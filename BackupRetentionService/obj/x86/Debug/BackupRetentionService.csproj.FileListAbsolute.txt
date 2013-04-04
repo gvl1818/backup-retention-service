@@ -1,0 +1,24 @@
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\obj\x86\Debug\ResolveAssemblyReference.cache
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\obj\x86\Debug\BackupRetentionService.ProjectInstaller.resources
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\obj\x86\Debug\ResGen.read.1.tlog
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\obj\x86\Debug\ResGen.write.1.tlog
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetentionService.exe
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetentionService.pdb
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\bin\Debug\SevenZipSharp.dll
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\obj\x86\Debug\BackupRetentionService.exe
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\obj\x86\Debug\BackupRetentionService.pdb
+\\hesdnet.com\admin\home\pcooper\visual studio 2010\Projects\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetentionService.exe.config
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetentionService.exe.config
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\BackupRetentionService.exe
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\BackupRetentionService.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetentionService.exe
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetentionService.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\SevenZipSharp.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\BackupRetentionService.ProjectInstaller.resources
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\ResGen.read.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\ResGen.write.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetention.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetention.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\Renci.SshNet.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\AlexPilotti.FTPS.Client.dll

@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <SyncConfig>
+    <ID>1</ID>
+    <Enabled>false</Enabled>
+    <Monday>true</Monday>
+    <DayOfMonth>-2</DayOfMonth>
+    <SourceFolder>c:\\BackupTest2</SourceFolder>
+    <DestinationFolder>C:\\BackupTest</DestinationFolder>
+    <FileSyncReplicaOption>OneWay</FileSyncReplicaOption>
+    <FileSyncReset>false</FileSyncReset>
+    <FolderSyncDirectionOrder>Upload</FolderSyncDirectionOrder>
+    <DefaultConflictResolutionPolicy>SourceWins</DefaultConflictResolutionPolicy>
+  </SyncConfig>
+</DocumentElement>

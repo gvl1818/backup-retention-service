@@ -1,0 +1,16 @@
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\ResGen.read.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\ResGen.write.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetentionSystemTray.exe
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetentionSystemTray.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\BackupRetentionSystemTray.exe
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\BackupRetentionSystemTray.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\BackupRetention.BackupRetentionSystemTray.resources
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\BackupRetention.Properties.Resources.resources
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetention.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\SevenZipSharp.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetention.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\BackupRetention.AboutBox.resources
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetentionSystemTray.exe.config
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\Renci.SshNet.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\AlexPilotti.FTPS.Client.dll

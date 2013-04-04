@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <RetentionConfig>
+    <ID>1</ID>
+    <Enabled>false</Enabled>
+    <Time></Time>
+    <Monday>false</Monday>
+    <Tuesday>false</Tuesday>
+    <Wednesday>false</Wednesday>
+    <Thursday>false</Thursday>
+    <Friday>false</Friday>
+    <Saturday>false</Saturday>
+    <Sunday>false</Sunday>
+    <DayOfMonth>0</DayOfMonth>
+    <BackupFolder>c:\\BackupTest3</BackupFolder>
+    <MinFileCount>3</MinFileCount>
+    <DayOfWeekToKeep>Monday</DayOfWeekToKeep>
+    <DailyMaxDaysOld>2</DailyMaxDaysOld>
+    <WeeklyMaxDaysOld>7</WeeklyMaxDaysOld>
+    <MonthlyMaxDaysOld>31</MonthlyMaxDaysOld>
+    <RetentionAlgorithm>GFS</RetentionAlgorithm>
+  </RetentionConfig>
+</DocumentElement>

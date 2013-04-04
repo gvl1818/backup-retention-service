@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+    <RemoteConfig>
+      <ID>1</ID>
+      <Enabled>false</Enabled>
+      <Time></Time>
+      <Monday>false</Monday>
+      <Tuesday>false</Tuesday>
+      <Wednesday>false</Wednesday>
+      <Thursday>false</Thursday>
+      <Friday>false</Friday>
+      <Saturday>false</Saturday>
+      <Sunday>false</Sunday>
+      <DayOfMonth>0</DayOfMonth>
+      <Host>10.13.10.11</Host>
+      <Protocol>SFTP</Protocol>
+      <Port>22</Port>
+      <Username>Administrator</Username>
+      <Password></Password>
+      <KeyFileDirectory></KeyFileDirectory>
+      <UsePassPhrase>false</UsePassPhrase>
+      <BackupFolder>c:\\BackupTest3</BackupFolder>
+      <RemoteDirectory></RemoteDirectory>
+      <TransferDirection>Upload</TransferDirection>
+      <Overwrite>ForceOverwrite</Overwrite>
+      <AllowAnyCertificate>true</AllowAnyCertificate>
+      <Timeout>120000</Timeout>
+    </RemoteConfig>
+</DocumentElement>
