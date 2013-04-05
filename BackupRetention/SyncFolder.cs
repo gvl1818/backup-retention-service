@@ -690,48 +690,55 @@ namespace BackupRetention
                     //Delete Files in DestinationFolder that are not in the SourceFolder or Fix Renamed File
                     foreach (FileInfo destinationFile in DestinationFiles)
                     {
-                        string strSource = "";
-                        strSource = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, strSourceFolder));
-                        if (blShuttingDown)
+                        try
                         {
-                            _evt.WriteEntry("Sync: Mirroring Shutting Down about to possibly delete mirror file: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                            return;
-                        }
-
-                        if (!File.Exists(strSource))
-                        {
-                            if (!Common.IsFileLocked(destinationFile))
+                            string strSource = "";
+                            strSource = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, strSourceFolder));
+                            if (blShuttingDown)
                             {
-                                FileInfo FileRenamed = GetRenamedFile(destinationFile, SourceFiles);
-                                if (FileRenamed != null && !FileSyncReset)
-                                {
-                                    string strRenamedDest = Common.WindowsPathClean(FileRenamed.FullName.Replace(strSourceFolder, strDestinationFolder));
-                                    //Rename Existing File
-                                    File.Move(destinationFile.FullName, strRenamedDest);
-                                    _evt.WriteEntry("Sync: Mirroring File Renamed: " + FileRenamed.FullName + " from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
+                                _evt.WriteEntry("Sync: Mirroring Shutting Down about to possibly delete mirror file: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                                return;
+                            }
 
-                                }
-                                else
+                            if (!File.Exists(strSource))
+                            {
+                                if (!Common.IsFileLocked(destinationFile))
                                 {
-                                    //File Not Found and Same File Uncompressed not found so Delete
-                                    if (!(destinationFile.Extension == ".7z" && File.Exists(strSource.Replace(".7z", ""))))
+                                    FileInfo FileRenamed = GetRenamedFile(destinationFile, SourceFiles);
+                                    if (FileRenamed != null && !FileSyncReset)
                                     {
-                                        if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
+                                        string strRenamedDest = Common.WindowsPathClean(FileRenamed.FullName.Replace(strSourceFolder, strDestinationFolder));
+                                        //Rename Existing File
+                                        File.Move(destinationFile.FullName, strRenamedDest);
+                                        _evt.WriteEntry("Sync: Mirroring File Renamed: " + FileRenamed.FullName + " from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
+
+                                    }
+                                    else
+                                    {
+                                        //File Not Found and Same File Uncompressed not found so Delete
+                                        if (!(destinationFile.Extension == ".7z" && File.Exists(strSource.Replace(".7z", ""))))
                                         {
-                                            string strRenamedDest = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destinationFile.Extension;
-                                            File.Move(destinationFile.FullName, strRenamedDest);
-                                            _evt.WriteEntry("Sync: Mirroring File Archived from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
-                                        }
-                                        else
-                                        {
-                                            File.SetAttributes(destinationFile.FullName, FileAttributes.Normal);
-                                            File.Delete(destinationFile.FullName);
-                                            _evt.WriteEntry("Sync: Mirroring File Deleted: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                                        }
+                                            if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
+                                            {
+                                                string strRenamedDest = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destinationFile.Extension;
+                                                File.Move(destinationFile.FullName, strRenamedDest);
+                                                _evt.WriteEntry("Sync: Mirroring File Archived from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
+                                            }
+                                            else
+                                            {
+                                                File.SetAttributes(destinationFile.FullName, FileAttributes.Normal);
+                                                File.Delete(destinationFile.FullName);
+                                                _evt.WriteEntry("Sync: Mirroring File Deleted: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                                            }
                                         
+                                        }
                                     }
                                 }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            _evt.WriteEntry("Sync: Mirroring File Failed to Delete: " + destinationFile.FullName + " " + ex.Message, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                         }
                     }
 
@@ -740,6 +747,7 @@ namespace BackupRetention
                     DestinationFolders = Common.GetAllDirectories(strDestinationFolder);
                     foreach (DirectoryInfo dir1 in DestinationFolders)
                     {
+                        
                         string strSource = "";
                         try
                         {
@@ -793,66 +801,74 @@ namespace BackupRetention
                     foreach (FileInfo srcFile in SourceFiles)
                     {
                         string strDestination = "";
-                        strDestination = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
-
-                        if (blShuttingDown)
+                        try
                         {
-                            _evt.WriteEntry("Sync: Mirroring Shutting Down about to possibly mirror file: " + srcFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
-                            return;
-                        }
+                            strDestination = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
 
-                        if (!File.Exists(strDestination))
-                        {
-                            if (File.Exists(strDestination + ".7z"))
+                            if (blShuttingDown)
                             {
-                                strDestination += ".7z";
+                                _evt.WriteEntry("Sync: Mirroring Shutting Down about to possibly mirror file: " + srcFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                return;
                             }
-                        }
+
+                            if (!File.Exists(strDestination))
+                            {
+                                if (File.Exists(strDestination + ".7z"))
+                                {
+                                    strDestination += ".7z";
+                                }
+                            }
                         
-                        if (!Common.IsFileLocked(srcFile) && srcFile.Name.ToLower() != "file.id" && srcFile.Name.ToLower() != "filesync.metadata")
+                            if (!Common.IsFileLocked(srcFile) && srcFile.Name.ToLower() != "file.id" && srcFile.Name.ToLower() != "filesync.metadata")
+                            {
+                                if (File.Exists(strDestination))
+                                {
+                                    FileInfo destFile = new FileInfo(strDestination);
+
+                                    //Refresh Last Modified Dates and Length
+                                    using (FileStream fs = new FileStream(srcFile.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                    {
+                                        fs.ReadByte();
+                                        fs.Close();
+                                    }
+                                    srcFile.Refresh();
+                                    destFile = Common.RefreshFileInfo(destFile);
+
+
+                                    //Copy the Modified file
+                                    if ((srcFile.Length != destFile.Length && destFile.Extension == srcFile.Extension) || srcFile.LastWriteTimeUtc != destFile.LastWriteTimeUtc)
+                                    {
+                                        strDestination = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
+                                        if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
+                                        {
+                                            string strRenamedDest = Common.WindowsPathClean(destFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destFile.Extension;
+                                            File.Move(strDestination,strRenamedDest);
+                                            File.Copy(srcFile.FullName, strDestination, true);
+                                            _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                        }
+                                        else
+                                        {
+                                            System.IO.File.Copy(srcFile.FullName, strDestination, true);
+                                            _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    //Copy the File
+                                    System.IO.File.Copy(srcFile.FullName, strDestination, true);
+                                    _evt.WriteEntry("Sync: Mirroring File Created Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
                         {
-                            if (File.Exists(strDestination))
-                            {
-                                FileInfo destFile = new FileInfo(strDestination);
-
-                                //Refresh Last Modified Dates and Length
-                                using (FileStream fs = new FileStream(srcFile.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                                {
-                                    fs.ReadByte();
-                                    fs.Close();
-                                }
-                                srcFile.Refresh();
-                                destFile = Common.RefreshFileInfo(destFile);
-
-
-                                //Copy the Modified file
-                                if ((srcFile.Length != destFile.Length && destFile.Extension == srcFile.Extension) || srcFile.LastWriteTimeUtc != destFile.LastWriteTimeUtc)
-                                {
-                                    strDestination = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
-                                    if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
-                                    {
-                                        string strRenamedDest = Common.WindowsPathClean(destFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destFile.Extension;
-                                        File.Move(strDestination,strRenamedDest);
-                                        File.Copy(srcFile.FullName, strDestination, true);
-                                        _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
-                                    }
-                                    else
-                                    {
-                                        System.IO.File.Copy(srcFile.FullName, strDestination, true);
-                                        _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                //Copy the File
-                                System.IO.File.Copy(srcFile.FullName, strDestination, true);
-                                _evt.WriteEntry("Sync: Mirroring File Created Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
-
-                            }
+                            _evt.WriteEntry("Sync: Mirroring File Modified Copy failed from: " + srcFile.FullName + " to: " + strDestination + " " + ex.Message, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
                         }
                     }
+
                 }
                 catch (Exception ex)
                 {
