@@ -910,7 +910,7 @@ namespace BackupRetention
                 guid = Guid.NewGuid();
                 replicaID = new SyncId(guid);
                 //FileStream fs = File.Open(syncFilePath, FileMode.Create);
-                FileStream fs = new FileStream(syncFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                FileStream fs = new FileStream(syncFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(guid.ToString());
                 sw.Close();
@@ -918,7 +918,7 @@ namespace BackupRetention
             }
             else
             {
-                FileStream fs = new FileStream(syncFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                FileStream fs = new FileStream(syncFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 StreamReader sr = new StreamReader(fs);
                 string guidString = sr.ReadLine();
                 guid = new Guid(guidString);
