@@ -424,7 +424,7 @@ namespace BackupRetention
 
             try
             {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 stream.Close();
                 stream.Dispose();
             }

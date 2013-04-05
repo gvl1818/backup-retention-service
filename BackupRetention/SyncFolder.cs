@@ -669,7 +669,13 @@ namespace BackupRetention
                         strDestinationFolder = Common.WindowsPathClean(DestinationFolder);
                     }
                     CreateDestinationFolders(strSourceFolder, strDestinationFolder);
-                    CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
+                    if (ArchiveFolder.Length > 0 && ArchiveDeleted)
+                    {
+                        if (Directory.Exists(ArchiveFolder))
+                        {
+                            CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
+                        }
+                    }
 
                     SourceFiles = Common.WalkDirectory(strSourceFolder, ref blShuttingDown);
                     DestinationFiles = Common.WalkDirectory(strDestinationFolder, ref blShuttingDown);
@@ -903,7 +909,8 @@ namespace BackupRetention
             {
                 guid = Guid.NewGuid();
                 replicaID = new SyncId(guid);
-                FileStream fs = File.Open(syncFilePath, FileMode.Create);
+                //FileStream fs = File.Open(syncFilePath, FileMode.Create);
+                FileStream fs = new FileStream(syncFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(guid.ToString());
                 sw.Close();
@@ -911,7 +918,7 @@ namespace BackupRetention
             }
             else
             {
-                FileStream fs = File.Open(syncFilePath, FileMode.Open);
+                FileStream fs = new FileStream(syncFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 StreamReader sr = new StreamReader(fs);
                 string guidString = sr.ReadLine();
                 guid = new Guid(guidString);
