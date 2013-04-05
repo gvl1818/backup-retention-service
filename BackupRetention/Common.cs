@@ -414,21 +414,18 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Checks whether file is locked by the operating system or another process
+        /// Checks whether file is locked by the operating system or another process.  Also if you have permission to the file.
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         public static bool IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
-
             try
             {
                 stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                stream.Close();
-                stream.Dispose();
             }
-            catch (IOException)
+            catch (Exception)
             {
                 //the file is unavailable because it is:
                 //still being written to
@@ -457,21 +454,52 @@ namespace BackupRetention
             return false;
         }
 
+        /// <summary>
+        /// Refresh FilInfo file attributes.  Windows 7 doesn't update attributes actively.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public static FileInfo RefreshFileInfo(FileInfo file)
         {
-            using (FileStream fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            FileStream fs = null;
+            try
             {
+                fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 fs.ReadByte();
                 fs.Close();
+                file.Refresh();
             }
-            file.Refresh();
+            catch (IOException)
+            {
+            }
+            finally
+            {
+                try
+                {
+                    if (fs != null)
+                    {
+                        fs.Close();
+                        fs.Dispose();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+            }
             return file;
+            
         }
 
-
+        /// <summary>
+        /// GetMD5HashFromFile returns MD5 hash of a file as a string
+        /// </summary>
+        /// <param name="strPath"></param>
+        /// <returns></returns>
         public static string GetMD5HashFromFile(string strPath)
         {
             StringBuilder sb = new StringBuilder();
+            string strMD5 = "";
             FileStream fs=null;
             MD5 md5 = new MD5CryptoServiceProvider();
             try
@@ -486,11 +514,10 @@ namespace BackupRetention
                 {
                     sb.Append(retVal[i].ToString("x2"));
                 }
+                strMD5 = sb.ToString();
             }
             catch (Exception)
             {
-
-
             }
             finally
             {
@@ -499,10 +526,14 @@ namespace BackupRetention
                     fs.Close();
                     fs.Dispose();
                 }
+                fs = null;
                 md5.Clear();
+                md5 = null;
+                sb.Clear();
+                sb = null;
             }
             
-            return sb.ToString();
+            return strMD5;
         }
 
         
@@ -624,7 +655,7 @@ namespace BackupRetention
 
             if (strPath.Length > 2)
             {
-                //Remove Ending BackSlashes
+                //Remove Ending BackSlashes from folders
                 if (strPath.Substring(strPath.Length - 2, 2) == "\\")
                 {
                     strPath = strPath.Remove(strPath.Length - 2);

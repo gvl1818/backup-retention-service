@@ -36,43 +36,6 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabRetention = new System.Windows.Forms.TabPage();
             this.dgvRetention = new System.Windows.Forms.DataGridView();
-            this.tabCompress = new System.Windows.Forms.TabPage();
-            this.dgvCompress = new System.Windows.Forms.DataGridView();
-            this.tabSync = new System.Windows.Forms.TabPage();
-            this.dgvSync = new System.Windows.Forms.DataGridView();
-            this.tabRemote = new System.Windows.Forms.TabPage();
-            this.dgvRemote = new System.Windows.Forms.DataGridView();
-            this.tabEvents = new System.Windows.Forms.TabPage();
-            this.dgvEvents = new System.Windows.Forms.DataGridView();
-            this.dgvEventImage = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dgvEventType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColEventTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColEventMessage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColEventSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColEventCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColEventEventID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnClearLogs = new System.Windows.Forms.Button();
-            this.txtServiceStatus = new System.Windows.Forms.TextBox();
-            this.lblServiceIntervalMinutes = new System.Windows.Forms.Label();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
-            this.gbTime = new System.Windows.Forms.GroupBox();
-            this.lblTimeInfo = new System.Windows.Forms.Label();
-            this.btnSaveApply = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.mtxtMaxDriveSpaceUsed = new System.Windows.Forms.MaskedTextBox();
-            this.lblMaxDriveSpaceUsed = new System.Windows.Forms.Label();
-            this.lblServiceInterval = new System.Windows.Forms.Label();
-            this.txtServiceInterval = new System.Windows.Forms.TextBox();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.pbLeftIcon = new System.Windows.Forms.PictureBox();
             this.dgvColRetentionID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColRetentionEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvColRetentionTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -91,6 +54,8 @@
             this.dgvColRetentionWeeklyMaxDaysOld = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColRetentionMonthlyMaxDaysOld = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColRetentionRetentionAlgorithm = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.tabCompress = new System.Windows.Forms.TabPage();
+            this.dgvCompress = new System.Windows.Forms.DataGridView();
             this.dgvColCompressID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColCompressEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvColCompressTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -110,6 +75,8 @@
             this.dgvColCompressKeepOriginalFile = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvColCompressCompressionLvl = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvColCompressStartCompressingAfterDays = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabSync = new System.Windows.Forms.TabPage();
+            this.dgvSync = new System.Windows.Forms.DataGridView();
             this.dgvColSyncID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColSyncEnabled1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvColSyncTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -129,6 +96,8 @@
             this.dgvColSyncDefaultConflictResolutionPolicy = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvColSyncArchiveDeleted = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvColSyncArchiveFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabRemote = new System.Windows.Forms.TabPage();
+            this.dgvRemote = new System.Windows.Forms.DataGridView();
             this.dgvColRemoteID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColRemoteEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvColRemoteTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -153,6 +122,44 @@
             this.dgvColRemoteAllowAnyCertificate = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dgvColRemoteTimeout = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColRemoteOverwrite = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.tabEvents = new System.Windows.Forms.TabPage();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.chkInformation = new System.Windows.Forms.CheckBox();
+            this.chkWarning = new System.Windows.Forms.CheckBox();
+            this.chkError = new System.Windows.Forms.CheckBox();
+            this.btnRefreshEventLog = new System.Windows.Forms.Button();
+            this.btnClearLogs = new System.Windows.Forms.Button();
+            this.dgvEvents = new System.Windows.Forms.DataGridView();
+            this.dgvEventImage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dgvEventType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColEventTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColEventMessage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColEventSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColEventCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColEventEventID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtServiceStatus = new System.Windows.Forms.TextBox();
+            this.lblServiceIntervalMinutes = new System.Windows.Forms.Label();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.gbTime = new System.Windows.Forms.GroupBox();
+            this.lblTimeInfo = new System.Windows.Forms.Label();
+            this.btnSaveApply = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.mtxtMaxDriveSpaceUsed = new System.Windows.Forms.MaskedTextBox();
+            this.lblMaxDriveSpaceUsed = new System.Windows.Forms.Label();
+            this.lblServiceInterval = new System.Windows.Forms.Label();
+            this.txtServiceInterval = new System.Windows.Forms.TextBox();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.pbLeftIcon = new System.Windows.Forms.PictureBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tabControl.SuspendLayout();
             this.tabRetention.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRetention)).BeginInit();
@@ -183,7 +190,7 @@
             this.tabControl.Location = new System.Drawing.Point(1, 247);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(575, 315);
+            this.tabControl.Size = new System.Drawing.Size(614, 429);
             this.tabControl.TabIndex = 16;
             // 
             // tabRetention
@@ -192,7 +199,7 @@
             this.tabRetention.Location = new System.Drawing.Point(4, 22);
             this.tabRetention.Name = "tabRetention";
             this.tabRetention.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRetention.Size = new System.Drawing.Size(567, 289);
+            this.tabRetention.Size = new System.Drawing.Size(606, 403);
             this.tabRetention.TabIndex = 0;
             this.tabRetention.Text = "Retention Config";
             this.tabRetention.UseVisualStyleBackColor = true;
@@ -223,454 +230,10 @@
             this.dgvRetention.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRetention.Location = new System.Drawing.Point(3, 3);
             this.dgvRetention.Name = "dgvRetention";
-            this.dgvRetention.Size = new System.Drawing.Size(561, 283);
+            this.dgvRetention.Size = new System.Drawing.Size(600, 397);
             this.dgvRetention.TabIndex = 9;
             this.dgvRetention.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRetention_CellDoubleClick);
             this.dgvRetention.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvRetention_CellValidating);
-            // 
-            // tabCompress
-            // 
-            this.tabCompress.Controls.Add(this.dgvCompress);
-            this.tabCompress.Location = new System.Drawing.Point(4, 22);
-            this.tabCompress.Name = "tabCompress";
-            this.tabCompress.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCompress.Size = new System.Drawing.Size(567, 289);
-            this.tabCompress.TabIndex = 1;
-            this.tabCompress.Text = "Compress Config";
-            this.tabCompress.UseVisualStyleBackColor = true;
-            // 
-            // dgvCompress
-            // 
-            this.dgvCompress.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvCompress.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCompress.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvColCompressID,
-            this.dgvColCompressEnabled,
-            this.dgvColCompressTime,
-            this.dgvColCompressMonday,
-            this.dgvColCompressTuesday,
-            this.dgvColCompressWednesday,
-            this.dgvColCompressThursday,
-            this.dgvColCompressFriday,
-            this.dgvColCompressSaturday,
-            this.dgvColCompressSunday,
-            this.dgvColCompressDayOfMonth,
-            this.dgvColCompressCompress,
-            this.dgvColCompressSourceOption,
-            this.dgvColCompressSourceFolder,
-            this.dgvColCompressDestinationFolder,
-            this.dgvColCompressEncryptionPassword,
-            this.dgvColCompressKeepOriginalFile,
-            this.dgvColCompressCompressionLvl,
-            this.dgvColCompressStartCompressingAfterDays});
-            this.dgvCompress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvCompress.Location = new System.Drawing.Point(3, 3);
-            this.dgvCompress.Name = "dgvCompress";
-            this.dgvCompress.Size = new System.Drawing.Size(561, 283);
-            this.dgvCompress.TabIndex = 11;
-            this.dgvCompress.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCompress_CellBeginEdit);
-            this.dgvCompress.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompress_CellDoubleClick);
-            this.dgvCompress.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompress_CellEndEdit);
-            this.dgvCompress.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvCompress_CellFormatting);
-            this.dgvCompress.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvCompress_CellValidating);
-            // 
-            // tabSync
-            // 
-            this.tabSync.Controls.Add(this.dgvSync);
-            this.tabSync.Location = new System.Drawing.Point(4, 22);
-            this.tabSync.Name = "tabSync";
-            this.tabSync.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSync.Size = new System.Drawing.Size(567, 289);
-            this.tabSync.TabIndex = 2;
-            this.tabSync.Text = "Synchronization Config";
-            this.tabSync.UseVisualStyleBackColor = true;
-            // 
-            // dgvSync
-            // 
-            this.dgvSync.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvSync.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSync.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvColSyncID,
-            this.dgvColSyncEnabled1,
-            this.dgvColSyncTime,
-            this.dgvColSyncMonday,
-            this.dgvColSyncTuesday,
-            this.dgvColSyncWednesday,
-            this.dgvColSyncThursday,
-            this.dgvColSyncFriday,
-            this.dgvColSyncSaturday,
-            this.dgvColSyncSunday,
-            this.dgvColSyncDayOfMonth,
-            this.dgvColSyncSourceFolder,
-            this.dgvColSyncDestinationFolder,
-            this.dgvColSyncFileSyncReplicaOption,
-            this.dgvColSyncFileSyncReset,
-            this.dgvColSyncFolderSyncDirectionOrder,
-            this.dgvColSyncDefaultConflictResolutionPolicy,
-            this.dgvColSyncArchiveDeleted,
-            this.dgvColSyncArchiveFolder});
-            this.dgvSync.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSync.Location = new System.Drawing.Point(3, 3);
-            this.dgvSync.Name = "dgvSync";
-            this.dgvSync.Size = new System.Drawing.Size(561, 283);
-            this.dgvSync.TabIndex = 13;
-            this.dgvSync.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSync_CellDoubleClick);
-            this.dgvSync.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvSync_CellValidating);
-            // 
-            // tabRemote
-            // 
-            this.tabRemote.Controls.Add(this.dgvRemote);
-            this.tabRemote.Location = new System.Drawing.Point(4, 22);
-            this.tabRemote.Name = "tabRemote";
-            this.tabRemote.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRemote.Size = new System.Drawing.Size(567, 289);
-            this.tabRemote.TabIndex = 3;
-            this.tabRemote.Text = "Remote Sync Config";
-            this.tabRemote.UseVisualStyleBackColor = true;
-            // 
-            // dgvRemote
-            // 
-            this.dgvRemote.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvRemote.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRemote.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvColRemoteID,
-            this.dgvColRemoteEnabled,
-            this.dgvColRemoteTime,
-            this.dgvColRemoteMonday,
-            this.dgvColRemoteTuesday,
-            this.dgvColRemoteWednesday,
-            this.dgvColRemoteThursday,
-            this.dgvColRemoteFriday,
-            this.dgvColRemoteSaturday,
-            this.dgvColRemoteSunday,
-            this.dgvColRemoteDayOfMonth,
-            this.dgvColRemoteHost,
-            this.dgvColRemoteProtocol,
-            this.dgvColRemotePort,
-            this.dgvColRemoteUsername,
-            this.dgvColRemotePassword,
-            this.dgvColRemoteKeyFileDirectory,
-            this.dgvColRemoteKeyFileUsePassPhrase,
-            this.dgvColRemoteRemoteDirectory,
-            this.dgvColRemoteBackupFolder,
-            this.dgvColRemoteTransferDirection,
-            this.dgvColRemoteAllowAnyCertificate,
-            this.dgvColRemoteTimeout,
-            this.dgvColRemoteOverwrite});
-            this.dgvRemote.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvRemote.Location = new System.Drawing.Point(3, 3);
-            this.dgvRemote.Name = "dgvRemote";
-            this.dgvRemote.Size = new System.Drawing.Size(561, 283);
-            this.dgvRemote.TabIndex = 15;
-            this.dgvRemote.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvRemote_CellBeginEdit);
-            this.dgvRemote.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRemote_CellDoubleClick);
-            this.dgvRemote.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRemote_CellEndEdit);
-            this.dgvRemote.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvRemote_CellFormatting);
-            this.dgvRemote.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvRemote_CellValidating);
-            // 
-            // tabEvents
-            // 
-            this.tabEvents.Controls.Add(this.dgvEvents);
-            this.tabEvents.Location = new System.Drawing.Point(4, 22);
-            this.tabEvents.Name = "tabEvents";
-            this.tabEvents.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEvents.Size = new System.Drawing.Size(567, 289);
-            this.tabEvents.TabIndex = 4;
-            this.tabEvents.Text = "Events";
-            this.tabEvents.UseVisualStyleBackColor = true;
-            // 
-            // dgvEvents
-            // 
-            this.dgvEvents.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvEvents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvEvents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvEventImage,
-            this.dgvEventType,
-            this.dgvColEventTime,
-            this.dgvColEventMessage,
-            this.dgvColEventSource,
-            this.dgvColEventCategory,
-            this.dgvColEventEventID});
-            this.dgvEvents.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvEvents.Location = new System.Drawing.Point(3, 3);
-            this.dgvEvents.Name = "dgvEvents";
-            this.dgvEvents.Size = new System.Drawing.Size(561, 283);
-            this.dgvEvents.TabIndex = 17;
-            // 
-            // dgvEventImage
-            // 
-            this.dgvEventImage.DataPropertyName = "EventImage";
-            this.dgvEventImage.HeaderText = "EventImage";
-            this.dgvEventImage.Name = "dgvEventImage";
-            this.dgvEventImage.Width = 70;
-            // 
-            // dgvEventType
-            // 
-            this.dgvEventType.DataPropertyName = "Type";
-            this.dgvEventType.HeaderText = "Type";
-            this.dgvEventType.Name = "dgvEventType";
-            this.dgvEventType.Visible = false;
-            this.dgvEventType.Width = 56;
-            // 
-            // dgvColEventTime
-            // 
-            this.dgvColEventTime.DataPropertyName = "Time";
-            this.dgvColEventTime.HeaderText = "Time";
-            this.dgvColEventTime.Name = "dgvColEventTime";
-            this.dgvColEventTime.Width = 55;
-            // 
-            // dgvColEventMessage
-            // 
-            this.dgvColEventMessage.DataPropertyName = "Message";
-            this.dgvColEventMessage.HeaderText = "Message";
-            this.dgvColEventMessage.Name = "dgvColEventMessage";
-            this.dgvColEventMessage.Width = 75;
-            // 
-            // dgvColEventSource
-            // 
-            this.dgvColEventSource.DataPropertyName = "Source";
-            this.dgvColEventSource.HeaderText = "Source";
-            this.dgvColEventSource.Name = "dgvColEventSource";
-            this.dgvColEventSource.Width = 66;
-            // 
-            // dgvColEventCategory
-            // 
-            this.dgvColEventCategory.DataPropertyName = "Category";
-            this.dgvColEventCategory.HeaderText = "Category";
-            this.dgvColEventCategory.Name = "dgvColEventCategory";
-            this.dgvColEventCategory.Width = 74;
-            // 
-            // dgvColEventEventID
-            // 
-            this.dgvColEventEventID.DataPropertyName = "EventID";
-            this.dgvColEventEventID.HeaderText = "EventID";
-            this.dgvColEventEventID.Name = "dgvColEventEventID";
-            this.dgvColEventEventID.Width = 71;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(582, 24);
-            this.menuStrip1.TabIndex = 19;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1,
-            this.helpToolStripMenuItem1});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutToolStripMenuItem1
-            // 
-            this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
-            this.aboutToolStripMenuItem1.Text = "&About";
-            this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
-            // 
-            // helpToolStripMenuItem1
-            // 
-            this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
-            this.helpToolStripMenuItem1.Text = "&Help";
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.btnClearLogs);
-            this.panel1.Controls.Add(this.txtServiceStatus);
-            this.panel1.Controls.Add(this.lblServiceIntervalMinutes);
-            this.panel1.Controls.Add(this.btnStart);
-            this.panel1.Controls.Add(this.btnStop);
-            this.panel1.Controls.Add(this.gbTime);
-            this.panel1.Controls.Add(this.btnSaveApply);
-            this.panel1.Controls.Add(this.btnSave);
-            this.panel1.Controls.Add(this.mtxtMaxDriveSpaceUsed);
-            this.panel1.Controls.Add(this.lblMaxDriveSpaceUsed);
-            this.panel1.Controls.Add(this.lblServiceInterval);
-            this.panel1.Controls.Add(this.txtServiceInterval);
-            this.panel1.Controls.Add(this.lblTitle);
-            this.panel1.Controls.Add(this.pbLeftIcon);
-            this.panel1.Location = new System.Drawing.Point(0, 30);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(582, 211);
-            this.panel1.TabIndex = 20;
-            // 
-            // btnClearLogs
-            // 
-            this.btnClearLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearLogs.Location = new System.Drawing.Point(497, 174);
-            this.btnClearLogs.Name = "btnClearLogs";
-            this.btnClearLogs.Size = new System.Drawing.Size(79, 27);
-            this.btnClearLogs.TabIndex = 35;
-            this.btnClearLogs.Text = "Clear Logs";
-            this.btnClearLogs.UseVisualStyleBackColor = true;
-            this.btnClearLogs.Click += new System.EventHandler(this.btnClearLogs_Click);
-            // 
-            // txtServiceStatus
-            // 
-            this.txtServiceStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtServiceStatus.Location = new System.Drawing.Point(384, 174);
-            this.txtServiceStatus.Name = "txtServiceStatus";
-            this.txtServiceStatus.ReadOnly = true;
-            this.txtServiceStatus.Size = new System.Drawing.Size(107, 24);
-            this.txtServiceStatus.TabIndex = 33;
-            // 
-            // lblServiceIntervalMinutes
-            // 
-            this.lblServiceIntervalMinutes.AutoSize = true;
-            this.lblServiceIntervalMinutes.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblServiceIntervalMinutes.Location = new System.Drawing.Point(359, 54);
-            this.lblServiceIntervalMinutes.Name = "lblServiceIntervalMinutes";
-            this.lblServiceIntervalMinutes.Size = new System.Drawing.Size(72, 18);
-            this.lblServiceIntervalMinutes.TabIndex = 32;
-            this.lblServiceIntervalMinutes.Text = "5 Minutes";
-            // 
-            // btnStart
-            // 
-            this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(303, 170);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 30);
-            this.btnStart.TabIndex = 6;
-            this.btnStart.Text = "S&tart";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(221, 170);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 30);
-            this.btnStop.TabIndex = 5;
-            this.btnStop.Text = "Sto&p";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // gbTime
-            // 
-            this.gbTime.Controls.Add(this.lblTimeInfo);
-            this.gbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbTime.Location = new System.Drawing.Point(9, 114);
-            this.gbTime.Name = "gbTime";
-            this.gbTime.Size = new System.Drawing.Size(495, 51);
-            this.gbTime.TabIndex = 31;
-            this.gbTime.TabStop = false;
-            this.gbTime.Text = "Times:";
-            // 
-            // lblTimeInfo
-            // 
-            this.lblTimeInfo.AutoSize = true;
-            this.lblTimeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTimeInfo.Location = new System.Drawing.Point(6, 19);
-            this.lblTimeInfo.Name = "lblTimeInfo";
-            this.lblTimeInfo.Size = new System.Drawing.Size(476, 17);
-            this.lblTimeInfo.TabIndex = 13;
-            this.lblTimeInfo.Text = "Time can be blank. If blank then execution will occur every service interval.";
-            // 
-            // btnSaveApply
-            // 
-            this.btnSaveApply.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveApply.Location = new System.Drawing.Point(91, 171);
-            this.btnSaveApply.Name = "btnSaveApply";
-            this.btnSaveApply.Size = new System.Drawing.Size(124, 29);
-            this.btnSaveApply.TabIndex = 4;
-            this.btnSaveApply.Text = "Save and &Apply";
-            this.btnSaveApply.UseVisualStyleBackColor = true;
-            this.btnSaveApply.Click += new System.EventHandler(this.btnSaveApply_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(9, 171);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 30);
-            this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "&Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // mtxtMaxDriveSpaceUsed
-            // 
-            this.mtxtMaxDriveSpaceUsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mtxtMaxDriveSpaceUsed.Location = new System.Drawing.Point(227, 84);
-            this.mtxtMaxDriveSpaceUsed.Mask = "00";
-            this.mtxtMaxDriveSpaceUsed.Name = "mtxtMaxDriveSpaceUsed";
-            this.mtxtMaxDriveSpaceUsed.Size = new System.Drawing.Size(48, 24);
-            this.mtxtMaxDriveSpaceUsed.TabIndex = 2;
-            // 
-            // lblMaxDriveSpaceUsed
-            // 
-            this.lblMaxDriveSpaceUsed.AutoSize = true;
-            this.lblMaxDriveSpaceUsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMaxDriveSpaceUsed.Location = new System.Drawing.Point(6, 87);
-            this.lblMaxDriveSpaceUsed.Name = "lblMaxDriveSpaceUsed";
-            this.lblMaxDriveSpaceUsed.Size = new System.Drawing.Size(218, 18);
-            this.lblMaxDriveSpaceUsed.TabIndex = 30;
-            this.lblMaxDriveSpaceUsed.Text = "Max Drive Space Used Percent:";
-            // 
-            // lblServiceInterval
-            // 
-            this.lblServiceInterval.AutoSize = true;
-            this.lblServiceInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblServiceInterval.Location = new System.Drawing.Point(114, 54);
-            this.lblServiceInterval.Name = "lblServiceInterval";
-            this.lblServiceInterval.Size = new System.Drawing.Size(111, 18);
-            this.lblServiceInterval.TabIndex = 25;
-            this.lblServiceInterval.Text = "Service Interval:";
-            // 
-            // txtServiceInterval
-            // 
-            this.txtServiceInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtServiceInterval.Location = new System.Drawing.Point(227, 54);
-            this.txtServiceInterval.Name = "txtServiceInterval";
-            this.txtServiceInterval.Size = new System.Drawing.Size(126, 24);
-            this.txtServiceInterval.TabIndex = 1;
-            this.txtServiceInterval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtServiceInterval_KeyPress);
-            this.txtServiceInterval.Validating += new System.ComponentModel.CancelEventHandler(this.txtServiceInterval_Validating);
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(86, 12);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(381, 26);
-            this.lblTitle.TabIndex = 23;
-            this.lblTitle.Text = "Backup Retention Service Settings";
-            // 
-            // pbLeftIcon
-            // 
-            this.pbLeftIcon.Image = global::BackupRetention.Properties.Resources.ImgWoodDriveTime;
-            this.pbLeftIcon.InitialImage = global::BackupRetention.Properties.Resources.ImgWoodDriveTime;
-            this.pbLeftIcon.Location = new System.Drawing.Point(448, -6);
-            this.pbLeftIcon.Name = "pbLeftIcon";
-            this.pbLeftIcon.Size = new System.Drawing.Size(118, 127);
-            this.pbLeftIcon.TabIndex = 34;
-            this.pbLeftIcon.TabStop = false;
             // 
             // dgvColRetentionID
             // 
@@ -861,6 +424,52 @@
             this.dgvColRetentionRetentionAlgorithm.ToolTipText = resources.GetString("dgvColRetentionRetentionAlgorithm.ToolTipText");
             this.dgvColRetentionRetentionAlgorithm.Width = 102;
             // 
+            // tabCompress
+            // 
+            this.tabCompress.Controls.Add(this.dgvCompress);
+            this.tabCompress.Location = new System.Drawing.Point(4, 22);
+            this.tabCompress.Name = "tabCompress";
+            this.tabCompress.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCompress.Size = new System.Drawing.Size(606, 403);
+            this.tabCompress.TabIndex = 1;
+            this.tabCompress.Text = "Compress Config";
+            this.tabCompress.UseVisualStyleBackColor = true;
+            // 
+            // dgvCompress
+            // 
+            this.dgvCompress.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvCompress.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCompress.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvColCompressID,
+            this.dgvColCompressEnabled,
+            this.dgvColCompressTime,
+            this.dgvColCompressMonday,
+            this.dgvColCompressTuesday,
+            this.dgvColCompressWednesday,
+            this.dgvColCompressThursday,
+            this.dgvColCompressFriday,
+            this.dgvColCompressSaturday,
+            this.dgvColCompressSunday,
+            this.dgvColCompressDayOfMonth,
+            this.dgvColCompressCompress,
+            this.dgvColCompressSourceOption,
+            this.dgvColCompressSourceFolder,
+            this.dgvColCompressDestinationFolder,
+            this.dgvColCompressEncryptionPassword,
+            this.dgvColCompressKeepOriginalFile,
+            this.dgvColCompressCompressionLvl,
+            this.dgvColCompressStartCompressingAfterDays});
+            this.dgvCompress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvCompress.Location = new System.Drawing.Point(3, 3);
+            this.dgvCompress.Name = "dgvCompress";
+            this.dgvCompress.Size = new System.Drawing.Size(561, 283);
+            this.dgvCompress.TabIndex = 11;
+            this.dgvCompress.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCompress_CellBeginEdit);
+            this.dgvCompress.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompress_CellDoubleClick);
+            this.dgvCompress.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompress_CellEndEdit);
+            this.dgvCompress.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvCompress_CellFormatting);
+            this.dgvCompress.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvCompress_CellValidating);
+            // 
             // dgvColCompressID
             // 
             this.dgvColCompressID.DataPropertyName = "ID";
@@ -1043,6 +652,49 @@
             this.dgvColCompressStartCompressingAfterDays.Name = "dgvColCompressStartCompressingAfterDays";
             this.dgvColCompressStartCompressingAfterDays.ToolTipText = "Only starts compressing files after days specified in this field.";
             this.dgvColCompressStartCompressingAfterDays.Width = 160;
+            // 
+            // tabSync
+            // 
+            this.tabSync.Controls.Add(this.dgvSync);
+            this.tabSync.Location = new System.Drawing.Point(4, 22);
+            this.tabSync.Name = "tabSync";
+            this.tabSync.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSync.Size = new System.Drawing.Size(606, 403);
+            this.tabSync.TabIndex = 2;
+            this.tabSync.Text = "Synchronization Config";
+            this.tabSync.UseVisualStyleBackColor = true;
+            // 
+            // dgvSync
+            // 
+            this.dgvSync.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvSync.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSync.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvColSyncID,
+            this.dgvColSyncEnabled1,
+            this.dgvColSyncTime,
+            this.dgvColSyncMonday,
+            this.dgvColSyncTuesday,
+            this.dgvColSyncWednesday,
+            this.dgvColSyncThursday,
+            this.dgvColSyncFriday,
+            this.dgvColSyncSaturday,
+            this.dgvColSyncSunday,
+            this.dgvColSyncDayOfMonth,
+            this.dgvColSyncSourceFolder,
+            this.dgvColSyncDestinationFolder,
+            this.dgvColSyncFileSyncReplicaOption,
+            this.dgvColSyncFileSyncReset,
+            this.dgvColSyncFolderSyncDirectionOrder,
+            this.dgvColSyncDefaultConflictResolutionPolicy,
+            this.dgvColSyncArchiveDeleted,
+            this.dgvColSyncArchiveFolder});
+            this.dgvSync.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSync.Location = new System.Drawing.Point(3, 3);
+            this.dgvSync.Name = "dgvSync";
+            this.dgvSync.Size = new System.Drawing.Size(561, 283);
+            this.dgvSync.TabIndex = 13;
+            this.dgvSync.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSync_CellDoubleClick);
+            this.dgvSync.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvSync_CellValidating);
             // 
             // dgvColSyncID
             // 
@@ -1229,6 +881,57 @@
             this.dgvColSyncArchiveFolder.Name = "dgvColSyncArchiveFolder";
             this.dgvColSyncArchiveFolder.ToolTipText = "Archive Destination Folder";
             this.dgvColSyncArchiveFolder.Width = 97;
+            // 
+            // tabRemote
+            // 
+            this.tabRemote.Controls.Add(this.dgvRemote);
+            this.tabRemote.Location = new System.Drawing.Point(4, 22);
+            this.tabRemote.Name = "tabRemote";
+            this.tabRemote.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRemote.Size = new System.Drawing.Size(606, 403);
+            this.tabRemote.TabIndex = 3;
+            this.tabRemote.Text = "Remote Sync Config";
+            this.tabRemote.UseVisualStyleBackColor = true;
+            // 
+            // dgvRemote
+            // 
+            this.dgvRemote.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvRemote.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRemote.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvColRemoteID,
+            this.dgvColRemoteEnabled,
+            this.dgvColRemoteTime,
+            this.dgvColRemoteMonday,
+            this.dgvColRemoteTuesday,
+            this.dgvColRemoteWednesday,
+            this.dgvColRemoteThursday,
+            this.dgvColRemoteFriday,
+            this.dgvColRemoteSaturday,
+            this.dgvColRemoteSunday,
+            this.dgvColRemoteDayOfMonth,
+            this.dgvColRemoteHost,
+            this.dgvColRemoteProtocol,
+            this.dgvColRemotePort,
+            this.dgvColRemoteUsername,
+            this.dgvColRemotePassword,
+            this.dgvColRemoteKeyFileDirectory,
+            this.dgvColRemoteKeyFileUsePassPhrase,
+            this.dgvColRemoteRemoteDirectory,
+            this.dgvColRemoteBackupFolder,
+            this.dgvColRemoteTransferDirection,
+            this.dgvColRemoteAllowAnyCertificate,
+            this.dgvColRemoteTimeout,
+            this.dgvColRemoteOverwrite});
+            this.dgvRemote.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvRemote.Location = new System.Drawing.Point(3, 3);
+            this.dgvRemote.Name = "dgvRemote";
+            this.dgvRemote.Size = new System.Drawing.Size(561, 283);
+            this.dgvRemote.TabIndex = 15;
+            this.dgvRemote.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvRemote_CellBeginEdit);
+            this.dgvRemote.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRemote_CellDoubleClick);
+            this.dgvRemote.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRemote_CellEndEdit);
+            this.dgvRemote.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvRemote_CellFormatting);
+            this.dgvRemote.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvRemote_CellValidating);
             // 
             // dgvColRemoteID
             // 
@@ -1438,11 +1141,398 @@
             this.dgvColRemoteOverwrite.Name = "dgvColRemoteOverwrite";
             this.dgvColRemoteOverwrite.Width = 58;
             // 
+            // tabEvents
+            // 
+            this.tabEvents.Controls.Add(this.lblSearch);
+            this.tabEvents.Controls.Add(this.txtSearch);
+            this.tabEvents.Controls.Add(this.chkInformation);
+            this.tabEvents.Controls.Add(this.chkWarning);
+            this.tabEvents.Controls.Add(this.chkError);
+            this.tabEvents.Controls.Add(this.btnRefreshEventLog);
+            this.tabEvents.Controls.Add(this.btnClearLogs);
+            this.tabEvents.Controls.Add(this.dgvEvents);
+            this.tabEvents.Location = new System.Drawing.Point(4, 22);
+            this.tabEvents.Name = "tabEvents";
+            this.tabEvents.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEvents.Size = new System.Drawing.Size(606, 403);
+            this.tabEvents.TabIndex = 4;
+            this.tabEvents.Text = "Events";
+            this.tabEvents.UseVisualStyleBackColor = true;
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSearch.Location = new System.Drawing.Point(325, 11);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(49, 15);
+            this.lblSearch.TabIndex = 42;
+            this.lblSearch.Text = "Search:";
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(380, 9);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(103, 21);
+            this.txtSearch.TabIndex = 41;
+            // 
+            // chkInformation
+            // 
+            this.chkInformation.AutoSize = true;
+            this.chkInformation.Checked = true;
+            this.chkInformation.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkInformation.Location = new System.Drawing.Point(231, 11);
+            this.chkInformation.Name = "chkInformation";
+            this.chkInformation.Size = new System.Drawing.Size(88, 19);
+            this.chkInformation.TabIndex = 40;
+            this.chkInformation.Text = "Information";
+            this.chkInformation.UseVisualStyleBackColor = true;
+            // 
+            // chkWarning
+            // 
+            this.chkWarning.AutoSize = true;
+            this.chkWarning.Checked = true;
+            this.chkWarning.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkWarning.Location = new System.Drawing.Point(161, 11);
+            this.chkWarning.Name = "chkWarning";
+            this.chkWarning.Size = new System.Drawing.Size(72, 19);
+            this.chkWarning.TabIndex = 39;
+            this.chkWarning.Text = "Warning";
+            this.chkWarning.UseVisualStyleBackColor = true;
+            // 
+            // chkError
+            // 
+            this.chkError.AutoSize = true;
+            this.chkError.Checked = true;
+            this.chkError.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkError.Location = new System.Drawing.Point(102, 11);
+            this.chkError.Name = "chkError";
+            this.chkError.Size = new System.Drawing.Size(53, 19);
+            this.chkError.TabIndex = 38;
+            this.chkError.Text = "Error";
+            this.chkError.UseVisualStyleBackColor = true;
+            // 
+            // btnRefreshEventLog
+            // 
+            this.btnRefreshEventLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefreshEventLog.Location = new System.Drawing.Point(7, 6);
+            this.btnRefreshEventLog.Name = "btnRefreshEventLog";
+            this.btnRefreshEventLog.Size = new System.Drawing.Size(79, 27);
+            this.btnRefreshEventLog.TabIndex = 37;
+            this.btnRefreshEventLog.Text = "Refresh";
+            this.btnRefreshEventLog.UseVisualStyleBackColor = true;
+            this.btnRefreshEventLog.Click += new System.EventHandler(this.btnRefreshEventLog_Click);
+            // 
+            // btnClearLogs
+            // 
+            this.btnClearLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearLogs.Location = new System.Drawing.Point(521, 6);
+            this.btnClearLogs.Name = "btnClearLogs";
+            this.btnClearLogs.Size = new System.Drawing.Size(79, 27);
+            this.btnClearLogs.TabIndex = 36;
+            this.btnClearLogs.Text = "Clear Logs";
+            this.btnClearLogs.UseVisualStyleBackColor = true;
+            this.btnClearLogs.Click += new System.EventHandler(this.btnClearLogs_Click);
+            // 
+            // dgvEvents
+            // 
+            this.dgvEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvEvents.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvEvents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvEvents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvEventImage,
+            this.dgvEventType,
+            this.dgvColEventTime,
+            this.dgvColEventMessage,
+            this.dgvColEventSource,
+            this.dgvColEventCategory,
+            this.dgvColEventEventID});
+            this.dgvEvents.Location = new System.Drawing.Point(0, 39);
+            this.dgvEvents.Name = "dgvEvents";
+            this.dgvEvents.Size = new System.Drawing.Size(606, 361);
+            this.dgvEvents.TabIndex = 17;
+            // 
+            // dgvEventImage
+            // 
+            this.dgvEventImage.DataPropertyName = "EventImage";
+            this.dgvEventImage.HeaderText = "EventImage";
+            this.dgvEventImage.Name = "dgvEventImage";
+            this.dgvEventImage.Width = 70;
+            // 
+            // dgvEventType
+            // 
+            this.dgvEventType.DataPropertyName = "Type";
+            this.dgvEventType.HeaderText = "Type";
+            this.dgvEventType.Name = "dgvEventType";
+            this.dgvEventType.Visible = false;
+            this.dgvEventType.Width = 56;
+            // 
+            // dgvColEventTime
+            // 
+            this.dgvColEventTime.DataPropertyName = "Time";
+            this.dgvColEventTime.HeaderText = "Time";
+            this.dgvColEventTime.Name = "dgvColEventTime";
+            this.dgvColEventTime.Width = 55;
+            // 
+            // dgvColEventMessage
+            // 
+            this.dgvColEventMessage.DataPropertyName = "Message";
+            this.dgvColEventMessage.HeaderText = "Message";
+            this.dgvColEventMessage.Name = "dgvColEventMessage";
+            this.dgvColEventMessage.Width = 75;
+            // 
+            // dgvColEventSource
+            // 
+            this.dgvColEventSource.DataPropertyName = "Source";
+            this.dgvColEventSource.HeaderText = "Source";
+            this.dgvColEventSource.Name = "dgvColEventSource";
+            this.dgvColEventSource.Width = 66;
+            // 
+            // dgvColEventCategory
+            // 
+            this.dgvColEventCategory.DataPropertyName = "Category";
+            this.dgvColEventCategory.HeaderText = "Category";
+            this.dgvColEventCategory.Name = "dgvColEventCategory";
+            this.dgvColEventCategory.Width = 74;
+            // 
+            // dgvColEventEventID
+            // 
+            this.dgvColEventEventID.DataPropertyName = "EventID";
+            this.dgvColEventEventID.HeaderText = "EventID";
+            this.dgvColEventEventID.Name = "dgvColEventEventID";
+            this.dgvColEventEventID.Width = 71;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(621, 24);
+            this.menuStrip1.TabIndex = 19;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem1,
+            this.helpToolStripMenuItem1});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem1
+            // 
+            this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem1.Text = "&About";
+            this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            // 
+            // helpToolStripMenuItem1
+            // 
+            this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.helpToolStripMenuItem1.Text = "&Help";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.txtServiceStatus);
+            this.panel1.Controls.Add(this.lblServiceIntervalMinutes);
+            this.panel1.Controls.Add(this.btnStart);
+            this.panel1.Controls.Add(this.btnStop);
+            this.panel1.Controls.Add(this.gbTime);
+            this.panel1.Controls.Add(this.btnSaveApply);
+            this.panel1.Controls.Add(this.btnSave);
+            this.panel1.Controls.Add(this.mtxtMaxDriveSpaceUsed);
+            this.panel1.Controls.Add(this.lblMaxDriveSpaceUsed);
+            this.panel1.Controls.Add(this.lblServiceInterval);
+            this.panel1.Controls.Add(this.txtServiceInterval);
+            this.panel1.Controls.Add(this.lblTitle);
+            this.panel1.Controls.Add(this.pbLeftIcon);
+            this.panel1.Location = new System.Drawing.Point(0, 30);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(621, 211);
+            this.panel1.TabIndex = 20;
+            // 
+            // txtServiceStatus
+            // 
+            this.txtServiceStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtServiceStatus.Location = new System.Drawing.Point(384, 174);
+            this.txtServiceStatus.Name = "txtServiceStatus";
+            this.txtServiceStatus.ReadOnly = true;
+            this.txtServiceStatus.Size = new System.Drawing.Size(107, 24);
+            this.txtServiceStatus.TabIndex = 33;
+            // 
+            // lblServiceIntervalMinutes
+            // 
+            this.lblServiceIntervalMinutes.AutoSize = true;
+            this.lblServiceIntervalMinutes.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblServiceIntervalMinutes.Location = new System.Drawing.Point(359, 54);
+            this.lblServiceIntervalMinutes.Name = "lblServiceIntervalMinutes";
+            this.lblServiceIntervalMinutes.Size = new System.Drawing.Size(72, 18);
+            this.lblServiceIntervalMinutes.TabIndex = 32;
+            this.lblServiceIntervalMinutes.Text = "5 Minutes";
+            // 
+            // btnStart
+            // 
+            this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStart.Location = new System.Drawing.Point(303, 170);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(75, 30);
+            this.btnStart.TabIndex = 6;
+            this.btnStart.Text = "S&tart";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStop.Location = new System.Drawing.Point(221, 170);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 30);
+            this.btnStop.TabIndex = 5;
+            this.btnStop.Text = "Sto&p";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // gbTime
+            // 
+            this.gbTime.Controls.Add(this.lblTimeInfo);
+            this.gbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbTime.Location = new System.Drawing.Point(9, 114);
+            this.gbTime.Name = "gbTime";
+            this.gbTime.Size = new System.Drawing.Size(495, 51);
+            this.gbTime.TabIndex = 31;
+            this.gbTime.TabStop = false;
+            this.gbTime.Text = "Times:";
+            // 
+            // lblTimeInfo
+            // 
+            this.lblTimeInfo.AutoSize = true;
+            this.lblTimeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimeInfo.Location = new System.Drawing.Point(6, 19);
+            this.lblTimeInfo.Name = "lblTimeInfo";
+            this.lblTimeInfo.Size = new System.Drawing.Size(476, 17);
+            this.lblTimeInfo.TabIndex = 13;
+            this.lblTimeInfo.Text = "Time can be blank. If blank then execution will occur every service interval.";
+            // 
+            // btnSaveApply
+            // 
+            this.btnSaveApply.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveApply.Location = new System.Drawing.Point(91, 171);
+            this.btnSaveApply.Name = "btnSaveApply";
+            this.btnSaveApply.Size = new System.Drawing.Size(124, 29);
+            this.btnSaveApply.TabIndex = 4;
+            this.btnSaveApply.Text = "Save and &Apply";
+            this.btnSaveApply.UseVisualStyleBackColor = true;
+            this.btnSaveApply.Click += new System.EventHandler(this.btnSaveApply_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Location = new System.Drawing.Point(9, 171);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 30);
+            this.btnSave.TabIndex = 3;
+            this.btnSave.Text = "&Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // mtxtMaxDriveSpaceUsed
+            // 
+            this.mtxtMaxDriveSpaceUsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mtxtMaxDriveSpaceUsed.Location = new System.Drawing.Point(227, 84);
+            this.mtxtMaxDriveSpaceUsed.Mask = "00";
+            this.mtxtMaxDriveSpaceUsed.Name = "mtxtMaxDriveSpaceUsed";
+            this.mtxtMaxDriveSpaceUsed.Size = new System.Drawing.Size(48, 24);
+            this.mtxtMaxDriveSpaceUsed.TabIndex = 2;
+            // 
+            // lblMaxDriveSpaceUsed
+            // 
+            this.lblMaxDriveSpaceUsed.AutoSize = true;
+            this.lblMaxDriveSpaceUsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaxDriveSpaceUsed.Location = new System.Drawing.Point(6, 87);
+            this.lblMaxDriveSpaceUsed.Name = "lblMaxDriveSpaceUsed";
+            this.lblMaxDriveSpaceUsed.Size = new System.Drawing.Size(218, 18);
+            this.lblMaxDriveSpaceUsed.TabIndex = 30;
+            this.lblMaxDriveSpaceUsed.Text = "Max Drive Space Used Percent:";
+            // 
+            // lblServiceInterval
+            // 
+            this.lblServiceInterval.AutoSize = true;
+            this.lblServiceInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblServiceInterval.Location = new System.Drawing.Point(114, 54);
+            this.lblServiceInterval.Name = "lblServiceInterval";
+            this.lblServiceInterval.Size = new System.Drawing.Size(111, 18);
+            this.lblServiceInterval.TabIndex = 25;
+            this.lblServiceInterval.Text = "Service Interval:";
+            // 
+            // txtServiceInterval
+            // 
+            this.txtServiceInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtServiceInterval.Location = new System.Drawing.Point(227, 54);
+            this.txtServiceInterval.Name = "txtServiceInterval";
+            this.txtServiceInterval.Size = new System.Drawing.Size(126, 24);
+            this.txtServiceInterval.TabIndex = 1;
+            this.txtServiceInterval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtServiceInterval_KeyPress);
+            this.txtServiceInterval.Validating += new System.ComponentModel.CancelEventHandler(this.txtServiceInterval_Validating);
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(86, 12);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(381, 26);
+            this.lblTitle.TabIndex = 23;
+            this.lblTitle.Text = "Backup Retention Service Settings";
+            // 
+            // pbLeftIcon
+            // 
+            this.pbLeftIcon.Image = global::BackupRetention.Properties.Resources.ImgWoodDriveTime;
+            this.pbLeftIcon.InitialImage = global::BackupRetention.Properties.Resources.ImgWoodDriveTime;
+            this.pbLeftIcon.Location = new System.Drawing.Point(448, -6);
+            this.pbLeftIcon.Name = "pbLeftIcon";
+            this.pbLeftIcon.Size = new System.Drawing.Size(118, 127);
+            this.pbLeftIcon.TabIndex = 34;
+            this.pbLeftIcon.TabStop = false;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // BackupRetentionSystemTray
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 562);
+            this.ClientSize = new System.Drawing.Size(621, 676);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.menuStrip1);
@@ -1462,6 +1552,7 @@
             this.tabRemote.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRemote)).EndInit();
             this.tabEvents.ResumeLayout(false);
+            this.tabEvents.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEvents)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -1517,7 +1608,6 @@
         private System.Windows.Forms.TextBox txtServiceInterval;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.PictureBox pbLeftIcon;
-        private System.Windows.Forms.Button btnClearLogs;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColRetentionID;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColRetentionEnabled;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColRetentionTime;
@@ -1598,6 +1688,14 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn dgvColRemoteAllowAnyCertificate;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColRemoteTimeout;
         private System.Windows.Forms.DataGridViewComboBoxColumn dgvColRemoteOverwrite;
+        private System.Windows.Forms.Button btnRefreshEventLog;
+        private System.Windows.Forms.Button btnClearLogs;
+        private System.Windows.Forms.CheckBox chkInformation;
+        private System.Windows.Forms.CheckBox chkWarning;
+        private System.Windows.Forms.CheckBox chkError;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.TextBox txtSearch;
+        protected System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

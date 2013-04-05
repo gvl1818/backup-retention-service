@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.ServiceProcess;
 using System.Configuration;
 using System.IO;
+using System.Diagnostics;
 
 namespace BackupRetention
 {
@@ -35,6 +36,7 @@ namespace BackupRetention
         public FolderBrowserDialog FolderBrowserD;
         private NotifyIcon trayIcon;
         private ContextMenu trayMenu;
+       
 
         #region "Properties"
 
@@ -187,8 +189,8 @@ namespace BackupRetention
             _evt = Common.GetEventLog;
             eventLogBackupRetention = Common.GetEventLog;
             
-            eventLogBackupRetention.EnableRaisingEvents = true;
-            eventLogBackupRetention.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.eventLogBackupRetention_EntryWritten);
+            //eventLogBackupRetention.EnableRaisingEvents = true;
+            //eventLogBackupRetention.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.eventLogBackupRetention_EntryWritten);
             
 
             sc = new ServiceController("BackupRetentionService");
@@ -294,30 +296,7 @@ namespace BackupRetention
 
             FolderBrowserD = new FolderBrowserDialog();
 
-            dsEvents = new DataSet("EventLog");
-
-            DataTable dtEvents = new DataTable("Events");
-
-            dtEvents.Columns.Add(new DataColumn("Type",typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("EventImage", typeof(System.Drawing.Image)));
-            dtEvents.Columns.Add(new DataColumn("Time", typeof(System.DateTime)));
-            dtEvents.Columns.Add(new DataColumn("Message", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("Source", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("Category", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("EventID", typeof(long)));
-            dsEvents.Tables.Add(dtEvents);
-
-            foreach (System.Diagnostics.EventLogEntry entry in eventLogBackupRetention.Entries)
-            {
-                if (entry.Source == "BackupRetention")
-                {
-                    AddEventLogEntry(entry);
-                }
-            }
-            bs = new BindingSource(dsEvents, "Events");
-            bs.Filter ="Source='BackupRetention'";
-            bs.Sort = "Time ASC";
-            dgvEvents.DataSource = bs;
+            
             GetServiceStatus();
         }
         
@@ -397,8 +376,42 @@ namespace BackupRetention
             System.Environment.Exit(0);
         }
 
+        private delegate void d_showTip(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon);
+        
+
+        public void ShowBalloonTip(int timeout,string tipTitle, string tipText, ToolTipIcon tipIcon)
+        {
+            
+            if (this.InvokeRequired)
+            {
+                d_showTip d = new d_showTip(ShowBalloonTip);
+
+                this.Invoke(d,new object[] {timeout,tipTitle,tipText,tipIcon});
+            }
+            else
+            {
+                trayIcon.ShowBalloonTip(timeout, tipTitle, tipText, tipIcon);
+                Application.DoEvents();
+                
+            }
 
         
+        }
+
+        private delegate void d_WriteEntry(string message);
+        private void WriteEntry(string message)
+        {
+            if (this.InvokeRequired)
+            {
+                d_WriteEntry d = new d_WriteEntry(WriteEntry);
+
+                this.Invoke(d, new object[] { message });
+            }
+            else
+            {
+                _evt.WriteEntry(message);
+            }
+        }
 
         /// <summary>
         /// Restarts or Starts BackupRetentionService
@@ -412,12 +425,11 @@ namespace BackupRetention
             try
             {
                 strStatus = sc.Status.ToString();
-
+                
                 //Restart
                 if (strStatus == "Running")
                 {
                     sc.Stop();
-
                     sc.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
                     GetServiceStatus();
                     Application.DoEvents();
@@ -427,17 +439,17 @@ namespace BackupRetention
                         sc.WaitForStatus(ServiceControllerStatus.Running, timeout);
                         if (sc.Status.ToString() == "Running")
                         {
-                            trayIcon.ShowBalloonTip(5000, "Restart", "BackupRetentionService Restarted Successfully", ToolTipIcon.Info);
+                            ShowBalloonTip(5000, "Restart", "BackupRetentionService Restarted Successfully", ToolTipIcon.Info);
                             blSuccess = true;
                         }
                         else
                         {
-                            trayIcon.ShowBalloonTip(5000, "Restart", "BackupRetentionService Restart Timed Out", ToolTipIcon.Error);
+                            ShowBalloonTip(5000, "Restart", "BackupRetentionService Restart Timed Out", ToolTipIcon.Error);
                         }
                     }
                     else
                     {
-                        trayIcon.ShowBalloonTip(5000, "Restart Failed", "BackupRetentionService did not stop in time to start back up", ToolTipIcon.Error);
+                        ShowBalloonTip(5000, "Restart Failed", "BackupRetentionService did not stop in time to start back up", ToolTipIcon.Error);
                     }
                 } //Already Stopped Just Start
                 else if (strStatus == "Stopped")
@@ -446,26 +458,26 @@ namespace BackupRetention
                     sc.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     if (sc.Status.ToString() == "Running")
                     {
-                        trayIcon.ShowBalloonTip(5000, "Start", "BackupRetentionService Started Successfully", ToolTipIcon.Info);
+                        ShowBalloonTip(5000, "Start", "BackupRetentionService Started Successfully", ToolTipIcon.Info);
                         blSuccess = true;
                     }
                     else
                     {
-                        trayIcon.ShowBalloonTip(5000, "Start", "BackupRetentionService Start Timed Out", ToolTipIcon.Error);
+                        ShowBalloonTip(5000, "Start", "BackupRetentionService Start Timed Out", ToolTipIcon.Error);
                     }
                 }
                 else
                 {
-                    trayIcon.ShowBalloonTip(5000, "Restart Failed", "BackupRetentionService is not in a proper state to restart", ToolTipIcon.Error);
+                    ShowBalloonTip(5000, "Restart Failed", "BackupRetentionService is not in a proper state to restart", ToolTipIcon.Error);
 
                 }
             }
             catch (Exception ex)
             {
-                trayIcon.ShowBalloonTip(5000, "Restart Failed", "Restart of BackupRetentionService Failed!", ToolTipIcon.Error);
-                _evt.WriteEntry(ex.Message);
+                ShowBalloonTip(5000, "Restart Failed", "Restart of BackupRetentionService Failed!", ToolTipIcon.Error);
+                WriteEntry(ex.Message);
             }
-            GetServiceStatus();
+            ////GetServiceStatus();
             return blSuccess;
         }
 
@@ -477,7 +489,8 @@ namespace BackupRetention
         /// <param name="e"></param>
         private void OnRestart(object sender, EventArgs e)
         {
-            Restart();
+            //Restart();
+            backgroundWorker1.RunWorkerAsync("Restart");
         }
 
         /// <summary>
@@ -501,31 +514,31 @@ namespace BackupRetention
 
                     if (sc.Status.ToString() == "Stopped")
                     {
-                        trayIcon.ShowBalloonTip(5000, "Stop", "BackupRetentionService Stopped Successfully", ToolTipIcon.Info);
+                        ShowBalloonTip(5000, "Stop", "BackupRetentionService Stopped Successfully", ToolTipIcon.Info);
                         blSuccess = true;
                     }
                     else
                     {
-                        trayIcon.ShowBalloonTip(5000, "Stop Failed", "BackupRetentionService timed out stopping.", ToolTipIcon.Error);
+                        ShowBalloonTip(5000, "Stop Failed", "BackupRetentionService timed out stopping.", ToolTipIcon.Error);
                     }
                 }
                 else if (strStatus == "Stopped")
                 {
-                    trayIcon.ShowBalloonTip(5000, "Stop", "BackupRetentionService Already Stopped", ToolTipIcon.Info);
+                    ShowBalloonTip(5000, "Stop", "BackupRetentionService Already Stopped", ToolTipIcon.Info);
                     blSuccess = true;
                 }
                 else
                 {
-                    trayIcon.ShowBalloonTip(5000, "Stop Failed", "BackupRetentionService is not in a proper state to stop.", ToolTipIcon.Error);
+                    ShowBalloonTip(5000, "Stop Failed", "BackupRetentionService is not in a proper state to stop.", ToolTipIcon.Error);
 
                 }
             }
             catch (Exception ex)
             {
-                trayIcon.ShowBalloonTip(5000, "Stop Failed", "Stop of BackupRetentionService Failed.", ToolTipIcon.Error);
-                _evt.WriteEntry(ex.Message);
+                ShowBalloonTip(5000, "Stop Failed", "Stop of BackupRetentionService Failed.", ToolTipIcon.Error);
+                WriteEntry(ex.Message);
             }
-            GetServiceStatus();
+            //GetServiceStatus();
             return blSuccess;
         }
 
@@ -536,7 +549,85 @@ namespace BackupRetention
         /// <param name="e"></param>
         private void OnStop(object sender, EventArgs e)
         {
-            Stop();
+            //Stop();
+            backgroundWorker1.RunWorkerAsync("Stop");
+        }
+
+
+        public void RefreshEventsTab()
+        {
+            Application.DoEvents();
+            //Refresh Events
+            dsEvents = new DataSet("EventLog");
+            DataTable dtEvents = new DataTable("Events");
+            dtEvents.Columns.Add(new DataColumn("Type", typeof(String)));
+            dtEvents.Columns.Add(new DataColumn("EventImage", typeof(System.Drawing.Image)));
+            dtEvents.Columns.Add(new DataColumn("Time", typeof(System.DateTime)));
+            dtEvents.Columns.Add(new DataColumn("Message", typeof(String)));
+            dtEvents.Columns.Add(new DataColumn("Source", typeof(String)));
+            dtEvents.Columns.Add(new DataColumn("Category", typeof(String)));
+            dtEvents.Columns.Add(new DataColumn("EventID", typeof(long)));
+            dsEvents.Tables.Add(dtEvents);
+
+            foreach (System.Diagnostics.EventLogEntry entry in eventLogBackupRetention.Entries)
+            {
+                if (entry.Source == "BackupRetention")
+                {
+                    AddEventLogEntry(entry);
+                }
+            }
+            bs = new BindingSource(dsEvents, "Events");
+            string strFilter = "";
+            if (!Common.FixNullbool(chkError.Checked))
+            {
+                strFilter = "Type<>'Error'";
+            }
+            if (!Common.FixNullbool(chkWarning.Checked))
+            {
+                if (strFilter.Length > 0)
+                {
+                    strFilter += " AND Type<>'Warning'";
+                }
+                else
+                {
+                    strFilter = "Type<>'Warning'";
+                }
+            }
+            if (!Common.FixNullbool(chkInformation.Checked))
+            {
+                if (strFilter.Length > 0)
+                {
+                    strFilter += " AND Type<>'Information'";
+                }
+                else
+                {
+                    strFilter = "Type<>'Information'";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(txtSearch.Text))
+            {
+                if (strFilter.Length > 0)
+                {
+                    strFilter += " AND Message LIKE '%" + txtSearch.Text +  "%'";
+                }
+                else
+                {
+                    strFilter = "Message LIKE '%" + txtSearch.Text + "%'";
+                }
+            }
+
+            if (strFilter.Length > 0)
+            {
+                bs.Filter = strFilter; //+ " AND Source='BackupRetention'";
+            }
+
+            
+            bs.Sort = "Time DESC";
+            dgvEvents.DataSource = bs;
+            Application.DoEvents();
+            GetServiceStatus();
+            Application.DoEvents();
         }
 
         /// <summary>
@@ -549,7 +640,7 @@ namespace BackupRetention
             GetServiceStatus();
             Visible = true;
             WindowState = FormWindowState.Normal;
-            
+            RefreshEventsTab();
         }
 
         /// <summary>
@@ -790,7 +881,8 @@ namespace BackupRetention
         private void btnSaveApply_Click(object sender, EventArgs e)
         {
             Save();
-            Restart();
+            //Restart();
+            backgroundWorker1.RunWorkerAsync("Restart");
         }
 
         /// <summary>
@@ -1105,7 +1197,8 @@ namespace BackupRetention
         /// <param name="e"></param>
         private void btnStop_Click(object sender, EventArgs e)
         {
-            Stop();
+            //Stop();
+            backgroundWorker1.RunWorkerAsync("Stop");
         }
 
         /// <summary>
@@ -1115,7 +1208,8 @@ namespace BackupRetention
         /// <param name="e"></param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Restart();
+            //Restart();
+            backgroundWorker1.RunWorkerAsync("Restart");
         }
 
         /// <summary>
@@ -1456,8 +1550,39 @@ namespace BackupRetention
         {
             _evt.Clear();
             dsEvents.Tables["Events"].Rows.Clear();
-
+            _evt.WriteEntry("BackupRe Event Log Cleared.");
         }
+
+        private void btnRefreshEventLog_Click(object sender, EventArgs e)
+        {
+            RefreshEventsTab();
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string strTask = Common.FixNullstring(e.Argument);
+            switch (strTask)
+            {
+                case "Stop":
+                    Stop();
+                    break;
+                case "Restart":
+                    Restart();
+                    break;
+
+            }
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Application.DoEvents();
+            GetServiceStatus();
+            Application.DoEvents();
+        }
+
+        
+
+        
 
         
 
