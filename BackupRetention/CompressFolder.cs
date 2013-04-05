@@ -474,6 +474,7 @@ namespace BackupRetention
 
                         foreach (System.IO.FileInfo file1 in AllFiles)
                         {
+                            string str7File = Common.WindowsPathClean(file1.FullName + ".7z");
                             bool blArchiveOk = false;
                             Stream extestreader = null;
 
@@ -515,19 +516,21 @@ namespace BackupRetention
 
                             try
                             {
-                                if (File.Exists(file1.FullName + ".7z"))
+                                
+                                if (File.Exists(str7File))
                                 {
-                                    extestreader = new FileStream(file1.FullName + ".7z", FileMode.Open);
+                                    extestreader = new FileStream(str7File, FileMode.Open);
                                     extractor = new SevenZipExtractor(extestreader);
 
                                     //If archive is not corrupted and KeepUncompressed is false then it is ok to delete the original
                                     if (extractor.Check() && KeepOriginalFile == false)
                                     {
-                                        FileInfo file2 = new FileInfo(file1.FullName + ".7z");
+                                        FileInfo file2 = new FileInfo(str7File);
                                         //Same File compressed then ok to delete
                                         if (file1.LastWriteTime == file2.LastWriteTime)
                                         {
-                                            file1.Delete();
+                                            File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            File.Delete(file1.FullName);
                                         }
                                         file2 = null;
                                     }
@@ -595,12 +598,12 @@ namespace BackupRetention
                                 }
 
 
-
+                                
                                 //Compress or Compress and Encrypt Files
                                 if (!string.IsNullOrEmpty(_encryptionPassword))
                                 {
 
-                                    creader = new FileStream(file1.FullName + ".7z", FileMode.OpenOrCreate);
+                                    creader = new FileStream(str7File, FileMode.OpenOrCreate);
 
                                     //Encrypt the file if password is specified
                                     AES256 aes = new AES256(ep);
@@ -609,7 +612,7 @@ namespace BackupRetention
                                     creader.Close();
                                     creader.Dispose();
                                     creader = null;
-                                    exreader = new FileStream(file1.FullName + ".7z", FileMode.Open);
+                                    exreader = new FileStream(str7File, FileMode.Open);
                                     extractor = new SevenZipExtractor(exreader, upassword);
                                     upassword = "";
                                 }
@@ -620,13 +623,13 @@ namespace BackupRetention
                                         _evt.WriteEntry("Compress: File is locked: " + file1.FullName, System.Diagnostics.EventLogEntryType.Error, 5070, 50);
                                         continue;
                                     }
-                                    creader = new FileStream(file1.FullName + ".7z", FileMode.OpenOrCreate);
+                                    creader = new FileStream(str7File, FileMode.OpenOrCreate);
 
                                     compressor.CompressFiles(creader, strfilearr);
                                     creader.Close();
                                     creader.Dispose();
                                     creader = null;
-                                    exreader = new FileStream(file1.FullName + ".7z", FileMode.Open);
+                                    exreader = new FileStream(str7File, FileMode.Open);
                                     extractor = new SevenZipExtractor(exreader);
 
                                 }
@@ -642,16 +645,16 @@ namespace BackupRetention
                                 {
 
                                     //Set file attributes to match original file for retention purposes
-                                    System.IO.File.SetCreationTime(file1.FullName + ".7z", file1.CreationTime); //Created
-                                    System.IO.File.SetLastWriteTime(file1.FullName + ".7z", file1.LastWriteTime);//Modified
+                                    System.IO.File.SetCreationTime(str7File, file1.CreationTime); //Created
+                                    System.IO.File.SetLastWriteTime(str7File, file1.LastWriteTime);//Modified
 
                                     //Move the compressed file if destination is specified and different than Source Folder
                                     if (!string.IsNullOrEmpty(DestinationFolder))
                                     {
                                         if (SourceFolder.ToLower() != DestinationFolder.ToLower())
                                         {
-                                            string strDestination = Common.WindowsPathCombine(DestinationFolder, file1.FullName + ".7z", SourceFolder);
-                                            File.Move(file1.FullName + ".7z", strDestination);
+                                            string strDestination = Common.WindowsPathCombine(DestinationFolder, str7File, SourceFolder);
+                                            File.Move(str7File, strDestination);
                                         }
                                     }
 
@@ -659,7 +662,8 @@ namespace BackupRetention
                                     //Delete Original Uncompressed File if KeepUncompressedFile == false
                                     if (!KeepOriginalFile)
                                     {
-                                        file1.Delete();
+                                        File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        File.Delete(file1.FullName);
                                         _evt.WriteEntry("Compress: Original File Deleted Per KeepUncompressedFile Setting: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 5070, 50);
 
                                     }
@@ -668,10 +672,11 @@ namespace BackupRetention
                                 }
                                 else
                                 {
-                                    FileInfo zFile = new FileInfo(file1.FullName + ".7z");
+                                    FileInfo zFile = new FileInfo(str7File);
 
                                     //Delete corrupted file
-                                    zFile.Delete();
+                                    File.SetAttributes(zFile.FullName, FileAttributes.Normal);
+                                    File.Delete(zFile.FullName);
                                     _evt.WriteEntry("Compress: 7zip Archive Corrupted and deleted: " + zFile.FullName, System.Diagnostics.EventLogEntryType.Error, 5160, 50);
                                     zFile = null;
 
@@ -715,7 +720,7 @@ namespace BackupRetention
                             bool blArchiveOk = false;
                             Stream extestreader = null;
                             DirectoryInfo DirInfo1 = new DirectoryInfo(strDir);
-
+                            string str7Dir = Common.WindowsPathClean(DirInfo1.FullName + ".7z");
                             if (blShuttingDown)
                             {
                                 _evt.WriteEntry("Compress: Shutting Down, about to Compress: " + strDir, System.Diagnostics.EventLogEntryType.Information, 5130, 50);
@@ -746,19 +751,19 @@ namespace BackupRetention
 
                             try
                             {
-                                if (File.Exists(DirInfo1.FullName + ".7z"))
+                                if (File.Exists(str7Dir))
                                 {
-                                    extestreader = new FileStream(DirInfo1.FullName + ".7z", FileMode.Open);
+                                    extestreader = new FileStream(str7Dir, FileMode.Open);
                                     extractor = new SevenZipExtractor(extestreader);
 
                                     //If archive is not corrupted and KeepUncompressed is false then it is ok to delete the original
                                     if (extractor.Check() && KeepOriginalFile == false)
                                     {
-                                        DirectoryInfo dir2 = new DirectoryInfo(DirInfo1.FullName + ".7z");
+                                        DirectoryInfo dir2 = new DirectoryInfo(str7Dir);
                                         //Same File compressed then ok to delete
                                         if (DirInfo1.LastWriteTime == dir2.LastWriteTime)
                                         {
-                                            DirInfo1.Delete();
+                                            Directory.Delete(DirInfo1.FullName,true);
                                         }
                                         dir2 = null;
                                     }
@@ -831,7 +836,7 @@ namespace BackupRetention
                                 if (!string.IsNullOrEmpty(_encryptionPassword))
                                 {
 
-                                    creader = new FileStream(DirInfo1.FullName + ".7z", FileMode.OpenOrCreate);
+                                    creader = new FileStream(str7Dir, FileMode.OpenOrCreate);
 
                                     //Encrypt the file if password is specified
                                     AES256 aes = new AES256(ep);
@@ -840,19 +845,19 @@ namespace BackupRetention
                                     creader.Close();
                                     creader.Dispose();
                                     creader = null;
-                                    exreader = new FileStream(DirInfo1.FullName + ".7z", FileMode.Open);
+                                    exreader = new FileStream(str7Dir, FileMode.Open);
                                     extractor = new SevenZipExtractor(exreader, upassword);
                                     upassword = "";
                                 }
                                 else
                                 {
-                                    creader = new FileStream(DirInfo1.FullName + ".7z", FileMode.OpenOrCreate);
+                                    creader = new FileStream(str7Dir, FileMode.OpenOrCreate);
 
                                     compressor.CompressDirectory(DirInfo1.FullName,creader);
                                     creader.Close();
                                     creader.Dispose();
                                     creader = null;
-                                    exreader = new FileStream(DirInfo1.FullName + ".7z", FileMode.Open);
+                                    exreader = new FileStream(str7Dir, FileMode.Open);
                                     extractor = new SevenZipExtractor(exreader);
 
                                 }
@@ -868,17 +873,17 @@ namespace BackupRetention
                                 {
 
                                     //Set file attributes to match original file for retention purposes
-                                    System.IO.File.SetCreationTime(DirInfo1.FullName + ".7z", DirInfo1.CreationTime); //Created
-                                    System.IO.File.SetLastWriteTime(DirInfo1.FullName + ".7z", DirInfo1.LastWriteTime);//Modified
+                                    System.IO.File.SetCreationTime(str7Dir, DirInfo1.CreationTime); //Created
+                                    System.IO.File.SetLastWriteTime(str7Dir, DirInfo1.LastWriteTime);//Modified
 
                                     //Move the compressed file if destination is specified and different than Source Folder
                                     if (!string.IsNullOrEmpty(DestinationFolder))
                                     {
                                         if (SourceFolder.ToLower() != DestinationFolder.ToLower())
                                         {
-                                            string strDestination = Common.WindowsPathCombine(DestinationFolder, DirInfo1.FullName + ".7z", SourceFolder);
-                                            
-                                            File.Move(DirInfo1.FullName + ".7z", strDestination);
+                                            string strDestination = Common.WindowsPathCombine(DestinationFolder, str7Dir, SourceFolder);
+
+                                            File.Move(str7Dir, strDestination);
                                         }
                                     }
 
@@ -886,21 +891,19 @@ namespace BackupRetention
                                     //Delete Original Uncompressed File if KeepUncompressedFile == false
                                     if (!KeepOriginalFile)
                                     {
-                                        DirInfo1.Delete(true);
+                                        Directory.Delete(DirInfo1.FullName,true);
                                         _evt.WriteEntry("Compress: Original File Deleted Per KeepUncompressedFile Setting: " + DirInfo1.FullName, System.Diagnostics.EventLogEntryType.Information, 5070, 50);
 
                                     }
-                                    _evt.WriteEntry("Compress: File Compressed successfully: " + DirInfo1.FullName + "  To: " + Common.WindowsPathCombine(DestinationFolder, DirInfo1.FullName + ".7z", SourceFolder), System.Diagnostics.EventLogEntryType.Information, 5050, 50);
+                                    _evt.WriteEntry("Compress: File Compressed successfully: " + DirInfo1.FullName + "  To: " + Common.WindowsPathCombine(DestinationFolder, str7Dir, SourceFolder), System.Diagnostics.EventLogEntryType.Information, 5050, 50);
 
                                 }
                                 else
                                 {
-                                    FileInfo zFile = new FileInfo(DirInfo1.FullName + ".7z");
-
                                     //Delete corrupted file
-                                    zFile.Delete();
-                                    _evt.WriteEntry("Compress: 7zip Archive Corrupted and deleted: " + zFile.FullName, System.Diagnostics.EventLogEntryType.Error, 5160, 50);
-                                    zFile = null;
+                                    File.SetAttributes(str7Dir, FileAttributes.Normal);
+                                    File.Delete(str7Dir);
+                                    _evt.WriteEntry("Compress: 7zip Archive Corrupted and deleted: " + str7Dir, System.Diagnostics.EventLogEntryType.Error, 5160, 50);
 
                                 }
 
@@ -1041,7 +1044,7 @@ namespace BackupRetention
                                         }
                                         else
                                         {
-                                            strDestination = Common.WindowsPathCombine(strDestination, file1.FullName.Replace(".7z", ""), SourceFolder);
+                                            strDestination = Common.WindowsPathCombine(strDestination, Common.WindowsPathClean(file1.FullName.Replace(".7z", "")), SourceFolder);
                                             if (!Directory.Exists(strDestination))
                                             {
                                                 Directory.CreateDirectory(strDestination);
@@ -1058,7 +1061,8 @@ namespace BackupRetention
                                         exreader = null;
                                         if (!KeepOriginalFile)
                                         {
-                                            file1.Delete();
+                                            File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            File.Delete(file1.FullName);
                                             _evt.WriteEntry("Compress: Deleted Original Compressed File: " + file1.FullName + " Per Setting KeepOriginalFile", System.Diagnostics.EventLogEntryType.Information,5170, 50);
                                         }
                                     }

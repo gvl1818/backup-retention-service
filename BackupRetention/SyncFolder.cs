@@ -515,7 +515,8 @@ namespace BackupRetention
                                     {
                                         if (SFile.Extension != file1.Extension)
                                         {
-                                            file1.Delete();
+                                            File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            File.Delete(file1.FullName);
                                             _evt.WriteEntry("Sync:  7z Compressed file in destination but source file modified Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 40);
                             
                                         }
@@ -531,18 +532,22 @@ namespace BackupRetention
                         {
                             if (File.Exists(SourceFolder + "\\filesync.metadata"))
                             {
+                                File.SetAttributes(SourceFolder + "\\filesync.metadata", FileAttributes.Normal);
                                 File.Delete(SourceFolder + "\\filesync.metadata");
                             }
                             if (File.Exists(SourceFolder + "\\File.ID"))
                             {
+                                File.SetAttributes(SourceFolder + "\\File.ID", FileAttributes.Normal);
                                 File.Delete(SourceFolder + "\\File.ID");
                             }
                             if (File.Exists(DestinationFolder + "\\filesync.metadata"))
                             {
+                                File.SetAttributes(DestinationFolder + "\\filesync.metadata", FileAttributes.Normal);
                                 File.Delete(DestinationFolder + "\\filesync.metadata");
                             }
                             if (File.Exists(DestinationFolder + "\\File.ID"))
                             {
+                                File.SetAttributes(DestinationFolder + "\\File.ID", FileAttributes.Normal);
                                 File.Delete(DestinationFolder + "\\File.ID");
                             }
                         }
@@ -719,6 +724,7 @@ namespace BackupRetention
                                         }
                                         else
                                         {
+                                            File.SetAttributes(destinationFile.FullName, FileAttributes.Normal);
                                             File.Delete(destinationFile.FullName);
                                             _evt.WriteEntry("Sync: Mirroring File Deleted: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                         }
@@ -763,12 +769,14 @@ namespace BackupRetention
                                         }
                                     }
                                     
-                                    dir1.Delete(true);
+                                    
+                                    Directory.Delete(dir1.FullName, true);
                                     _evt.WriteEntry("Sync: Mirroring Folder and sub folders and files Deleted: " + dir1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                 }
                                 else
                                 {
-                                    dir1.Delete(true);
+                                    Directory.Delete(dir1.FullName, true);
+                                    
                                     _evt.WriteEntry("Sync: Mirroring Folder and sub folders and files Deleted: " + dir1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                 }
 
@@ -824,8 +832,8 @@ namespace BackupRetention
                                     if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
                                     {
                                         string strRenamedDest = Common.WindowsPathClean(destFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destFile.Extension;
-                                        System.IO.File.Move(strDestination,strRenamedDest);
-                                        System.IO.File.Copy(srcFile.FullName, strDestination, true);
+                                        File.Move(strDestination,strRenamedDest);
+                                        File.Copy(srcFile.FullName, strDestination, true);
                                         _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
                                     }
                                     else

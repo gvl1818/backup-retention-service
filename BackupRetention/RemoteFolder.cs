@@ -778,6 +778,15 @@ namespace BackupRetention
                                     {
                                         if ((blFileFound == false || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound == true))
                                         {
+                                            /*if (sftp.Exists(ufile.FullName))
+                                            {
+                                                SftpFileAttributes fa=sftp.GetAttributes(ufile.FullName);
+                                                fa.OwnerCanWrite = true;
+                                                fa.OthersCanWrite = true;
+                                                fa.GroupCanWrite = true;
+                                                sftp.SetAttributes(ufile.FullName,fa);
+                                                sftp.DeleteFile(ufile.FullName);
+                                            }*/
                                             sftp.UploadFile(File.OpenRead(ufile.FullName), strRemotePath);
                                             _evt.WriteEntry("Remote Sync SFTP: File Uploaded: " + ufile.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 1010, 10);
                                         
@@ -860,6 +869,11 @@ namespace BackupRetention
                                         {
                                             if (Common.DownloadFile(strLocalFilePath, strRemoteFilePath, ftpfile, Overwrite))
                                             {
+                                                if (File.Exists(strLocalFilePath))
+                                                {
+                                                    File.SetAttributes(strLocalFilePath, FileAttributes.Normal);
+                                                    File.Delete(strLocalFilePath);
+                                                }
                                                 using (FileStream fs = new FileStream(strLocalFilePath, FileMode.Create))
                                                 {
 
