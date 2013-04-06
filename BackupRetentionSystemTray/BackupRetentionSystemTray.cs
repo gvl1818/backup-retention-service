@@ -378,7 +378,13 @@ namespace BackupRetention
 
         private delegate void d_showTip(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon);
         
-
+        /// <summary>
+        /// ShowBalloonTip invokes the form in case it is called from other thread.
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <param name="tipTitle"></param>
+        /// <param name="tipText"></param>
+        /// <param name="tipIcon"></param>
         public void ShowBalloonTip(int timeout,string tipTitle, string tipText, ToolTipIcon tipIcon)
         {
             
@@ -399,6 +405,10 @@ namespace BackupRetention
         }
 
         private delegate void d_WriteEntry(string message);
+        /// <summary>
+        /// WriteEntry invokes the form in case it is called from another thread.
+        /// </summary>
+        /// <param name="message"></param>
         private void WriteEntry(string message)
         {
             if (this.InvokeRequired)
