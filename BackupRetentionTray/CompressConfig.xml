@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <CompressConfig>
+    <ID>1</ID>
+    <Enabled>false</Enabled>
+    <Time></Time>
+    <Monday>false</Monday>
+    <Tuesday>false</Tuesday>
+    <Wednesday>false</Wednesday>
+    <Thursday>false</Thursday>
+    <Friday>false</Friday>
+    <Saturday>false</Saturday>
+    <Sunday>false</Sunday>
+    <DayOfMonth>0</DayOfMonth>
+    <Compress>Compress</Compress>
+    <SourceOption>File</SourceOption>
+    <SourceFolder>c:\\BackupTest</SourceFolder>
+    <DestinationFolder>c:\\BackupTest</DestinationFolder>
+    <EncryptionPassword></EncryptionPassword>
+    <KeepOriginalFile>false</KeepOriginalFile>
+    <CompressionLvl>Normal</CompressionLvl>
+    <StartCompressingAfterDays>2</StartCompressingAfterDays>
+  </CompressConfig>
+</DocumentElement>

@@ -462,7 +462,7 @@
             this.dgvCompress.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCompress.Location = new System.Drawing.Point(3, 3);
             this.dgvCompress.Name = "dgvCompress";
-            this.dgvCompress.Size = new System.Drawing.Size(561, 283);
+            this.dgvCompress.Size = new System.Drawing.Size(600, 397);
             this.dgvCompress.TabIndex = 11;
             this.dgvCompress.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvCompress_CellBeginEdit);
             this.dgvCompress.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompress_CellDoubleClick);
@@ -691,7 +691,7 @@
             this.dgvSync.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSync.Location = new System.Drawing.Point(3, 3);
             this.dgvSync.Name = "dgvSync";
-            this.dgvSync.Size = new System.Drawing.Size(561, 283);
+            this.dgvSync.Size = new System.Drawing.Size(600, 397);
             this.dgvSync.TabIndex = 13;
             this.dgvSync.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSync_CellDoubleClick);
             this.dgvSync.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvSync_CellValidating);
@@ -925,7 +925,7 @@
             this.dgvRemote.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRemote.Location = new System.Drawing.Point(3, 3);
             this.dgvRemote.Name = "dgvRemote";
-            this.dgvRemote.Size = new System.Drawing.Size(561, 283);
+            this.dgvRemote.Size = new System.Drawing.Size(600, 397);
             this.dgvRemote.TabIndex = 15;
             this.dgvRemote.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvRemote_CellBeginEdit);
             this.dgvRemote.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRemote_CellDoubleClick);
@@ -1163,7 +1163,7 @@
             // 
             this.lblSearch.AutoSize = true;
             this.lblSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(325, 11);
+            this.lblSearch.Location = new System.Drawing.Point(357, 12);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(49, 15);
             this.lblSearch.TabIndex = 42;
@@ -1172,7 +1172,7 @@
             // txtSearch
             // 
             this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(380, 9);
+            this.txtSearch.Location = new System.Drawing.Point(412, 9);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(103, 21);
             this.txtSearch.TabIndex = 41;
@@ -1183,7 +1183,7 @@
             this.chkInformation.Checked = true;
             this.chkInformation.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkInformation.Location = new System.Drawing.Point(231, 11);
+            this.chkInformation.Location = new System.Drawing.Point(263, 11);
             this.chkInformation.Name = "chkInformation";
             this.chkInformation.Size = new System.Drawing.Size(88, 19);
             this.chkInformation.TabIndex = 40;
@@ -1196,7 +1196,7 @@
             this.chkWarning.Checked = true;
             this.chkWarning.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkWarning.Location = new System.Drawing.Point(161, 11);
+            this.chkWarning.Location = new System.Drawing.Point(185, 11);
             this.chkWarning.Name = "chkWarning";
             this.chkWarning.Size = new System.Drawing.Size(72, 19);
             this.chkWarning.TabIndex = 39;
@@ -1209,7 +1209,7 @@
             this.chkError.Checked = true;
             this.chkError.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkError.Location = new System.Drawing.Point(102, 11);
+            this.chkError.Location = new System.Drawing.Point(126, 11);
             this.chkError.Name = "chkError";
             this.chkError.Size = new System.Drawing.Size(53, 19);
             this.chkError.TabIndex = 38;
@@ -1219,11 +1219,11 @@
             // btnRefreshEventLog
             // 
             this.btnRefreshEventLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefreshEventLog.Location = new System.Drawing.Point(7, 6);
+            this.btnRefreshEventLog.Location = new System.Drawing.Point(521, 6);
             this.btnRefreshEventLog.Name = "btnRefreshEventLog";
             this.btnRefreshEventLog.Size = new System.Drawing.Size(79, 27);
             this.btnRefreshEventLog.TabIndex = 37;
-            this.btnRefreshEventLog.Text = "Refresh";
+            this.btnRefreshEventLog.Text = "Search";
             this.btnRefreshEventLog.UseVisualStyleBackColor = true;
             this.btnRefreshEventLog.Click += new System.EventHandler(this.btnRefreshEventLog_Click);
             // 
@@ -1231,7 +1231,7 @@
             // 
             this.btnClearLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClearLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearLogs.Location = new System.Drawing.Point(521, 6);
+            this.btnClearLogs.Location = new System.Drawing.Point(3, 5);
             this.btnClearLogs.Name = "btnClearLogs";
             this.btnClearLogs.Size = new System.Drawing.Size(79, 27);
             this.btnClearLogs.TabIndex = 36;

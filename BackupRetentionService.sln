@@ -7,6 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupRetentionService", "B
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BackupRetentionServiceInstaller", "BackupRetentionServiceInstaller\BackupRetentionServiceInstaller.vdproj", "{9B036E35-A516-428E-B0FB-401D84F1E416}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1724BDDA-4347-4B91-AB8B-7156E1A45EA4} = {1724BDDA-4347-4B91-AB8B-7156E1A45EA4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupRetentionSystemTray", "BackupRetentionSystemTray\BackupRetentionSystemTray.csproj", "{571FB77B-846B-4294-A342-B36358BE45AE}"
 EndProject

@@ -441,6 +441,48 @@ namespace BackupRetention
 
         }
 
+        /*
+         ,RunTime TEXT
+	,FolderAction TEXT
+	,Direction TEXT
+	,SourceFolder TEXT
+	,DestinationFolder TEXT
+	,Host TEXT
+	,Port INT
+	,Protocol TEXT
+	,Username TEXT
+	,Comment TEXT
+         */
+        public int Save(string strComment)
+        {
+            int lastid = 0;
+            SQLiteDatabase db;
+            db = new SQLiteDatabase(Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\backupretention.db"));
+            Dictionary<String, String> data = new Dictionary<String, String>();
+            //data.Add("Name", Name);
+            data.Add("RunTime", Common.DateTimeSQLite(DateTime.Now));
+            data.Add("FolderAction", "SyncFolder-" + FileSyncReplicaOption.ToString());
+            data.Add("Direction", FolderSyncDirectionOrder.ToString());
+            data.Add("SourceFolder", SourceFolder);
+            data.Add("DestinationFolder", DestinationFolder);
+            if (!string.IsNullOrEmpty(strComment))
+            {
+                data.Add("Comment", strComment);
+            }
+            try
+            {
+                lastid = db.Insert("FolderAction", data);
+            }
+            catch (Exception ex)
+            {
+                lastid = 0;
+                //MessageBox.Show(crap.Message);
+            }
+            return lastid;
+
+        }
+
+
         //Microsoft Sync Methods
         //http://msdn.microsoft.com/en-us/sync/bb887623
         //http://www.microsoft.com/en-us/download/details.aspx?id=23217

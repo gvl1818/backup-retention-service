@@ -39,38 +39,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_22FECFDB7261E2844DD04E00ABDE142C"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "MsmKey" = "8:_241F697A165844FA83633FB76A29C523"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_22FECFDB7261E2844DD04E00ABDE142C"
+        "MsmKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
+        "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
         "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_22FECFDB7261E2844DD04E00ABDE142C"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_22FECFDB7261E2844DD04E00ABDE142C"
-        "OwnerKey" = "8:_A140875430E5C185912195701EC05E68"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_22FECFDB7261E2844DD04E00ABDE142C"
-        "OwnerKey" = "8:_5F3BA0DF596377F2385DD97D63DA66FD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_241F697A165844FA83633FB76A29C523"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
+        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -123,24 +111,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_5F3BA0DF596377F2385DD97D63DA66FD"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5F3BA0DF596377F2385DD97D63DA66FD"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5F3BA0DF596377F2385DD97D63DA66FD"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
         "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
@@ -165,26 +135,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A140875430E5C185912195701EC05E68"
-        "OwnerKey" = "8:_5F3BA0DF596377F2385DD97D63DA66FD"
+        "MsmKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A140875430E5C185912195701EC05E68"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A140875430E5C185912195701EC05E68"
+        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
         "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
+        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
+        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
+        "OwnerKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
+        "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -203,6 +185,24 @@
         {
         "MsmKey" = "8:_FAEA70543DF64948B408864CFF5F2591"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
+        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
+        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
+        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -244,19 +244,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5F3BA0DF596377F2385DD97D63DA66FD"
+        "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A140875430E5C185912195701EC05E68"
+        "OwnerKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_22FECFDB7261E2844DD04E00ABDE142C"
+        "OwnerKey" = "8:_C1E799D188259667BBA1B9318B81D084"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -471,37 +471,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_22FECFDB7261E2844DD04E00ABDE142C"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_22FECFDB7261E2844DD04E00ABDE142C"
-                    {
-                    "Name" = "8:Microsoft.Synchronization.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.Synchronization.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_241F697A165844FA83633FB76A29C523"
             {
             "SourcePath" = "8:..\\BackupRetentionService\\RemoteConfig.xml"
@@ -520,6 +489,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_27C224F79EECD165EE9A2D030D486F81"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization.MetadataStorage, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_27C224F79EECD165EE9A2D030D486F81"
+                    {
+                    "Name" = "8:Microsoft.Synchronization.MetadataStorage.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Synchronization.MetadataStorage.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_36475001ED1E4E9FBD0BFB58337B1CED"
@@ -586,7 +586,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5379844BFA40B330231809CB6363C476"
@@ -627,37 +627,6 @@
                     }
                 }
             "SourcePath" = "8:SevenZipSharp.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F3BA0DF596377F2385DD97D63DA66FD"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization.Files, Version=1.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_5F3BA0DF596377F2385DD97D63DA66FD"
-                    {
-                    "Name" = "8:Microsoft.Synchronization.Files.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.Synchronization.Files.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
@@ -726,20 +695,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A140875430E5C185912195701EC05E68"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C1E799D188259667BBA1B9318B81D084"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization.MetadataStorage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_A140875430E5C185912195701EC05E68"
+                    "_C1E799D188259667BBA1B9318B81D084"
                     {
-                    "Name" = "8:Microsoft.Synchronization.MetadataStorage.dll"
+                    "Name" = "8:Microsoft.Synchronization.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Microsoft.Synchronization.MetadataStorage.dll"
+            "SourcePath" = "8:Microsoft.Synchronization.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
@@ -795,6 +764,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization.Files, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FDB0BECA8816E1FCF1FA147C8DBB50DE"
+                    {
+                    "Name" = "8:Microsoft.Synchronization.Files.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Synchronization.Files.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -1208,8 +1208,8 @@
                             "Type" = "3:3"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1203"
+                            "Setting" = "3:2"
+                            "Value" = "8:The installer will guide you through the steps required to install [ProductName] on your computer.  7Zip installed in the default program files location is a prerequisite www.7zip.org , and Microsoft Sync Framework Redistributable Provider Services-v2.1 and Synchronization-v2.1 are required http://www.microsoft.com/en-us/download/details.aspx?id=19502."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1331,8 +1331,8 @@
                             "Type" = "3:3"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1203"
+                            "Setting" = "3:2"
+                            "Value" = "8:The installer will guide you through the steps required to install [ProductName] on your computer.  7Zip installed in the default program files location is a prerequisite www.7zip.org , and Microsoft Sync Framework Redistributable Provider Services-v2.1 and Synchronization-v2.1 are required http://www.microsoft.com/en-us/download/details.aspx?id=19502."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1397,8 +1397,8 @@
                             "Type" = "3:15"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1258"
+                            "Setting" = "3:2"
+                            "Value" = "8:Run Services.msc and change the logon credentials of BackupRetentionService to a user account that has the needed permissions for file shares.  Verify the permissions for the folders or add this user with read/write permissions to the file shares. Please use Windows Update to check for any critical updates to the .NET Framework."
                             "DefaultValue" = "8:#1258"
                             "UsePlugInResources" = "11:TRUE"
                             }

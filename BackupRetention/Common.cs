@@ -212,6 +212,12 @@ namespace BackupRetention
 
         }
 
+        public static string DateTimeSQLite(DateTime datetime)
+        {
+            string dateTimeFormat = "{0}-{1}-{2} {3}:{4}:{5}.{6}";
+            return string.Format(dateTimeFormat, datetime.Year, datetime.Month, datetime.Day, datetime.Hour, datetime.Minute, datetime.Second, datetime.Millisecond);
+        }
+
 
         /// <summary>
         /// Gets Drive Space Used Percent of Drive Letter passed
@@ -1160,6 +1166,7 @@ namespace BackupRetention
     /// </summary>
     public class RemoteFile
     {
+        #region "Properties"
         public string Name { get; set; }
         public string FullName { get; set; }
         public long Length { get; set; }
@@ -1173,7 +1180,42 @@ namespace BackupRetention
         public FileOperations FileOperation { get; set; }
 
         public string NewFullName { get; set; }
-       
+
+        public string MD5 { get; set; }
+
+        #endregion
+
+        #region "Methods"
+
+        public int Save(int intFolderActionID)
+        {
+            int lastid = 0;
+            SQLiteDatabase db;
+            db = new SQLiteDatabase(Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\backupretention.db") );
+            Dictionary<String, String> data = new Dictionary<String, String>();
+            data.Add("Name", Name);
+            data.Add("FullName", FullName);
+            data.Add("FileLength", Length.ToString());
+            data.Add("ParentDirectory", ParentDirectory);
+            data.Add("IsDirectory", IsDirectory.ToString());
+            data.Add("LastWriteTime", Common.DateTimeSQLite(LastWriteTime));
+            data.Add("LastWriteTimeUTC", Common.DateTimeSQLite(LastWriteTimeUtc));
+            
+            data.Add("FileOperation", FileOperation.ToString());
+            data.Add("NewFileName", NewFullName);
+            data.Add("MD5", MD5);
+            try
+            {
+                lastid=db.Insert("RFile", data);
+            }
+            catch (Exception ex)
+            {
+                lastid = 0;
+                //MessageBox.Show(crap.Message);
+            }
+            return lastid;
+
+        }
 
         /// <summary>
         ///  A list of all the files/folder in a specific location.
@@ -1268,6 +1310,7 @@ namespace BackupRetention
             this.FileOperation = fileOp;
             this.NewFullName = newFullName;
         }
+        #endregion
     }
     
 }

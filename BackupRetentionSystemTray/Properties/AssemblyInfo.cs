@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BackupRetentionSystemTray")]
-[assembly: AssemblyDescription("Backup Retention Service will execute a configured retention plan, compress individual files, and sychronize folders from multiple folder locations.  Destination folders must be either a local drive or a folder mapped to drive a drive letter. Remote Sync can be used to upload or download files from sftp, ftps, or ftp sites.  Compression for performance reasons should only be configured for local drives.")]
+[assembly: AssemblyDescription("Backup Retention Service will execute a configured retention plan, compress individual files, and sychronize folders from multiple folder locations.  Destination folders must be either a local drive or a UNC path to shared folder. Remote Sync can be used to upload or download files from sftp, ftps, or ftp sites.  Compression for performance reasons should only be configured for local drives.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BackupRetentionSystemTray")]

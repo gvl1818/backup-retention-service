@@ -17,31 +17,70 @@ namespace BackupRetention
     /// </summary>
     public partial class BackupRetentionSystemTray : Form
     {
+        #region "Variables"
+        
         const long ServiceIntervalDefault = 120000; 
+        
+        /// <summary>
+        /// Service Controller for restaring the BackupRetentionService
+        /// </summary>
         ServiceController sc;
+
+        /// <summary>
+        /// Sync DataTable
+        /// </summary>
         private DataTable dtSyncConfig;
+        /// <summary>
+        /// Retention DataTable
+        /// </summary>
         private DataTable dtRetentionConfig;
+        /// <summary>
+        /// Compression DataTable
+        /// </summary>
         private DataTable dtCompressConfig;
+        /// <summary>
+        /// Remote Sync DataTable
+        /// </summary>
         private DataTable dtRemoteConfig;
 
+        /// <summary>
+        /// Event Log DataSet
+        /// </summary>
         private DataSet dsEvents;
         private BindingSource bs;
        
 
         private string ep = "ISincerely!HopeThisIsNotUsed@";
 
-
+        /// <summary>
+        /// About Box
+        /// </summary>
         private AboutBox FrmAboutBox;
 
+
+        /// <summary>
+        /// FolderBrowserDialog for double click events in dgv's cells with folder data
+        /// </summary>
         public FolderBrowserDialog FolderBrowserD;
+        
+        /// <summary>
+        /// trayIcon or Notification Area Icon
+        /// </summary>
         private NotifyIcon trayIcon;
+        /// <summary>
+        /// Context Menu for trayIcon
+        /// </summary>
         private ContextMenu trayMenu;
-       
+
+        /// <summary>
+        /// Event Log Class
+        /// </summary>
+        private static System.Diagnostics.EventLog _evt;
+
+
+        #endregion
 
         #region "Properties"
-
-
-
 
         private long _serviceInterval = ServiceIntervalDefault;
         /// <summary>
@@ -112,10 +151,8 @@ namespace BackupRetention
         }
         #endregion
 
-        /// <summary>
-        /// Event Log Class
-        /// </summary>
-        private static System.Diagnostics.EventLog _evt;
+        #region "Methods"
+        
 
         /// <summary>
         /// dtSyncConfi initialization
@@ -564,6 +601,9 @@ namespace BackupRetention
         }
 
 
+        /// <summary>
+        /// Searches or Refreshes Events DataTable and DGV
+        /// </summary>
         public void RefreshEventsTab()
         {
             Application.DoEvents();
@@ -1556,6 +1596,11 @@ namespace BackupRetention
             }
         }
 
+        /// <summary>
+        /// Clear Logs button click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnClearLogs_Click(object sender, EventArgs e)
         {
             _evt.Clear();
@@ -1563,11 +1608,21 @@ namespace BackupRetention
             _evt.WriteEntry("BackupRe Event Log Cleared.");
         }
 
+        /// <summary>
+        /// Search button click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRefreshEventLog_Click(object sender, EventArgs e)
         {
             RefreshEventsTab();
         }
 
+        /// <summary>
+        /// BackgroundWork1 DoWork event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             string strTask = Common.FixNullstring(e.Argument);
@@ -1583,6 +1638,11 @@ namespace BackupRetention
             }
         }
 
+        /// <summary>
+        /// backgroundWork1 DoWork Completed Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Application.DoEvents();
@@ -1590,27 +1650,9 @@ namespace BackupRetention
             Application.DoEvents();
         }
 
-        
+        #endregion
 
-        
 
-        
 
-        
-
-        
-
-        
-        
-
-        
-        
-
-        
-        
-        
-        
-
-        
     }
 }

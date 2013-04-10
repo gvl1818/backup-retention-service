@@ -1,0 +1,13 @@
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\MainWindow.baml
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\MainWindow.g.cs
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\App.g.cs
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\BackupRetentionTray_MarkupCompile.cache
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\BackupRetentionTray.g.resources
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\BackupRetentionTray.Properties.Resources.resources
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\bin\Debug\BackupRetentionTray.exe
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\bin\Debug\BackupRetentionTray.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\BackupRetentionTray.exe
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionTray\obj\x86\Debug\BackupRetentionTray.pdb
