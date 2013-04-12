@@ -13,6 +13,8 @@ using AlexPilotti.FTPS.Common;
 using System.Security.Cryptography;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Collections;
+using System.Data.SqlServerCe;
 
 
 
@@ -45,6 +47,7 @@ namespace BackupRetention
         OneWay
         ,TwoWay
         ,OneWayMirror
+        ,OneWayBackup
     }
 
     public enum ProtocolOptions
@@ -373,6 +376,50 @@ namespace BackupRetention
         }
 
 
+        /// <summary>
+        /// Calculates Folder Size by adding up all file.Length
+        /// this works for UNC and Non UNC paths.
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        public static long GetFolderFileCount(string folder)
+        {
+            long lFileCount = 0;
+            try
+            {
+                //Checks if the path is valid or not
+                if (!DirectoryExists(folder))
+                    return lFileCount;
+                else
+                {
+                    try
+                    {
+                        foreach (string file in Directory.GetFiles(folder))
+                        {
+                            if (File.Exists(file))
+                            {
+                                lFileCount++;
+                            }
+                        }
+
+                        foreach (string dir in Directory.GetDirectories(folder))
+                        {
+                            lFileCount += GetFolderFileCount(dir);
+                        }
+                    }
+                    catch (NotSupportedException)
+                    {
+                        //Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                //Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+            }
+            return lFileCount;
+        }
+
        
 
         /// <summary>Checks if the given path is on a network drive.</summary>
@@ -419,6 +466,18 @@ namespace BackupRetention
             return date.DayOfWeek == dow && (d - 1) / 7 == (n - 1);
         }
 
+        public static string Strip7zExtension(string FullName)
+        {
+            if (FullName.Length > 3)
+            {
+                if (FullName.Substring(FullName.Length - 3, 3) == ".7z")
+                {
+                    FullName = FullName.Substring(0, FullName.Length - 3);
+                }
+            }
+            return FullName;
+        }
+
         /// <summary>
         /// Checks whether file is locked by the operating system or another process.  Also if you have permission to the file.
         /// </summary>
@@ -429,7 +488,8 @@ namespace BackupRetention
             FileStream stream = null;
             try
             {
-                stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                file.IsReadOnly = false;
+                stream = new FileStream(file.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             }
             catch (Exception)
             {
@@ -472,7 +532,6 @@ namespace BackupRetention
             {
                 fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 fs.ReadByte();
-                fs.Close();
                 file.Refresh();
             }
             catch (IOException)
@@ -803,6 +862,71 @@ namespace BackupRetention
         /// </summary>
         /// <param name="objData"></param>
         /// <returns></returns>
+        public static bool FixNullboolParse(object objData)
+        {
+            bool blValue = false;
+            if (DBNull.Value == objData || objData == null)
+            {
+                return blValue;
+            }
+            else
+            {
+                
+                string strValue = objData.ToString();
+
+                // 2
+                // Remove whitespace from string
+                strValue = strValue.Trim();
+
+                // 3
+                // Lowercase the string
+                strValue = strValue.ToLower();
+
+                // 4
+                // Check for word true
+                if (strValue == "true")
+                {
+                    return true;
+                }
+
+                // 5
+                // Check for letter true
+                if (strValue == "t")
+                {
+                    return true;
+                }
+
+                // 6
+                // Check for one
+                if (strValue == "1")
+                {
+                    return true;
+                }
+
+                // 7
+                // Check for word yes
+                if (strValue == "yes")
+                {
+                    return true;
+                }
+
+                // 8
+                // Check for letter yes
+                if (strValue == "y")
+                {
+                    return true;
+                }
+                       
+                
+            }
+            return blValue;
+        }
+
+        /// <summary>
+        /// Fixes null bool and returns false if null
+        /// </summary>
+        /// <param name="objData"></param>
+        /// <returns></returns>
         public static bool FixNullbool(object objData)
         {
             bool blValue = false;
@@ -813,8 +937,8 @@ namespace BackupRetention
             else
             {
                 bool.TryParse(objData.ToString(), out blValue);
-                return blValue;
             }
+            return blValue;
         }
 
         public static byte[] GetBytes(string str)
@@ -866,6 +990,19 @@ namespace BackupRetention
 
             return ((blFileFound == false || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound == true));
                                    
+        }
+
+
+        public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist)
+        {
+            if (flist != null && lFolderActionID > 0)
+            {
+                foreach (FileInfo file in flist)
+                {
+                    RemoteFile rfile = new RemoteFile(file);
+                    rfile.Save(lFolderActionID);
+                }
+            }
         }
 
        
@@ -1139,6 +1276,7 @@ namespace BackupRetention
                     // where the file has been deleted since the call to TraverseTree().
 
                     //Console.WriteLine(fi.FullName);
+                    RefreshFileInfo(fi);
                     AllFiles.Add(fi);
                 }
 
@@ -1183,35 +1321,75 @@ namespace BackupRetention
 
         public string MD5 { get; set; }
 
+        public string Comment { get; set; }
+
         #endregion
 
         #region "Methods"
 
-        public int Save(int intFolderActionID)
+        public long Save(long lFolderActionID)
         {
-            int lastid = 0;
-            SQLiteDatabase db;
-            db = new SQLiteDatabase(Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\backupretention.db") );
-            Dictionary<String, String> data = new Dictionary<String, String>();
-            data.Add("Name", Name);
-            data.Add("FullName", FullName);
-            data.Add("FileLength", Length.ToString());
-            data.Add("ParentDirectory", ParentDirectory);
-            data.Add("IsDirectory", IsDirectory.ToString());
-            data.Add("LastWriteTime", Common.DateTimeSQLite(LastWriteTime));
-            data.Add("LastWriteTimeUTC", Common.DateTimeSQLite(LastWriteTimeUtc));
+            long lastid = 0;
+            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+
+            List<SqlCeParameter> list = new List<SqlCeParameter>();
+
+            SqlCeParameter sp;
+
+            sp = new SqlCeParameter("@Name", SqlDbType.NVarChar,3000);
+            sp.Value =Common.FixNullstring(Name);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
+            sp.Value =Common.FixNullstring(FullName);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+            sp.Value =Length;
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
+            sp.Value =Common.FixNullstring(ParentDirectory);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
+            sp.Value =IsDirectory;
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
+            sp.Value =LastWriteTime;
+            list.Add(sp);
+           
+            sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
+            sp.Value =LastWriteTimeUtc;
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
+            sp.Value =Common.FixNullstring(FileOperation);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
+            sp.Value = Common.FixNullstring(NewFullName);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 50);
+            sp.Value =Common.FixNullstring(MD5);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
+            sp.Value =lFolderActionID;
+            list.Add(sp);
             
-            data.Add("FileOperation", FileOperation.ToString());
-            data.Add("NewFileName", NewFullName);
-            data.Add("MD5", MD5);
             try
             {
-                lastid=db.Insert("RFile", data);
+                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID)", list);
             }
             catch (Exception ex)
             {
                 lastid = 0;
-                //MessageBox.Show(crap.Message);
+
+                throw ex;
+               
             }
             return lastid;
 
@@ -1247,6 +1425,25 @@ namespace BackupRetention
             this.IsDirectory = false;
             this.LastWriteTime = file1.LastWriteTime;
             this.LastWriteTimeUtc = file1.LastWriteTimeUtc;
+        }
+
+
+
+        public RemoteFile(DataRow row)
+        {
+            DateTime dtLastWriteTime;
+            DateTime dtLastWriteTimeUTC;
+            this.Name = Common.FixNullstring(row["Name"]);
+            this.FullName = Common.FixNullstring(row["FullName"]);
+            this.Length = Common.FixNulllong(row["FileLength"]);
+            this.ParentDirectory = Common.FixNullstring(row["FileParentDirectory"]);
+            this.IsDirectory = Common.FixNullboolParse(row["IsDirectory"]);
+            DateTime.TryParse(Common.FixNullstring(row["LastWriteTime"]),out dtLastWriteTime);
+            DateTime.TryParse(Common.FixNullstring(row["LastWriteTimeUTC"]), out dtLastWriteTimeUTC);
+            this.LastWriteTime = dtLastWriteTime;
+            this.LastWriteTimeUtc = dtLastWriteTimeUTC;
+            this.NewFullName = Common.FixNullstring(row["NewFileName"]);
+            this.MD5 = Common.FixNullstring(row["MD5"]);
         }
 
         public RemoteFile(FileInfo file1, FileOperations fileOp)

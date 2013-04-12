@@ -77,25 +77,6 @@
             this.dgvColCompressStartCompressingAfterDays = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabSync = new System.Windows.Forms.TabPage();
             this.dgvSync = new System.Windows.Forms.DataGridView();
-            this.dgvColSyncID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColSyncEnabled1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColSyncMonday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncTuesday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncWednesday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncThursday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncFriday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncSaturday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncSunday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvColSyncDayOfMonth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColSyncSourceFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColSyncDestinationFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColSyncFileSyncReplicaOption = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvColSyncFileSyncReset = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvColSyncFolderSyncDirectionOrder = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvColSyncDefaultConflictResolutionPolicy = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvColSyncArchiveDeleted = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvColSyncArchiveFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabRemote = new System.Windows.Forms.TabPage();
             this.dgvRemote = new System.Windows.Forms.DataGridView();
             this.dgvColRemoteID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -160,6 +141,25 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.pbLeftIcon = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.dgvColSyncID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColSyncEnabled1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColSyncMonday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncTuesday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncWednesday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncThursday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncFriday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncSaturday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncSunday = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvColSyncDayOfMonth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColSyncSourceFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColSyncDestinationFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvColSyncFileSyncReplicaOption = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvColSyncFileSyncReset = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvColSyncFolderSyncDirectionOrder = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvColSyncDefaultConflictResolutionPolicy = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvColSyncArchiveDeleted = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgvColSyncArchiveFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.tabRetention.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRetention)).BeginInit();
@@ -695,192 +695,6 @@
             this.dgvSync.TabIndex = 13;
             this.dgvSync.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSync_CellDoubleClick);
             this.dgvSync.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvSync_CellValidating);
-            // 
-            // dgvColSyncID
-            // 
-            this.dgvColSyncID.DataPropertyName = "ID";
-            this.dgvColSyncID.HeaderText = "ID";
-            this.dgvColSyncID.Name = "dgvColSyncID";
-            this.dgvColSyncID.ReadOnly = true;
-            this.dgvColSyncID.Width = 43;
-            // 
-            // dgvColSyncEnabled1
-            // 
-            this.dgvColSyncEnabled1.DataPropertyName = "Enabled";
-            this.dgvColSyncEnabled1.FalseValue = "false";
-            this.dgvColSyncEnabled1.HeaderText = "Enabled";
-            this.dgvColSyncEnabled1.IndeterminateValue = "";
-            this.dgvColSyncEnabled1.Name = "dgvColSyncEnabled1";
-            this.dgvColSyncEnabled1.TrueValue = "true";
-            this.dgvColSyncEnabled1.Width = 52;
-            // 
-            // dgvColSyncTime
-            // 
-            this.dgvColSyncTime.DataPropertyName = "Time";
-            this.dgvColSyncTime.HeaderText = "Time";
-            this.dgvColSyncTime.MaxInputLength = 5;
-            this.dgvColSyncTime.Name = "dgvColSyncTime";
-            this.dgvColSyncTime.Width = 55;
-            // 
-            // dgvColSyncMonday
-            // 
-            this.dgvColSyncMonday.DataPropertyName = "Monday";
-            this.dgvColSyncMonday.FalseValue = "false";
-            this.dgvColSyncMonday.HeaderText = "Mon";
-            this.dgvColSyncMonday.IndeterminateValue = "";
-            this.dgvColSyncMonday.Name = "dgvColSyncMonday";
-            this.dgvColSyncMonday.TrueValue = "true";
-            this.dgvColSyncMonday.Width = 34;
-            // 
-            // dgvColSyncTuesday
-            // 
-            this.dgvColSyncTuesday.DataPropertyName = "Tuesday";
-            this.dgvColSyncTuesday.FalseValue = "false";
-            this.dgvColSyncTuesday.HeaderText = "Tue";
-            this.dgvColSyncTuesday.IndeterminateValue = "";
-            this.dgvColSyncTuesday.Name = "dgvColSyncTuesday";
-            this.dgvColSyncTuesday.TrueValue = "true";
-            this.dgvColSyncTuesday.Width = 32;
-            // 
-            // dgvColSyncWednesday
-            // 
-            this.dgvColSyncWednesday.DataPropertyName = "Wednesday";
-            this.dgvColSyncWednesday.FalseValue = "false";
-            this.dgvColSyncWednesday.HeaderText = "Wed";
-            this.dgvColSyncWednesday.IndeterminateValue = "";
-            this.dgvColSyncWednesday.Name = "dgvColSyncWednesday";
-            this.dgvColSyncWednesday.TrueValue = "true";
-            this.dgvColSyncWednesday.Width = 36;
-            // 
-            // dgvColSyncThursday
-            // 
-            this.dgvColSyncThursday.DataPropertyName = "Thursday";
-            this.dgvColSyncThursday.FalseValue = "false";
-            this.dgvColSyncThursday.HeaderText = "Thu";
-            this.dgvColSyncThursday.IndeterminateValue = "";
-            this.dgvColSyncThursday.Name = "dgvColSyncThursday";
-            this.dgvColSyncThursday.TrueValue = "true";
-            this.dgvColSyncThursday.Width = 32;
-            // 
-            // dgvColSyncFriday
-            // 
-            this.dgvColSyncFriday.DataPropertyName = "Friday";
-            this.dgvColSyncFriday.FalseValue = "false";
-            this.dgvColSyncFriday.HeaderText = "Fri";
-            this.dgvColSyncFriday.IndeterminateValue = "";
-            this.dgvColSyncFriday.Name = "dgvColSyncFriday";
-            this.dgvColSyncFriday.TrueValue = "true";
-            this.dgvColSyncFriday.Width = 24;
-            // 
-            // dgvColSyncSaturday
-            // 
-            this.dgvColSyncSaturday.DataPropertyName = "Saturday";
-            this.dgvColSyncSaturday.FalseValue = "false";
-            this.dgvColSyncSaturday.HeaderText = "Sat";
-            this.dgvColSyncSaturday.IndeterminateValue = "";
-            this.dgvColSyncSaturday.Name = "dgvColSyncSaturday";
-            this.dgvColSyncSaturday.TrueValue = "true";
-            this.dgvColSyncSaturday.Width = 29;
-            // 
-            // dgvColSyncSunday
-            // 
-            this.dgvColSyncSunday.DataPropertyName = "Sunday";
-            this.dgvColSyncSunday.FalseValue = "false";
-            this.dgvColSyncSunday.HeaderText = "Sun";
-            this.dgvColSyncSunday.IndeterminateValue = "";
-            this.dgvColSyncSunday.Name = "dgvColSyncSunday";
-            this.dgvColSyncSunday.TrueValue = "true";
-            this.dgvColSyncSunday.Width = 32;
-            // 
-            // dgvColSyncDayOfMonth
-            // 
-            this.dgvColSyncDayOfMonth.DataPropertyName = "DayOfMonth";
-            this.dgvColSyncDayOfMonth.HeaderText = "DayOfMonth";
-            this.dgvColSyncDayOfMonth.MaxInputLength = 2;
-            this.dgvColSyncDayOfMonth.Name = "dgvColSyncDayOfMonth";
-            this.dgvColSyncDayOfMonth.Width = 92;
-            // 
-            // dgvColSyncSourceFolder
-            // 
-            this.dgvColSyncSourceFolder.DataPropertyName = "SourceFolder";
-            this.dgvColSyncSourceFolder.HeaderText = "SourceFolder";
-            this.dgvColSyncSourceFolder.Name = "dgvColSyncSourceFolder";
-            this.dgvColSyncSourceFolder.Width = 95;
-            // 
-            // dgvColSyncDestinationFolder
-            // 
-            this.dgvColSyncDestinationFolder.DataPropertyName = "DestinationFolder";
-            this.dgvColSyncDestinationFolder.HeaderText = "DestinationFolder";
-            this.dgvColSyncDestinationFolder.Name = "dgvColSyncDestinationFolder";
-            this.dgvColSyncDestinationFolder.Width = 114;
-            // 
-            // dgvColSyncFileSyncReplicaOption
-            // 
-            this.dgvColSyncFileSyncReplicaOption.DataPropertyName = "FileSyncReplicaOption";
-            this.dgvColSyncFileSyncReplicaOption.HeaderText = "FileSyncReplicaOption";
-            this.dgvColSyncFileSyncReplicaOption.Items.AddRange(new object[] {
-            "OneWay",
-            "OneWayMirror"});
-            this.dgvColSyncFileSyncReplicaOption.Name = "dgvColSyncFileSyncReplicaOption";
-            this.dgvColSyncFileSyncReplicaOption.ToolTipText = "OneWay, TwoWay Synchronization, or OneWay Mirror which will delete files in the d" +
-    "estination folder that no longer exist on the source folder.";
-            this.dgvColSyncFileSyncReplicaOption.Width = 120;
-            // 
-            // dgvColSyncFileSyncReset
-            // 
-            this.dgvColSyncFileSyncReset.DataPropertyName = "FileSyncReset";
-            this.dgvColSyncFileSyncReset.HeaderText = "FileSyncReset";
-            this.dgvColSyncFileSyncReset.Items.AddRange(new object[] {
-            "true",
-            "false"});
-            this.dgvColSyncFileSyncReset.Name = "dgvColSyncFileSyncReset";
-            this.dgvColSyncFileSyncReset.ToolTipText = "Deletes .metadata file which forces files already copied if missing to be copied " +
-    "over again";
-            this.dgvColSyncFileSyncReset.Width = 81;
-            // 
-            // dgvColSyncFolderSyncDirectionOrder
-            // 
-            this.dgvColSyncFolderSyncDirectionOrder.DataPropertyName = "FolderSyncDirectionOrder";
-            this.dgvColSyncFolderSyncDirectionOrder.HeaderText = "FolderSyncDirectionOrder";
-            this.dgvColSyncFolderSyncDirectionOrder.Items.AddRange(new object[] {
-            "Upload",
-            "UploadAndDownload",
-            "Download",
-            "DownloadAndUpload"});
-            this.dgvColSyncFolderSyncDirectionOrder.Name = "dgvColSyncFolderSyncDirectionOrder";
-            this.dgvColSyncFolderSyncDirectionOrder.ToolTipText = resources.GetString("dgvColSyncFolderSyncDirectionOrder.ToolTipText");
-            this.dgvColSyncFolderSyncDirectionOrder.Width = 134;
-            // 
-            // dgvColSyncDefaultConflictResolutionPolicy
-            // 
-            this.dgvColSyncDefaultConflictResolutionPolicy.DataPropertyName = "DefaultConflictResolutionPolicy";
-            this.dgvColSyncDefaultConflictResolutionPolicy.HeaderText = "DefaultConflictResolutionPolicy";
-            this.dgvColSyncDefaultConflictResolutionPolicy.Items.AddRange(new object[] {
-            "SourceWins",
-            "DestinationWins"});
-            this.dgvColSyncDefaultConflictResolutionPolicy.Name = "dgvColSyncDefaultConflictResolutionPolicy";
-            this.dgvColSyncDefaultConflictResolutionPolicy.ToolTipText = "whether the source location will be the winner for conflicts or the destination.";
-            this.dgvColSyncDefaultConflictResolutionPolicy.Width = 160;
-            // 
-            // dgvColSyncArchiveDeleted
-            // 
-            this.dgvColSyncArchiveDeleted.DataPropertyName = "ArchiveDeleted";
-            this.dgvColSyncArchiveDeleted.HeaderText = "ArchiveDeleted";
-            this.dgvColSyncArchiveDeleted.Items.AddRange(new object[] {
-            "true",
-            "false"});
-            this.dgvColSyncArchiveDeleted.Name = "dgvColSyncArchiveDeleted";
-            this.dgvColSyncArchiveDeleted.ToolTipText = "Whether to move deleted and modified files to ArchiveFolder before being overwrit" +
-    "ten or deleted";
-            this.dgvColSyncArchiveDeleted.Width = 86;
-            // 
-            // dgvColSyncArchiveFolder
-            // 
-            this.dgvColSyncArchiveFolder.DataPropertyName = "ArchiveFolder";
-            this.dgvColSyncArchiveFolder.HeaderText = "ArchiveFolder";
-            this.dgvColSyncArchiveFolder.Name = "dgvColSyncArchiveFolder";
-            this.dgvColSyncArchiveFolder.ToolTipText = "Archive Destination Folder";
-            this.dgvColSyncArchiveFolder.Width = 97;
             // 
             // tabRemote
             // 
@@ -1528,6 +1342,193 @@
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // dgvColSyncID
+            // 
+            this.dgvColSyncID.DataPropertyName = "ID";
+            this.dgvColSyncID.HeaderText = "ID";
+            this.dgvColSyncID.Name = "dgvColSyncID";
+            this.dgvColSyncID.ReadOnly = true;
+            this.dgvColSyncID.Width = 43;
+            // 
+            // dgvColSyncEnabled1
+            // 
+            this.dgvColSyncEnabled1.DataPropertyName = "Enabled";
+            this.dgvColSyncEnabled1.FalseValue = "false";
+            this.dgvColSyncEnabled1.HeaderText = "Enabled";
+            this.dgvColSyncEnabled1.IndeterminateValue = "";
+            this.dgvColSyncEnabled1.Name = "dgvColSyncEnabled1";
+            this.dgvColSyncEnabled1.TrueValue = "true";
+            this.dgvColSyncEnabled1.Width = 52;
+            // 
+            // dgvColSyncTime
+            // 
+            this.dgvColSyncTime.DataPropertyName = "Time";
+            this.dgvColSyncTime.HeaderText = "Time";
+            this.dgvColSyncTime.MaxInputLength = 5;
+            this.dgvColSyncTime.Name = "dgvColSyncTime";
+            this.dgvColSyncTime.Width = 55;
+            // 
+            // dgvColSyncMonday
+            // 
+            this.dgvColSyncMonday.DataPropertyName = "Monday";
+            this.dgvColSyncMonday.FalseValue = "false";
+            this.dgvColSyncMonday.HeaderText = "Mon";
+            this.dgvColSyncMonday.IndeterminateValue = "";
+            this.dgvColSyncMonday.Name = "dgvColSyncMonday";
+            this.dgvColSyncMonday.TrueValue = "true";
+            this.dgvColSyncMonday.Width = 34;
+            // 
+            // dgvColSyncTuesday
+            // 
+            this.dgvColSyncTuesday.DataPropertyName = "Tuesday";
+            this.dgvColSyncTuesday.FalseValue = "false";
+            this.dgvColSyncTuesday.HeaderText = "Tue";
+            this.dgvColSyncTuesday.IndeterminateValue = "";
+            this.dgvColSyncTuesday.Name = "dgvColSyncTuesday";
+            this.dgvColSyncTuesday.TrueValue = "true";
+            this.dgvColSyncTuesday.Width = 32;
+            // 
+            // dgvColSyncWednesday
+            // 
+            this.dgvColSyncWednesday.DataPropertyName = "Wednesday";
+            this.dgvColSyncWednesday.FalseValue = "false";
+            this.dgvColSyncWednesday.HeaderText = "Wed";
+            this.dgvColSyncWednesday.IndeterminateValue = "";
+            this.dgvColSyncWednesday.Name = "dgvColSyncWednesday";
+            this.dgvColSyncWednesday.TrueValue = "true";
+            this.dgvColSyncWednesday.Width = 36;
+            // 
+            // dgvColSyncThursday
+            // 
+            this.dgvColSyncThursday.DataPropertyName = "Thursday";
+            this.dgvColSyncThursday.FalseValue = "false";
+            this.dgvColSyncThursday.HeaderText = "Thu";
+            this.dgvColSyncThursday.IndeterminateValue = "";
+            this.dgvColSyncThursday.Name = "dgvColSyncThursday";
+            this.dgvColSyncThursday.TrueValue = "true";
+            this.dgvColSyncThursday.Width = 32;
+            // 
+            // dgvColSyncFriday
+            // 
+            this.dgvColSyncFriday.DataPropertyName = "Friday";
+            this.dgvColSyncFriday.FalseValue = "false";
+            this.dgvColSyncFriday.HeaderText = "Fri";
+            this.dgvColSyncFriday.IndeterminateValue = "";
+            this.dgvColSyncFriday.Name = "dgvColSyncFriday";
+            this.dgvColSyncFriday.TrueValue = "true";
+            this.dgvColSyncFriday.Width = 24;
+            // 
+            // dgvColSyncSaturday
+            // 
+            this.dgvColSyncSaturday.DataPropertyName = "Saturday";
+            this.dgvColSyncSaturday.FalseValue = "false";
+            this.dgvColSyncSaturday.HeaderText = "Sat";
+            this.dgvColSyncSaturday.IndeterminateValue = "";
+            this.dgvColSyncSaturday.Name = "dgvColSyncSaturday";
+            this.dgvColSyncSaturday.TrueValue = "true";
+            this.dgvColSyncSaturday.Width = 29;
+            // 
+            // dgvColSyncSunday
+            // 
+            this.dgvColSyncSunday.DataPropertyName = "Sunday";
+            this.dgvColSyncSunday.FalseValue = "false";
+            this.dgvColSyncSunday.HeaderText = "Sun";
+            this.dgvColSyncSunday.IndeterminateValue = "";
+            this.dgvColSyncSunday.Name = "dgvColSyncSunday";
+            this.dgvColSyncSunday.TrueValue = "true";
+            this.dgvColSyncSunday.Width = 32;
+            // 
+            // dgvColSyncDayOfMonth
+            // 
+            this.dgvColSyncDayOfMonth.DataPropertyName = "DayOfMonth";
+            this.dgvColSyncDayOfMonth.HeaderText = "DayOfMonth";
+            this.dgvColSyncDayOfMonth.MaxInputLength = 2;
+            this.dgvColSyncDayOfMonth.Name = "dgvColSyncDayOfMonth";
+            this.dgvColSyncDayOfMonth.Width = 92;
+            // 
+            // dgvColSyncSourceFolder
+            // 
+            this.dgvColSyncSourceFolder.DataPropertyName = "SourceFolder";
+            this.dgvColSyncSourceFolder.HeaderText = "SourceFolder";
+            this.dgvColSyncSourceFolder.Name = "dgvColSyncSourceFolder";
+            this.dgvColSyncSourceFolder.Width = 95;
+            // 
+            // dgvColSyncDestinationFolder
+            // 
+            this.dgvColSyncDestinationFolder.DataPropertyName = "DestinationFolder";
+            this.dgvColSyncDestinationFolder.HeaderText = "DestinationFolder";
+            this.dgvColSyncDestinationFolder.Name = "dgvColSyncDestinationFolder";
+            this.dgvColSyncDestinationFolder.Width = 114;
+            // 
+            // dgvColSyncFileSyncReplicaOption
+            // 
+            this.dgvColSyncFileSyncReplicaOption.DataPropertyName = "FileSyncReplicaOption";
+            this.dgvColSyncFileSyncReplicaOption.HeaderText = "FileSyncReplicaOption";
+            this.dgvColSyncFileSyncReplicaOption.Items.AddRange(new object[] {
+            "OneWay",
+            "OneWayMirror",
+            "OneWayBackup"});
+            this.dgvColSyncFileSyncReplicaOption.Name = "dgvColSyncFileSyncReplicaOption";
+            this.dgvColSyncFileSyncReplicaOption.ToolTipText = "OneWay, TwoWay Synchronization, or OneWay Mirror which will delete files in the d" +
+    "estination folder that no longer exist on the source folder.";
+            this.dgvColSyncFileSyncReplicaOption.Width = 120;
+            // 
+            // dgvColSyncFileSyncReset
+            // 
+            this.dgvColSyncFileSyncReset.DataPropertyName = "FileSyncReset";
+            this.dgvColSyncFileSyncReset.HeaderText = "FileSyncReset";
+            this.dgvColSyncFileSyncReset.Items.AddRange(new object[] {
+            "true",
+            "false"});
+            this.dgvColSyncFileSyncReset.Name = "dgvColSyncFileSyncReset";
+            this.dgvColSyncFileSyncReset.ToolTipText = "Deletes .metadata file which forces files already copied if missing to be copied " +
+    "over again";
+            this.dgvColSyncFileSyncReset.Width = 81;
+            // 
+            // dgvColSyncFolderSyncDirectionOrder
+            // 
+            this.dgvColSyncFolderSyncDirectionOrder.DataPropertyName = "FolderSyncDirectionOrder";
+            this.dgvColSyncFolderSyncDirectionOrder.HeaderText = "FolderSyncDirectionOrder";
+            this.dgvColSyncFolderSyncDirectionOrder.Items.AddRange(new object[] {
+            "Upload",
+            "UploadAndDownload",
+            "Download",
+            "DownloadAndUpload"});
+            this.dgvColSyncFolderSyncDirectionOrder.Name = "dgvColSyncFolderSyncDirectionOrder";
+            this.dgvColSyncFolderSyncDirectionOrder.ToolTipText = resources.GetString("dgvColSyncFolderSyncDirectionOrder.ToolTipText");
+            this.dgvColSyncFolderSyncDirectionOrder.Width = 134;
+            // 
+            // dgvColSyncDefaultConflictResolutionPolicy
+            // 
+            this.dgvColSyncDefaultConflictResolutionPolicy.DataPropertyName = "DefaultConflictResolutionPolicy";
+            this.dgvColSyncDefaultConflictResolutionPolicy.HeaderText = "DefaultConflictResolutionPolicy";
+            this.dgvColSyncDefaultConflictResolutionPolicy.Items.AddRange(new object[] {
+            "SourceWins",
+            "DestinationWins"});
+            this.dgvColSyncDefaultConflictResolutionPolicy.Name = "dgvColSyncDefaultConflictResolutionPolicy";
+            this.dgvColSyncDefaultConflictResolutionPolicy.ToolTipText = "whether the source location will be the winner for conflicts or the destination.";
+            this.dgvColSyncDefaultConflictResolutionPolicy.Width = 160;
+            // 
+            // dgvColSyncArchiveDeleted
+            // 
+            this.dgvColSyncArchiveDeleted.DataPropertyName = "ArchiveDeleted";
+            this.dgvColSyncArchiveDeleted.HeaderText = "ArchiveDeleted";
+            this.dgvColSyncArchiveDeleted.Items.AddRange(new object[] {
+            "true",
+            "false"});
+            this.dgvColSyncArchiveDeleted.Name = "dgvColSyncArchiveDeleted";
+            this.dgvColSyncArchiveDeleted.ToolTipText = "Whether to move deleted and modified files to ArchiveFolder before being overwrit" +
+    "ten or deleted";
+            this.dgvColSyncArchiveDeleted.Width = 86;
+            // 
+            // dgvColSyncArchiveFolder
+            // 
+            this.dgvColSyncArchiveFolder.DataPropertyName = "ArchiveFolder";
+            this.dgvColSyncArchiveFolder.HeaderText = "ArchiveFolder";
+            this.dgvColSyncArchiveFolder.Name = "dgvColSyncArchiveFolder";
+            this.dgvColSyncArchiveFolder.ToolTipText = "Archive Destination Folder";
+            this.dgvColSyncArchiveFolder.Width = 97;
+            // 
             // BackupRetentionSystemTray
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1645,25 +1646,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn dgvColCompressKeepOriginalFile;
         private System.Windows.Forms.DataGridViewComboBoxColumn dgvColCompressCompressionLvl;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColCompressStartCompressingAfterDays;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncID;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncEnabled1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncTime;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncMonday;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncTuesday;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncWednesday;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncThursday;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncFriday;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncSaturday;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncSunday;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncDayOfMonth;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncSourceFolder;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncDestinationFolder;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncFileSyncReplicaOption;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncFileSyncReset;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncFolderSyncDirectionOrder;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncDefaultConflictResolutionPolicy;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncArchiveDeleted;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncArchiveFolder;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColRemoteID;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColRemoteEnabled;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColRemoteTime;
@@ -1696,6 +1678,25 @@
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox txtSearch;
         protected System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncID;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncEnabled1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncTime;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncMonday;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncTuesday;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncWednesday;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncThursday;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncFriday;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncSaturday;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dgvColSyncSunday;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncDayOfMonth;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncSourceFolder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncDestinationFolder;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncFileSyncReplicaOption;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncFileSyncReset;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncFolderSyncDirectionOrder;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncDefaultConflictResolutionPolicy;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dgvColSyncArchiveDeleted;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColSyncArchiveFolder;
     }
 }
 

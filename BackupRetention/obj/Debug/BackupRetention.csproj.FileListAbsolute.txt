@@ -7,3 +7,4 @@ C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Debug\SevenZ
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Debug\AlexPilotti.FTPS.Client.dll
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Debug\Org.Mentalis.Security.dll
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Debug\Renci.SshNet.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Debug\BackupRetention.dll.config

@@ -525,11 +525,13 @@ namespace BackupRetention
                                     //If archive is not corrupted and KeepUncompressed is false then it is ok to delete the original
                                     if (extractor.Check() && KeepOriginalFile == false)
                                     {
+                                        
                                         FileInfo file2 = new FileInfo(str7File);
                                         //Same File compressed then ok to delete
-                                        if (file1.LastWriteTime == file2.LastWriteTime)
+                                        if (file1.LastWriteTime == file2.LastWriteTime && file1.Length == extractor.UnpackedSize && extractor.FilesCount==1)
                                         {
-                                            File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            file1.IsReadOnly = false;
                                             File.Delete(file1.FullName);
                                         }
                                         file2 = null;
@@ -662,7 +664,8 @@ namespace BackupRetention
                                     //Delete Original Uncompressed File if KeepUncompressedFile == false
                                     if (!KeepOriginalFile)
                                     {
-                                        File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        file1.IsReadOnly = false;
                                         File.Delete(file1.FullName);
                                         _evt.WriteEntry("Compress: Original File Deleted Per KeepUncompressedFile Setting: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 5070, 50);
 
@@ -675,7 +678,8 @@ namespace BackupRetention
                                     FileInfo zFile = new FileInfo(str7File);
 
                                     //Delete corrupted file
-                                    File.SetAttributes(zFile.FullName, FileAttributes.Normal);
+                                    //File.SetAttributes(zFile.FullName, FileAttributes.Normal);
+                                    zFile.IsReadOnly = false;
                                     File.Delete(zFile.FullName);
                                     _evt.WriteEntry("Compress: 7zip Archive Corrupted and deleted: " + zFile.FullName, System.Diagnostics.EventLogEntryType.Error, 5160, 50);
                                     zFile = null;
@@ -753,19 +757,19 @@ namespace BackupRetention
                             {
                                 if (File.Exists(str7Dir))
                                 {
+                                    FileInfo file7 = new FileInfo(str7Dir);
                                     extestreader = new FileStream(str7Dir, FileMode.Open);
                                     extractor = new SevenZipExtractor(extestreader);
 
                                     //If archive is not corrupted and KeepUncompressed is false then it is ok to delete the original
                                     if (extractor.Check() && KeepOriginalFile == false)
                                     {
-                                        DirectoryInfo dir2 = new DirectoryInfo(str7Dir);
                                         //Same File compressed then ok to delete
-                                        if (DirInfo1.LastWriteTime == dir2.LastWriteTime)
+                                        if (DirInfo1.LastWriteTime == file7.LastWriteTime && Common.CalculateFolderSize(DirInfo1.FullName) == extractor.UnpackedSize && Common.GetFolderFileCount(DirInfo1.FullName) == extractor.FilesCount)
                                         {
                                             Directory.Delete(DirInfo1.FullName,true);
                                         }
-                                        dir2 = null;
+                                        
                                     }
 
                                     continue;
@@ -1044,7 +1048,7 @@ namespace BackupRetention
                                         }
                                         else
                                         {
-                                            strDestination = Common.WindowsPathCombine(strDestination, Common.WindowsPathClean(file1.FullName.Replace(".7z", "")), SourceFolder);
+                                            strDestination = Common.WindowsPathCombine(strDestination, Common.WindowsPathClean(Common.Strip7zExtension(file1.FullName)), SourceFolder);
                                             if (!Directory.Exists(strDestination))
                                             {
                                                 Directory.CreateDirectory(strDestination);
@@ -1061,7 +1065,8 @@ namespace BackupRetention
                                         exreader = null;
                                         if (!KeepOriginalFile)
                                         {
-                                            File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            file1.IsReadOnly = false;
                                             File.Delete(file1.FullName);
                                             _evt.WriteEntry("Compress: Deleted Original Compressed File: " + file1.FullName + " Per Setting KeepOriginalFile", System.Diagnostics.EventLogEntryType.Information,5170, 50);
                                         }

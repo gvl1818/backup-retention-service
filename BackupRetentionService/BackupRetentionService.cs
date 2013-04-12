@@ -8,6 +8,7 @@ using System.Configuration;
 //using System.Net.Mail;
 using System.IO;
 using System.Threading;
+using System.Data.SqlServerCe;
 
 namespace BackupRetention
 {
@@ -17,6 +18,7 @@ namespace BackupRetention
     public partial class BackupRetentionService : ServiceBase
     {
         #region "Variables"
+
 
         /// <summary>
         /// Default Service Interval
@@ -687,10 +689,31 @@ namespace BackupRetention
         {
             try
             {
+               
                 
+                
+
+           
                 //Sync
                 if (!SyncThread.IsAlive)
                 {
+                    if (!RemoteSyncThread.IsAlive)
+                    {
+                        SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+
+                        object o;
+                        int intCount=0;
+                        o = db.ExecuteScalar("SELECT COUNT(ID) FROM RFile");
+                        int.TryParse(o.ToString(), out intCount);
+                        if (intCount > 0)
+                        {
+
+                            db.ExecuteNonQuery("DELETE FROM FolderAction");
+                            db.ExecuteNonQuery("DELETE FROM RFile");
+                            db.ExecuteNonQuery("ALTER TABLE FolderAction ALTER COLUMN [ID] IDENTITY (1,1)");
+                            db.ExecuteNonQuery("ALTER TABLE RFile ALTER COLUMN [ID] IDENTITY (1,1)");
+                        }
+                    }
                     SyncThread = new Thread(new ThreadStart(Sync));
                     SyncThread.Start();
                 }

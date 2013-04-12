@@ -53,20 +53,42 @@ namespace BackupRetention
         public DataTable GetDataTable(string sql)
         {
             DataTable dt = new DataTable();
+            SQLiteConnection cnn = null;
+            SQLiteCommand mycommand = null;
+            SQLiteDataReader reader = null;
             try
             {
-                SQLiteConnection cnn = new SQLiteConnection(dbConnection);
+                cnn = new SQLiteConnection(dbConnection);
                 cnn.Open();
-                SQLiteCommand mycommand = new SQLiteCommand(cnn);
+                mycommand = new SQLiteCommand(cnn);
                 mycommand.CommandText = sql;
-                SQLiteDataReader reader = mycommand.ExecuteReader();
+                reader = mycommand.ExecuteReader();
                 dt.Load(reader);
-                reader.Close();
-                cnn.Close();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                return null;//throw new Exception(e.Message);
+            }
+            finally
+            {
+                if (cnn != null)
+                {
+                    cnn.Close();
+                    cnn.Dispose();
+                    cnn = null;
+                }
+                if (mycommand != null)
+                {
+                    mycommand.Dispose();
+                    mycommand = null;
+                }
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                    reader = null;
+                }
+
             }
             return dt;
         }
@@ -78,13 +100,40 @@ namespace BackupRetention
         /// <returns>An Integer containing the number of rows updated.</returns>
         public int ExecuteNonQuery(string sql)
         {
-            SQLiteConnection cnn = new SQLiteConnection(dbConnection);
-            cnn.Open();
-            SQLiteCommand mycommand = new SQLiteCommand(cnn);
-            mycommand.CommandText = sql;
-            int rowsUpdated = mycommand.ExecuteNonQuery();
-            cnn.Close();
+            int rowsUpdated = 0;
+            SQLiteConnection cnn = null;
+            SQLiteCommand mycommand = null;
+            try
+            {
+                cnn = new SQLiteConnection(dbConnection);
+                cnn.Open();
+                mycommand = new SQLiteCommand(cnn);
+                mycommand.CommandText = sql;
+                rowsUpdated = mycommand.ExecuteNonQuery();
+
+                
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            finally
+            {
+                if (cnn != null)
+                {
+                    cnn.Close();
+                    cnn.Dispose();
+                    cnn = null;
+                }
+                if (mycommand != null)
+                {
+                    mycommand.Dispose();
+                    mycommand = null;
+                }
+            }
             return rowsUpdated;
+            
         }
 
         /// <summary>
@@ -94,16 +143,41 @@ namespace BackupRetention
         /// <returns>A string.</returns>
         public string ExecuteScalar(string sql)
         {
-            SQLiteConnection cnn = new SQLiteConnection(dbConnection);
-            cnn.Open();
-            SQLiteCommand mycommand = new SQLiteCommand(cnn);
-            mycommand.CommandText = sql;
-            object value = mycommand.ExecuteScalar();
-            cnn.Close();
-            if (value != null)
+            SQLiteConnection cnn=null;
+            SQLiteCommand mycommand=null;
+            try
             {
-                return value.ToString();
+                cnn = new SQLiteConnection(dbConnection);
+                cnn.Open();
+                mycommand = new SQLiteCommand(cnn);
+                mycommand.CommandText = sql;
+                object value = mycommand.ExecuteScalar();
+                
+                if (value != null)
+                {
+                    return value.ToString();
+                }
             }
+            catch (Exception ex)
+            {
+
+
+            }
+            finally
+            {
+                if (cnn != null)
+                {
+                    cnn.Close();
+                    cnn.Dispose();
+                    cnn = null;
+                }
+                if (mycommand != null)
+                {
+                    mycommand.Dispose();
+                    mycommand = null;
+                }
+            }
+            
             return "";
         }
 
@@ -150,7 +224,7 @@ namespace BackupRetention
             {
                 this.ExecuteNonQuery(String.Format("delete from {0} where {1};", tableName, where));
             }
-            catch (Exception fail)
+            catch (Exception ex)
             {
                 //MessageBox.Show(fail.Message);
                 returnCode = false;
@@ -168,33 +242,56 @@ namespace BackupRetention
         {
             String columns = "";
             String values = "";
+            SQLiteConnection cnn=null;
+            SQLiteCommand mycommand=null;
+            SQLiteCommand mycommand2=null;
             //Boolean returnCode = true;
             int lastId = 0;
-            foreach (KeyValuePair<String, String> val in data)
-            {
-                columns += String.Format(" {0},", val.Key.ToString());
-                values += String.Format(" '{0}',", val.Value);
-            }
-            columns = columns.Substring(0, columns.Length - 1);
-            values = values.Substring(0, values.Length - 1);
+            
             try
             {
+                foreach (KeyValuePair<String, String> val in data)
+                {
+                    columns += String.Format(" {0},", val.Key.ToString());
+                    values += String.Format(" '{0}',", val.Value);
+                }
+                columns = columns.Substring(0, columns.Length - 1);
+                values = values.Substring(0, values.Length - 1);
                 string strSQL = String.Format("insert into {0}({1}) values({2});", tableName, columns, values);
                 string strSQLLastID = @"select last_insert_rowid()";
-                SQLiteConnection cnn = new SQLiteConnection(dbConnection);
+                cnn = new SQLiteConnection(dbConnection);
                 cnn.Open();
-                SQLiteCommand mycommand = new SQLiteCommand(cnn);
-                SQLiteCommand mycommand2 = new SQLiteCommand(cnn);
+                mycommand = new SQLiteCommand(cnn);
+                mycommand2 = new SQLiteCommand(cnn);
                 mycommand.CommandText = strSQL;
                 mycommand2.CommandText = strSQLLastID;
                 int rowsUpdated = mycommand.ExecuteNonQuery();
                 int.TryParse(mycommand2.ExecuteScalar().ToString(), out lastId);
-                cnn.Close();
+                
             }
-            catch (Exception fail)
+            catch (Exception ex)
             {
                 //MessageBox.Show(fail.Message);
                 lastId = 0;
+            }
+            finally
+            {
+                if (cnn != null)
+                {
+                    cnn.Close();
+                    cnn.Dispose();
+                    cnn = null;
+                }
+                if (mycommand != null)
+                {
+                    mycommand.Dispose();
+                    mycommand = null;
+                }
+                if (mycommand2 != null)
+                {
+                    mycommand2.Dispose();
+                    mycommand2 = null;
+                }
             }
             return lastId;
         }

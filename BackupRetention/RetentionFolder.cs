@@ -574,7 +574,8 @@ namespace BackupRetention
                                     else
                                     {
                                         FilesDeleted.Add(file1);
-                                        File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        file1.IsReadOnly = false;
                                         File.Delete(file1.FullName);
                                         _evt.WriteEntry("Retention: GFS Monthly File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6770, 60);
                                     }
@@ -591,7 +592,8 @@ namespace BackupRetention
                                     else
                                     {
                                         FilesDeleted.Add(file1);
-                                        File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        file1.IsReadOnly = false;
                                         File.Delete(file1.FullName);
                                         
                                         _evt.WriteEntry("Retention: GFS Weekly File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6670, 60);
@@ -607,7 +609,8 @@ namespace BackupRetention
                                     else
                                     {
                                         FilesDeleted.Add(file1);
-                                        File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                        file1.IsReadOnly = false;
                                         File.Delete(file1.FullName);
                                         _evt.WriteEntry("Retention: GFS Daily File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6570, 60);
                                     }
@@ -721,7 +724,8 @@ namespace BackupRetention
                             if ((timespan.Days * 24 + timespan.Hours) > (DailyMaxDaysOld * 24))
                             {
                                 FilesDeleted.Add(file1);
-                                File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                file1.IsReadOnly = false;
                                 File.Delete(file1.FullName);
                                 _evt.WriteEntry("Retention: Daily File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6570, 60);
                                 
@@ -811,7 +815,8 @@ namespace BackupRetention
                             if ((timespan.Days * 24 + timespan.Hours) > (WeeklyMaxDaysOld * 24) || FileDate.DayOfWeek != DayOfWeekToKeep)
                             {
                                 FilesDeleted.Add(file1);
-                                File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                file1.IsReadOnly = false;
                                 File.Delete(file1.FullName);
                                 _evt.WriteEntry("Retention: Weekly File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6670, 60);
                                 
