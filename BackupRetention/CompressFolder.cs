@@ -442,21 +442,17 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Verifies 7zip Archive after compression and implements some settings
+        /// Implements Archive Verify Settings
         /// </summary>
         /// <param name="extractor"></param>
         /// <param name="str7File"></param>
         /// <param name="strSourcePath"></param>
         /// <returns></returns>
-        private bool verifyArchive(ref SevenZip.SevenZipExtractor extractor, string str7File,string strSourcePath)
+        private void verifyArchive(bool blArchiveOk, string str7File,string strSourcePath)
         {
-            bool blArchiveOk = false;
+            
             FileInfo srcFile=null;
             DirectoryInfo srcDir = null;
-            //7Zip file ok?
-            blArchiveOk = extractor.Check();
-            
-
             
             //Test 7zip archive
             if (blArchiveOk)
@@ -472,7 +468,11 @@ namespace BackupRetention
                         if (SourceFolder.ToLower() != DestinationFolder.ToLower())
                         {
                             string strDestination = Common.WindowsPathCombine(DestinationFolder, str7File, SourceFolder);
-                            File.Move(str7File, strDestination);
+                            if (!File.Exists(strDestination))
+                            {
+                                File.Move(str7File, strDestination);
+                            }
+                            
                         }
                     }
                     FilesCompressed.Add(srcFile);
@@ -503,8 +503,10 @@ namespace BackupRetention
                         if (SourceFolder.ToLower() != DestinationFolder.ToLower())
                         {
                             string strDestination = Common.WindowsPathCombine(DestinationFolder, str7File, SourceFolder);
-
-                            File.Move(str7File, strDestination);
+                            if (!File.Exists(strDestination))
+                            {
+                                File.Move(str7File, strDestination);
+                            }
                         }
                     }
 
@@ -531,7 +533,6 @@ namespace BackupRetention
                 _evt.WriteEntry("Compress: 7zip Archive Corrupted and deleted: " + zFile.FullName, System.Diagnostics.EventLogEntryType.Error, 5160, 50);
             }
 
-            return blArchiveOk;
         }
 
 
@@ -583,12 +584,17 @@ namespace BackupRetention
 
             try
             {
-
+                if (SourceFolder != DestinationFolder)
+                {
+                    Common.CreateDestinationFolders(SourceFolder, DestinationFolder);
+                }
 
                 //Loop through every file
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
                     string str7File = Common.WindowsPathClean(file1.FullName + ".7z");
+                    string strDestination = Common.WindowsPathCombine(DestinationFolder, str7File, SourceFolder);
+                            
                     bool blArchiveOk = false;
                    
 
@@ -618,16 +624,16 @@ namespace BackupRetention
                     try
                     {
 
-                        if (File.Exists(str7File))
+                        if (File.Exists(strDestination))
                         {
-                            extestreader = new FileStream(str7File, FileMode.Open);
+                            extestreader = new FileStream(strDestination, FileMode.Open);
                             extractor = new SevenZipExtractor(extestreader);
 
                             //If archive is not corrupted and KeepUncompressed is false then it is ok to delete the original
                             if (extractor.Check() && KeepOriginalFile == false)
                             {
 
-                                FileInfo file2 = new FileInfo(str7File);
+                                FileInfo file2 = new FileInfo(strDestination);
                                 //Same File compressed then ok to delete
                                 if (file1.LastWriteTime == file2.LastWriteTime && file1.Length == extractor.UnpackedSize && extractor.FilesCount == 1)
                                 {
@@ -731,12 +737,13 @@ namespace BackupRetention
                             extractor = new SevenZipExtractor(exreader);
 
                         }
-
+                        
                         //7Zip file ok?
-                        blArchiveOk = verifyArchive(ref extractor, str7File, file1.FullName);
+                        blArchiveOk = extractor.Check();
                         exreader.Close();
                         exreader.Dispose();
                         exreader = null;
+                        verifyArchive(blArchiveOk, str7File, file1.FullName);
 
                     }
                     catch (Exception ex)
@@ -815,7 +822,7 @@ namespace BackupRetention
             Stream extestreader = null;
 
             string[] strfilearr = new string[1];
-
+            
             try
             {
                 string[] Directories = Directory.GetDirectories(SourceFolder);
@@ -827,6 +834,8 @@ namespace BackupRetention
                     
                     DirectoryInfo DirInfo1 = new DirectoryInfo(strDir);
                     string str7Dir = Common.WindowsPathClean(DirInfo1.FullName + ".7z");
+                    string strDestination = Common.WindowsPathCombine(DestinationFolder, str7Dir, SourceFolder);
+                    
                     if (blShuttingDown)
                     {
                         _evt.WriteEntry("Compress: Shutting Down, about to Compress: " + strDir, System.Diagnostics.EventLogEntryType.Information, 5130, 50);
@@ -841,10 +850,10 @@ namespace BackupRetention
                     //Check for Original Folder
                     try
                     {
-                        if (File.Exists(str7Dir))
+                        if (File.Exists(strDestination))
                         {
-                            FileInfo file7 = new FileInfo(str7Dir);
-                            extestreader = new FileStream(str7Dir, FileMode.Open);
+                            FileInfo file7 = new FileInfo(strDestination);
+                            extestreader = new FileStream(strDestination, FileMode.Open);
                             extractor = new SevenZipExtractor(extestreader);
 
                             //If archive is not corrupted and KeepUncompressed is false then it is ok to delete the original
@@ -949,7 +958,12 @@ namespace BackupRetention
                         }
 
                         //7Zip file ok?
-                        blArchiveOk = verifyArchive(ref extractor, str7Dir, DirInfo1.FullName);
+                        blArchiveOk = extractor.Check();
+                        //close the archive so it can be deleted later
+                        exreader.Close();
+                        exreader.Dispose();
+                        exreader = null;
+                        verifyArchive(blArchiveOk, str7Dir, DirInfo1.FullName);
 
 
                     }
@@ -1110,11 +1124,7 @@ namespace BackupRetention
                                     strDestination = DestinationFolder;
                                     strDestination = Common.WindowsPathCombine(strDestination, file1.DirectoryName, SourceFolder);
 
-                                    if (SourceOption == CompressSourceOptions.File)
-                                    {
-                                        strDestination = Common.WindowsPathCombine(strDestination, file1.DirectoryName, SourceFolder);
-                                    }
-                                    else
+                                    if (SourceOption == CompressSourceOptions.Folder)
                                     {
                                         strDestination = Common.WindowsPathCombine(strDestination, Common.WindowsPathClean(Common.Strip7zExtension(file1.FullName)), SourceFolder);
                                         if (!Directory.Exists(strDestination))

@@ -1229,6 +1229,19 @@ namespace BackupRetention
         }
 
         /// <summary>
+        /// Creates copy of folders from sourcePath to destinationPath
+        /// </summary>
+        /// <param name="strSourcePath"></param>
+        /// <param name="strDestinationPath"></param>
+        public static void CreateDestinationFolders(string strSourcePath, string strDestinationPath)
+        {
+            System.Collections.Generic.List<RemoteFile> Directories;
+            Directories = Common.GetAllDirectoriesR(strSourcePath);
+            Common.CreateLocalFolderStructure(Directories, strDestinationPath);
+
+        }
+
+        /// <summary>
         /// Duplicates folder structure needed for each RemoteFile
         /// </summary>
         /// <param name="Files"></param>

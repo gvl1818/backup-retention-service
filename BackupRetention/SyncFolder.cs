@@ -655,13 +655,7 @@ namespace BackupRetention
 
 
 
-        public void CreateDestinationFolders(string strSourcePath, string strDestinationPath)
-        {
-            System.Collections.Generic.List<RemoteFile> Directories;
-            Directories = Common.GetAllDirectoriesR(strSourcePath);
-            Common.CreateLocalFolderStructure(Directories, strDestinationPath);
-
-        }
+        
 
 
         public FileInfo GetRenamedFile(FileInfo file1, System.Collections.Generic.List<FileInfo> files)
@@ -856,12 +850,12 @@ namespace BackupRetention
                         strSourceFolder = Common.WindowsPathClean(SourceFolder);
                         strDestinationFolder = Common.WindowsPathClean(DestinationFolder);
                     }
-                    CreateDestinationFolders(strSourceFolder, strDestinationFolder);
+                    Common.CreateDestinationFolders(strSourceFolder, strDestinationFolder);
                     if (ArchiveFolder.Length > 0 && ArchiveDeleted)
                     {
                         if (Directory.Exists(ArchiveFolder))
                         {
-                            CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
+                            Common.CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
                         }
                     }
                     _evt.WriteEntry("Sync: Mirroring Crawling SourceFolder: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
