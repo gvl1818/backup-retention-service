@@ -1159,7 +1159,7 @@ namespace BackupRetention
                         }
                         break;
                     case TransferDirectionOptions.Download:
-                        BackupFolder = BackupFolder.Replace("\\\\", "\\");
+                        
                         List<RemoteFile> RemoteFilesD=null;
 
                         try

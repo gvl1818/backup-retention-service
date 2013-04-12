@@ -677,19 +677,7 @@ namespace BackupRetention
                 {
                     try
                     {
-                        using (FileStream fs = new FileStream(srcFile.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            fs.ReadByte();
-                            fs.Close();
-                        }
-
-                        using (FileStream dfs = new FileStream(file1.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            dfs.ReadByte();
-                            dfs.Close();
-                        }
-                        srcFile.Refresh();
-                        file1.Refresh();
+                        
                         string strDestinationCheck = Common.WindowsPathClean(srcFile.FullName.Replace(SourceFolder, DestinationFolder));
                         if (file1.Length == srcFile.Length && !File.Exists(strDestinationCheck))
                         {
@@ -830,7 +818,11 @@ namespace BackupRetention
 
         }
 
-
+        /// <summary>
+        /// Custom Mirror Method if blDelete if false then Mirrors without deletion of files
+        /// </summary>
+        /// <param name="blShuttingDown"></param>
+        /// <param name="blDelete"></param>
         public void ExecuteMirror(ref bool blShuttingDown, bool blDelete)
         {
             
@@ -872,17 +864,24 @@ namespace BackupRetention
                             CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
                         }
                     }
-
+                    _evt.WriteEntry("Sync: Mirroring Crawling SourceFolder: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
                     SourceFiles = Common.WalkDirectory(strSourceFolder, ref blShuttingDown);
+                    _evt.WriteEntry("Sync: Mirroring Finished Crawling SourceFolder: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                    _evt.WriteEntry("Sync: Mirroring Crawling DestinationFolder: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                     DestinationFiles = Common.WalkDirectory(strDestinationFolder, ref blShuttingDown);
-
+                    _evt.WriteEntry("Sync: Mirroring Finished Crawling DestinationFolder: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                    
 
                     //This will be used to compare files from the source and destination
                     long lSourceFilesID=Save("MirrorSourceFiles");
                     long lDestinationFilesID = Save("MirrorDestinationFiles");
+                    _evt.WriteEntry("Sync: Mirroring Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
                     Common.SaveFileInfoList(lSourceFilesID,SourceFiles);
+                    _evt.WriteEntry("Sync: Mirroring Finished Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
+                    _evt.WriteEntry("Sync: Mirroring Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                     Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles);
-
+                    _evt.WriteEntry("Sync: Mirroring Finished Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                   
                     FilesDelOrRenamed=GetMirrorRenamedOrDeleted(lSourceFilesID, strSourceFolder,lDestinationFilesID, strDestinationFolder);
 
 
@@ -917,6 +916,9 @@ namespace BackupRetention
                                     }
                                     else
                                     {
+
+                                        //destinationFile without .7z exists and does not in the source and destinationFile does not in the source
+                                        //if true then delete the file
                                         if (File.Exists(Common.Strip7zExtension(destinationFile.FullName)) && !File.Exists(Common.Strip7zExtension(strSource)) )
                                         {
                                             if (ArchiveDeleted && Directory.Exists(ArchiveFolder) && blDelete)
@@ -966,7 +968,7 @@ namespace BackupRetention
                         }
                         catch (Exception ex)
                         {
-                            _evt.WriteEntry("Sync: Mirroring File Failed to Delete: " + destinationFile.FullName + " " + ex.Message, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                            _evt.WriteEntry("Sync: Mirroring File Failed to Delete: " + destinationFile.FullName + " " + ex.Message, System.Diagnostics.EventLogEntryType.Warning, 4070, 45);
                         }
                     }
 

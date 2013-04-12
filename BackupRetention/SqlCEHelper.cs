@@ -8,17 +8,26 @@ using System.Data.SqlServerCe;
 
 namespace BackupRetention
 {
+    /// <summary>
+    /// System.Data.SqlServerCe Helper Class
+    /// </summary>
     public class SqlCEHelper
     {
         private SqlCeConnection LocalConnection = null;
-        //private string DataSource = @"Data Source=[path to your .sdf file]";
 
+        /// <summary>
+        /// Contructor expects: @"Data Source=pathtofile.sdf";
+        /// </summary>
+        /// <param name="strConnectionString"></param>
         public SqlCEHelper(string strConnectionString)
         {
-          // create new database connection
+            // create new database connection
             LocalConnection = new SqlCeConnection(strConnectionString);
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~SqlCEHelper()
         {
             if (LocalConnection != null)
@@ -31,6 +40,9 @@ namespace BackupRetention
             }
         }
 
+        /// <summary>
+        /// Opens SqlCeConnection
+        /// </summary>
         private void OpenConnection()
         {
             if (LocalConnection != null)
@@ -42,7 +54,9 @@ namespace BackupRetention
                 throw new NullReferenceException("The connection string is null!");
             }
         }
- 
+        /// <summary>
+        /// Closes SqlCeConnection
+        /// </summary>
         private void CloseConnection()
         {
             if (LocalConnection != null)
@@ -53,6 +67,11 @@ namespace BackupRetention
         }
  
         #region ExecuteDataReader
+        /// <summary>
+        /// ExecuteDataReader
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public SqlCeDataReader ExecuteDataReader(string query)
         {
           SqlCeDataReader localReader = null;
@@ -82,6 +101,12 @@ namespace BackupRetention
           return (localReader);
         }
 
+        /// <summary>
+        /// ExecuteDataReader
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public SqlCeDataReader ExecuteDataReader(string query, List<SqlCeParameter> parameters)
         {
           SqlCeDataReader localReader = null;
@@ -119,6 +144,11 @@ namespace BackupRetention
         #endregion
  
         #region DataSet
+        /// <summary>
+        /// ExecuteDataSet
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public DataSet ExecuteDataSet(string query)
         {
           DataSet localDataSet = null;
@@ -153,6 +183,12 @@ namespace BackupRetention
           return (localDataSet);
         }
 
+        /// <summary>
+        /// ExecuteDataSet
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public DataSet ExecuteDataSet(string query, List<SqlCeParameter> parameters)
         {
           DataSet localDataSet = null;
@@ -195,6 +231,11 @@ namespace BackupRetention
         #endregion
  
         #region ExecuteScalar
+        /// <summary>
+        /// ExecuteScalar
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public object ExecuteScalar(string query)
         {
           object localScalarObject = string.Empty;
@@ -225,6 +266,12 @@ namespace BackupRetention
           return localScalarObject;
         }
 
+        /// <summary>
+        /// ExecuteScalar
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public object ExecuteScalar(string query, List<SqlCeParameter> parameters)
         {
           object localScalarObject = string.Empty;
@@ -263,6 +310,11 @@ namespace BackupRetention
         #endregion
  
         #region ExecuteNonQuery
+        /// <summary>
+        /// Executes non query sql statement
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public int ExecuteNonQuery(string query)
         {
           int rowsAffected = 0;
@@ -294,6 +346,12 @@ namespace BackupRetention
           return (rowsAffected);
         }
 
+        /// <summary>
+        /// Executes non query sql statement with parameters
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public int ExecuteNonQuery(string query, List<SqlCeParameter> parameters)
         {
           int rowsAffected = 0;
@@ -330,7 +388,13 @@ namespace BackupRetention
         }
         #endregion
 
-
+        /// <summary>
+        /// Inserts record into SQL Server Compact Table
+        /// example sql: "INSERT INTO RFile (Name,FullName) VALUES (@Name,@FullName)"
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public long Insert(string query, List<SqlCeParameter> parameters)
         {
             long lastID = 0;
@@ -353,9 +417,8 @@ namespace BackupRetention
                         localCommand.Parameters.Add(localParam);
                 }
                 rowsAffected = localCommand.ExecuteNonQuery();
-
+                //Get @@IDENTITY value;
                 object o = localCommand2.ExecuteScalar();
-
                 long.TryParse(o.ToString(), out lastID);
 
             }
@@ -376,4 +439,45 @@ namespace BackupRetention
             return lastID;
         }
     }
+
+    /* Example Usage
+     using System.Data;
+     using System.Data.SqlServerCe;
+     
+     public long Save()
+        {
+            long lastid = 0;
+            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+
+            List<SqlCeParameter> list = new List<SqlCeParameter>();
+
+            SqlCeParameter sp;
+
+            sp = new SqlCeParameter("@Name", SqlDbType.NVarChar,3000);
+            sp.Value =Common.FixNullstring(Name);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
+            sp.Value =Common.FixNullstring(FullName);
+            list.Add(sp);
+
+            sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+            sp.Value =Length;
+            list.Add(sp);
+
+            try
+            {
+                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength) VALUES (@Name,@FullName,@FileLength)", list);
+            }
+            catch (Exception ex)
+            {
+                lastid = 0;
+
+                throw ex;
+               
+            }
+            return lastid;
+
+        }
+     */
 }

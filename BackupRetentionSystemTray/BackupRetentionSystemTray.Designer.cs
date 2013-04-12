@@ -201,7 +201,7 @@
             this.tabRetention.Padding = new System.Windows.Forms.Padding(3);
             this.tabRetention.Size = new System.Drawing.Size(606, 403);
             this.tabRetention.TabIndex = 0;
-            this.tabRetention.Text = "Retention Config";
+            this.tabRetention.Text = "Retention";
             this.tabRetention.UseVisualStyleBackColor = true;
             // 
             // dgvRetention
@@ -432,7 +432,7 @@
             this.tabCompress.Padding = new System.Windows.Forms.Padding(3);
             this.tabCompress.Size = new System.Drawing.Size(606, 403);
             this.tabCompress.TabIndex = 1;
-            this.tabCompress.Text = "Compress Config";
+            this.tabCompress.Text = "Compression";
             this.tabCompress.UseVisualStyleBackColor = true;
             // 
             // dgvCompress
@@ -661,7 +661,7 @@
             this.tabSync.Padding = new System.Windows.Forms.Padding(3);
             this.tabSync.Size = new System.Drawing.Size(606, 403);
             this.tabSync.TabIndex = 2;
-            this.tabSync.Text = "Synchronization Config";
+            this.tabSync.Text = "Synchronization";
             this.tabSync.UseVisualStyleBackColor = true;
             // 
             // dgvSync
@@ -704,7 +704,7 @@
             this.tabRemote.Padding = new System.Windows.Forms.Padding(3);
             this.tabRemote.Size = new System.Drawing.Size(606, 403);
             this.tabRemote.TabIndex = 3;
-            this.tabRemote.Text = "Remote Sync Config";
+            this.tabRemote.Text = "Remote Sync";
             this.tabRemote.UseVisualStyleBackColor = true;
             // 
             // dgvRemote
@@ -970,7 +970,7 @@
             this.tabEvents.Padding = new System.Windows.Forms.Padding(3);
             this.tabEvents.Size = new System.Drawing.Size(606, 403);
             this.tabEvents.TabIndex = 4;
-            this.tabEvents.Text = "Events";
+            this.tabEvents.Text = "Log";
             this.tabEvents.UseVisualStyleBackColor = true;
             // 
             // lblSearch
@@ -1049,7 +1049,7 @@
             this.btnClearLogs.Name = "btnClearLogs";
             this.btnClearLogs.Size = new System.Drawing.Size(79, 27);
             this.btnClearLogs.TabIndex = 36;
-            this.btnClearLogs.Text = "Clear Logs";
+            this.btnClearLogs.Text = "Clear Log";
             this.btnClearLogs.UseVisualStyleBackColor = true;
             this.btnClearLogs.Click += new System.EventHandler(this.btnClearLogs_Click);
             // 

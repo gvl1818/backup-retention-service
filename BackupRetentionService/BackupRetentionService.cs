@@ -573,8 +573,6 @@ namespace BackupRetention
                         {
                             if (DayToExecute(SFolder) || DayOfMonthToExecute(SFolder) || NthDayOfMonth(SFolder))
                             {
-                                //string strDriveLetter = "";
-                                //strDriveLetter = SFolder.DestinationFolder.Substring(0, 1);
                                 if (Common.DriveSpaceUsed(SFolder.DestinationFolder) < MaxDriveSpaceUsedPercent)
                                 {
                                     SFolder.ExecuteSyncFolder(ref blShuttingDown);
@@ -607,8 +605,6 @@ namespace BackupRetention
                         {
                             if (DayToExecute(RemFolder) || DayOfMonthToExecute(RemFolder) || NthDayOfMonth(RemFolder))
                             {
-                                //string strDriveLetter = "";
-                                //strDriveLetter = RemFolder.BackupFolder.Substring(0, 1);
                                 if ((Common.DriveSpaceUsed(RemFolder.BackupFolder) < MaxDriveSpaceUsedPercent) || (RemFolder.TransferDirection == TransferDirectionOptions.Upload))
                                 {
                                     RemFolder.ExecuteTransfer(ref blShuttingDown);

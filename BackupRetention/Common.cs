@@ -225,7 +225,7 @@ namespace BackupRetention
         /// <summary>
         /// Gets Drive Space Used Percent of Drive Letter passed
         /// </summary>
-        /// <param name="strDrive"></param>
+        /// <param name="strPath"></param>
         /// <returns></returns>
         public static double DriveSpaceUsed(string strPath)
         {
@@ -268,7 +268,7 @@ namespace BackupRetention
         /// <summary>
         /// Gets Drive Free Space of Drive letter passed
         /// </summary>
-        /// <param name="strDrive"></param>
+        /// <param name="strPath"></param>
         /// <returns></returns>
         public static double DriveFreeSpace(string strPath)
         {
@@ -377,8 +377,7 @@ namespace BackupRetention
 
 
         /// <summary>
-        /// Calculates Folder Size by adding up all file.Length
-        /// this works for UNC and Non UNC paths.
+        /// Gets Number of files in entire folder and sub folder
         /// </summary>
         /// <param name="folder"></param>
         /// <returns></returns>
@@ -466,6 +465,12 @@ namespace BackupRetention
             return date.DayOfWeek == dow && (d - 1) / 7 == (n - 1);
         }
 
+
+        /// <summary>
+        /// Removes ".7z" from a filename if it is on the end.
+        /// </summary>
+        /// <param name="FullName"></param>
+        /// <returns></returns>
         public static string Strip7zExtension(string FullName)
         {
             if (FullName.Length > 3)
@@ -623,6 +628,11 @@ namespace BackupRetention
             }
         }
 
+        /// <summary>
+        /// Cleans the path before checking if the directory exists
+        /// </summary>
+        /// <param name="strPath"></param>
+        /// <returns></returns>
         public static bool DirectoryExists(string strPath)
         {
             bool blSuccess = false;
@@ -992,7 +1002,11 @@ namespace BackupRetention
                                    
         }
 
-
+        /// <summary>
+        /// Saves FileInfo list to the SQL Server Compact Database
+        /// </summary>
+        /// <param name="lFolderActionID"></param>
+        /// <param name="flist"></param>
         public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist)
         {
             if (flist != null && lFolderActionID > 0)
@@ -1162,6 +1176,13 @@ namespace BackupRetention
         }
 
 
+        /// <summary>
+        /// Returns directory list from FTPS Client
+        /// </summary>
+        /// <param name="Path"></param>
+        /// <param name="ftps"></param>
+        /// <param name="ParentDirectory"></param>
+        /// <returns></returns>
         public static List<RemoteFile> GetRemoteDirectories(string Path, AlexPilotti.FTPS.Client.FTPSClient ftps, string ParentDirectory = "")
         {
             List<RemoteFile> Files = new List<RemoteFile>();
@@ -1207,7 +1228,11 @@ namespace BackupRetention
 
         }
 
-
+        /// <summary>
+        /// Duplicates folder structure needed for each RemoteFile
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <param name="dlpath"></param>
         public static void CreateLocalFolderStructure(List<RemoteFile> Files, string dlpath)
         {
             _evt = GetEventLog;
