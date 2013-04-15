@@ -686,16 +686,12 @@ namespace BackupRetention
             try
             {
                
-                
-                
-
-           
                 //Sync
                 if (!SyncThread.IsAlive)
                 {
                     if (!RemoteSyncThread.IsAlive)
                     {
-                        SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+                        SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000; Max Buffer Size = 1024"));
 
                         object o;
                         int intCount=0;

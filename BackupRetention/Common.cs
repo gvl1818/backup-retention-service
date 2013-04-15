@@ -1368,7 +1368,7 @@ namespace BackupRetention
         public long Save(long lFolderActionID)
         {
             long lastid = 0;
-            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
             List<SqlCeParameter> list = new List<SqlCeParameter>();
 

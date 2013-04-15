@@ -460,7 +460,7 @@ namespace BackupRetention
         {
             
             long lastid = 0;
-            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
 
            
@@ -709,7 +709,7 @@ namespace BackupRetention
             try
             {
 
-                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
                 strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@DestinationID AND replace(FullName,@strDestinationFolder,@strSourceFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@SourceID)";
                 //not sure how strings with slashes are stored in sqlite!
@@ -763,7 +763,7 @@ namespace BackupRetention
             try
             {
 
-                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf"));
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
                 //strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@SourceID AND replace(FullName,@strSourceFolder,@strDestinationFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@DestinationID)";
 
