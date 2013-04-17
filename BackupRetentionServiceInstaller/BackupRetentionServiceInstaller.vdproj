@@ -129,6 +129,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_853E0C24A5FC4B2D92D65FC830D4F8AD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
         "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
@@ -166,13 +172,13 @@
         "Entry"
         {
         "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -185,12 +191,6 @@
         {
         "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
         "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DA84F93B5BAF47D9BC81C3C7E00AD178"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -226,25 +226,19 @@
         "Entry"
         {
         "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -275,6 +269,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -658,7 +658,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5379844BFA40B330231809CB6363C476"
@@ -714,6 +714,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_853E0C24A5FC4B2D92D65FC830D4F8AD"
+            {
+            "SourcePath" = "8:..\\BackupRetentionService\\BackupRetention.sdf"
+            "TargetName" = "8:BackupRetention.sdf"
+            "Tag" = "8:"
+            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_946E992E3911708BA4D98766DEFFC4A8"
@@ -796,26 +816,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA84F93B5BAF47D9BC81C3C7E00AD178"
-            {
-            "SourcePath" = "8:..\\BackupRetentionService\\BackupRetention.sdf"
-            "TargetName" = "8:BackupRetention.sdf"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E63804C90B1641C4A11BD872312DF7C6"
@@ -977,7 +977,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Backup Retention Service"
         "ProductCode" = "8:{242340CB-B359-4EE0-AD96-EBF24077A98F}"
-        "PackageCode" = "8:{D84FFE53-5F9A-4648-B3EA-27B932F24469}"
+        "PackageCode" = "8:{79EEC9BF-66D8-4A79-B8B0-FBC87CC8521C}"
         "UpgradeCode" = "8:{13942A01-A7FC-4553-AC0C-A2A82F17C5F3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

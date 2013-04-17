@@ -606,8 +606,23 @@ namespace BackupRetention
             return strMD5;
         }
 
-        
 
+        public static string GetMD5HashFromString(string input)
+        {
+            // step 1, calculate MD5 hash from input
+            StringBuilder sb = new StringBuilder();
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            // step 2, convert byte array to hex string
+            
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("x2"));
+            }
+            return sb.ToString();
+        }
         
 
         /// <summary>
@@ -1007,14 +1022,15 @@ namespace BackupRetention
         /// </summary>
         /// <param name="lFolderActionID"></param>
         /// <param name="flist"></param>
-        public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist)
+        public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist, string strSource)
         {
             if (flist != null && lFolderActionID > 0)
             {
                 foreach (FileInfo file in flist)
                 {
-                    RemoteFile rfile = new RemoteFile(file);
-                    rfile.Save(lFolderActionID);
+                    RemoteFile rfile = new RemoteFile(file, strSource);
+                    rfile.FolderActionID = lFolderActionID;
+                    rfile.Save();
                 }
             }
         }
@@ -1359,75 +1375,120 @@ namespace BackupRetention
 
         public string MD5 { get; set; }
 
+        public long FolderActionID { get; set; }
+
         public string Comment { get; set; }
+
+        private string _shortFullName = "";
+        public string ShortFullName 
+        { 
+            get { return _shortFullName;} 
+            set 
+            { 
+                _shortFullName = value;
+                _shortFullNameMD5 = Common.GetMD5HashFromString(_shortFullName);
+            } 
+        }
+
+        private string _shortFullNameMD5 = "";
+        public string ShortFullNameMD5 { get { return _shortFullNameMD5;} }
+        
+        public string SourceFolderMD5 { get; set; }
+
 
         #endregion
 
         #region "Methods"
 
-        public long Save(long lFolderActionID)
+        public long Save()
         {
+
+            //left off here need! finally 
             long lastid = 0;
-            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+            SqlCEHelper db = null;
+            SqlCeParameter sp=null;
+            List<SqlCeParameter> list = null;
 
-            List<SqlCeParameter> list = new List<SqlCeParameter>();
-
-            SqlCeParameter sp;
-
-            sp = new SqlCeParameter("@Name", SqlDbType.NVarChar,3000);
-            sp.Value =Common.FixNullstring(Name);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
-            sp.Value =Common.FixNullstring(FullName);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-            sp.Value =Length;
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
-            sp.Value =Common.FixNullstring(ParentDirectory);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
-            sp.Value =IsDirectory;
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
-            sp.Value =LastWriteTime;
-            list.Add(sp);
-           
-            sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
-            sp.Value =LastWriteTimeUtc;
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
-            sp.Value =Common.FixNullstring(FileOperation);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
-            sp.Value = Common.FixNullstring(NewFullName);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 50);
-            sp.Value =Common.FixNullstring(MD5);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
-            sp.Value =lFolderActionID;
-            list.Add(sp);
-            
             try
             {
-                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID)", list);
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+                list = new List<SqlCeParameter>();
+
+                sp = new SqlCeParameter("@Name", SqlDbType.NVarChar, 260);
+                sp.Value = Common.FixNullstring(Name);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(FullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+                sp.Value = Length;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(ParentDirectory);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
+                sp.Value = IsDirectory;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
+                sp.Value = LastWriteTime;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
+                sp.Value = LastWriteTimeUtc;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
+                sp.Value = Common.FixNullstring(FileOperation);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(NewFullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.FixNullstring(MD5);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
+                sp.Value = FolderActionID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@ShortFullName", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(ShortFullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.FixNullstring(ShortFullNameMD5);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.FixNullstring(SourceFolderMD5);
+                list.Add(sp);
+                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID,@ShortFullName,@ShortFullNameMD5,@SourceFolderMD5)", list);
             }
             catch (Exception ex)
             {
                 lastid = 0;
 
                 throw ex;
-               
+
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+                if (list != null)
+                {
+                    list.Clear();
+                }
+                sp = null;
             }
             return lastid;
 
@@ -1465,6 +1526,19 @@ namespace BackupRetention
             this.LastWriteTimeUtc = file1.LastWriteTimeUtc;
         }
 
+        public RemoteFile(FileInfo file1, string strSource)
+        {
+            this.Name = file1.Name;
+            this.FullName = file1.FullName;
+            this.Length = file1.Length;
+            this.ParentDirectory = file1.Directory.FullName;
+            this.IsDirectory = false;
+            this.LastWriteTime = file1.LastWriteTime;
+            this.LastWriteTimeUtc = file1.LastWriteTimeUtc;
+            this.ShortFullName = file1.FullName.Replace(strSource, "");
+            this.SourceFolderMD5 = Common.GetMD5HashFromString(strSource);
+        }
+
 
 
         public RemoteFile(DataRow row)
@@ -1481,7 +1555,10 @@ namespace BackupRetention
             this.LastWriteTime = dtLastWriteTime;
             this.LastWriteTimeUtc = dtLastWriteTimeUTC;
             this.NewFullName = Common.FixNullstring(row["NewFileName"]);
-            this.MD5 = Common.FixNullstring(row["MD5"]);
+            this.FolderActionID = Common.FixNulllong(row["FolderActionID"]);
+            this._shortFullName = Common.FixNullstring(row["ShortFullName"]);
+            this._shortFullNameMD5 = Common.FixNullstring(row["ShortFullNameMD5"]);
+            this.SourceFolderMD5 = Common.FixNullstring(row["SourceFolderMD5"]);
         }
 
         public RemoteFile(FileInfo file1, FileOperations fileOp)

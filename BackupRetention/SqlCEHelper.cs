@@ -11,9 +11,11 @@ namespace BackupRetention
     /// <summary>
     /// System.Data.SqlServerCe Helper Class
     /// </summary>
-    public class SqlCEHelper
+    public class SqlCEHelper : IDisposable
     {
         private SqlCeConnection LocalConnection = null;
+
+        private bool disposed = false; // to detect redundant calls
 
         /// <summary>
         /// Contructor expects: @"Data Source=pathtofile.sdf";
@@ -25,19 +27,41 @@ namespace BackupRetention
             LocalConnection = new SqlCeConnection(strConnectionString);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                   
+                }
+                // Dispose unmanaged managed resources.
+                if (LocalConnection != null)
+                {
+                    if (LocalConnection.State == ConnectionState.Open)
+                    {
+                        LocalConnection.Close();
+                    }
+                    LocalConnection.Dispose();
+                }
+                disposed = true;
+                
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         /// <summary>
         /// Destructor
         /// </summary>
         ~SqlCEHelper()
         {
-            if (LocalConnection != null)
-            {
-                if (LocalConnection.State == ConnectionState.Open)
-                {
-                    LocalConnection.Close();
-                }
-                LocalConnection.Dispose();
-            }
+            Dispose(false);
         }
 
         /// <summary>
@@ -447,34 +471,45 @@ namespace BackupRetention
      public long Save()
         {
             long lastid = 0;
-            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
-
-            List<SqlCeParameter> list = new List<SqlCeParameter>();
-
-            SqlCeParameter sp;
-
-            sp = new SqlCeParameter("@Name", SqlDbType.NVarChar,3000);
-            sp.Value =Common.FixNullstring(Name);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
-            sp.Value =Common.FixNullstring(FullName);
-            list.Add(sp);
-
-            sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-            sp.Value =Length;
-            list.Add(sp);
-
+            SqlCEHelper db=null;
+            List<SqlCeParameter> list=null;
+            SqlCeParameter sp=null;
+     
             try
             {
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+
+                list = new List<SqlCeParameter>();
+
+                sp = new SqlCeParameter("@Name", SqlDbType.NVarChar,3000);
+                sp.Value =Common.FixNullstring(Name);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
+                sp.Value =Common.FixNullstring(FullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+                sp.Value =Length;
+                list.Add(sp);
+     
                 lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength) VALUES (@Name,@FullName,@FileLength)", list);
             }
             catch (Exception ex)
             {
                 lastid = 0;
-
                 throw ex;
-               
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+                if (list !=null)
+                {
+                    list.Clear(); 
+                }
             }
             return lastid;
 

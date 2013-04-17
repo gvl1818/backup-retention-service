@@ -691,20 +691,8 @@ namespace BackupRetention
                 {
                     if (!RemoteSyncThread.IsAlive)
                     {
-                        SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000; Max Buffer Size = 1024"));
-
-                        object o;
-                        int intCount=0;
-                        o = db.ExecuteScalar("SELECT COUNT(ID) FROM RFile");
-                        int.TryParse(o.ToString(), out intCount);
-                        if (intCount > 0)
-                        {
-
-                            db.ExecuteNonQuery("DELETE FROM FolderAction");
-                            db.ExecuteNonQuery("DELETE FROM RFile");
-                            db.ExecuteNonQuery("ALTER TABLE FolderAction ALTER COLUMN [ID] IDENTITY (1,1)");
-                            db.ExecuteNonQuery("ALTER TABLE RFile ALTER COLUMN [ID] IDENTITY (1,1)");
-                        }
+                        SyncFolder.CompactDatabase();
+                        
                     }
                     SyncThread = new Thread(new ThreadStart(Sync));
                     SyncThread.Start();

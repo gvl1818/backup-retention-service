@@ -445,65 +445,80 @@ namespace BackupRetention
         }
 
         /*
-         ,RunTime TEXT
-	,FolderAction TEXT
-	,Direction TEXT
-	,SourceFolder TEXT
-	,DestinationFolder TEXT
-	,Host TEXT
-	,Port INT
-	,Protocol TEXT
-	,Username TEXT
-	,Comment TEXT
+        ,RunTime TEXT
+	    ,FolderAction TEXT
+	    ,Direction TEXT
+	    ,SourceFolder TEXT
+	    ,DestinationFolder TEXT
+	    ,Host TEXT
+	    ,Port INT
+	    ,Protocol TEXT
+	    ,Username TEXT
+	    ,Comment TEXT
          */
         public long Save(string strComment)
         {
-            
+
+            SqlCEHelper db = null;
+            List<SqlCeParameter> list = null;
             long lastid = 0;
-            SqlCEHelper db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
-
-           
-            List<SqlCeParameter> list = new List<SqlCeParameter>();
-
-            
-            SqlCeParameter sp = new SqlCeParameter("@RunTime", SqlDbType.DateTime);
-            sp.Value = DateTime.Now;
-            list.Add(sp);
-
-            sp =new SqlCeParameter("@FolderAction", SqlDbType.NVarChar,100);
-            sp.Value =FileSyncReplicaOption.ToString();
-            list.Add(sp);
-
-            sp =new SqlCeParameter("@Direction", SqlDbType.NVarChar,100);
-            sp.Value =FolderSyncDirectionOrder.ToString();
-            list.Add(sp);
-
-            sp =new SqlCeParameter("@SourceFolder", SqlDbType.NVarChar, 3000);
-            sp.Value =Common.FixNullstring(SourceFolder);
-            list.Add(sp);
-
-            sp =new SqlCeParameter("@DestinationFolder", SqlDbType.NVarChar, 3000);
-            sp.Value =Common.FixNullstring(DestinationFolder);
-            list.Add(sp);
-
-            sp =new SqlCeParameter("@Comment", SqlDbType.NVarChar, 3000);
-            sp.Value =Common.FixNullstring(strComment);
-            list.Add(sp);
-            
             try
             {
-                lastid = db.Insert("INSERT INTO FolderAction (RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Comment) VALUES (@RunTime,@FolderAction,@Direction,@SourceFolder,@DestinationFolder,@Comment)", list);
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+                list = new List<SqlCeParameter>();
+
+                SqlCeParameter sp = new SqlCeParameter("@RunTime", SqlDbType.DateTime);
+                sp.Value = DateTime.Now;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FolderAction", SqlDbType.NVarChar, 100);
+                sp.Value = FileSyncReplicaOption.ToString();
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@Direction", SqlDbType.NVarChar, 100);
+                sp.Value = FolderSyncDirectionOrder.ToString();
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@SourceFolder", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(SourceFolder);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@DestinationFolder", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(DestinationFolder);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@Comment", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(strComment);
+                list.Add(sp);
+
+                try
+                {
+                    lastid = db.Insert("INSERT INTO FolderAction (RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Comment) VALUES (@RunTime,@FolderAction,@Direction,@SourceFolder,@DestinationFolder,@Comment)", list);
+                }
+                catch (Exception ex)
+                {
+                    lastid = 0;
+                    _evt.WriteEntry("Sync: " + ex.Message);
+                }
             }
             catch (Exception ex)
             {
-                lastid = 0;
-                _evt.WriteEntry("Sync: " + ex.Message);
+                _evt.WriteEntry("Sync Mirror: Save() Error: " + ex.Message);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+                if (list != null)
+                {
+                    list.Clear();
+                    list = null;
+                }
             }
             return lastid;
-
-        
-
         }
 
 
@@ -702,35 +717,27 @@ namespace BackupRetention
         public List<RemoteFile> GetMirrorRenamedOrDeleted(long lSourceID, string strSourceFolder,long lDestinationID, string strDestinationFolder)
         {
             string strSQL = "";
-            DataTable dtRenamedOrDeleted;
-            SqlCEHelper db;
+            DataTable dtRenamedOrDeleted=null;
+            SqlCEHelper db=null;
             List<RemoteFile> RFiles=new List<RemoteFile>();
-            DataSet ds;
+            DataSet ds=null;
             try
             {
 
                 db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
-                strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@DestinationID AND replace(FullName,@strDestinationFolder,@strSourceFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@SourceID)";
+                strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID, ShortFullName, ShortFullNameMD5, SourceFolderMD5 FROM RFile WHERE FolderActionID=@DestinationID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@SourceID)";
                 //not sure how strings with slashes are stored in sqlite!
                 List<SqlCeParameter> list = new List<SqlCeParameter>();
 
                 SqlCeParameter sp;
 
-                sp =new SqlCeParameter("@strDestinationFolder", SqlDbType.NVarChar, 3000);
-                sp.Value =strDestinationFolder;
+                sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                sp.Value = lSourceID;
                 list.Add(sp);
 
-                sp =new SqlCeParameter("@strSourceFolder", SqlDbType.NVarChar, 3000);
-                sp.Value =strSourceFolder;
-                list.Add(sp);
-
-                sp =new SqlCeParameter("@SourceID", SqlDbType.BigInt);
-                sp.Value =lSourceID;
-                list.Add(sp);
-
-                sp =new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
-                sp.Value =lDestinationID;
+                sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
+                sp.Value = lDestinationID;
                 list.Add(sp);
 
                 ds = db.ExecuteDataSet(strSQL, list);
@@ -748,18 +755,127 @@ namespace BackupRetention
                 RFiles = null;
                 _evt.WriteEntry("Sync Mirror: " + ex.Message);
             }
+            finally
+            {
+                if (dtRenamedOrDeleted != null)
+                {
+                    dtRenamedOrDeleted.Clear();
+                    dtRenamedOrDeleted.Dispose();
+                }
+                if (ds != null)
+                {
+                    ds.Clear();
+                    ds.Dispose();
+                }
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+            }
             return RFiles;
 
         }
 
 
-        public List<RemoteFile> GetMissingFiles(long SourceID,string strSourceFolder, long DestinationID, string strDestinationFolder)
+        public static void CompactDatabase()
+        {
+            DataSet ds=null;
+            SqlCEHelper db=null;
+            List<RemoteFile> RFiles=null;
+            _evt = Common.GetEventLog;
+            //Clear Database Old Records
+            try
+            {
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000; Max Buffer Size = 1024"));
+
+                RFiles = new List<RemoteFile>();
+                object o;
+                string strSQL = "";
+                int intCount = 0;
+                o = db.ExecuteScalar("SELECT COUNT(ID) FROM FolderAction");
+                int.TryParse(o.ToString(), out intCount);
+                if (intCount > 2)
+                {
+                    int intMaxID = 0;
+
+                    o = db.ExecuteScalar("SELECT MAX(ID) AS MaxID FROM FolderAction");
+                    int.TryParse(o.ToString(), out intMaxID);
+                    intMaxID--;  //Decrement so that most recent source and destination are kept.
+
+                    List<SqlCeParameter> listp = new List<SqlCeParameter>();
+
+                    SqlCeParameter sp = new SqlCeParameter("@MaxID", SqlDbType.BigInt);
+                    sp.Direction = ParameterDirection.Input;
+                    sp.Value = intMaxID;
+
+
+                    db.ExecuteNonQuery("DELETE FROM RFile WHERE FolderActionID < @MaxID", listp);
+                    db.ExecuteNonQuery("DELETE FROM FolderAction WHERE ID < @MaxID", listp);
+                    //Change RFile's FolderActionID to new ID about to be inserted
+                    db.ExecuteNonQuery("UPDATE RFile SET FolderActionID=((FolderActionID-1) % 2) + 1");
+                    
+                    //Reinsert FolderAction Rows with new ID's
+                    db.ExecuteNonQuery("SET IDENTITY_INSERT FolderAction ON");
+                    //Reinsert FolderAction Rows
+                    db.ExecuteNonQuery("INSERT INTO FolderAction (ID,RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Host,Port,Protocol,Username,Comment) SELECT ((ID - 1) % 2) + 1 AS ID,RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Host,Port,Protocol,Username,Comment FROM FolderAction");
+                    db.ExecuteNonQuery("SET IDENTITY_INSERT FolderAction OFF");
+                    //Delete the rows that were already inserted
+                    db.ExecuteNonQuery("DELETE FROM FolderAction WHERE ID >= @MaxID", listp);
+                    //Reseed FolderAction
+                    db.ExecuteNonQuery("ALTER TABLE FolderAction ALTER COLUMN [ID] IDENTITY (3,1)");
+
+                    //Save All Rows to DataSet
+                    strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5 FROM RFile";
+                    ds = db.ExecuteDataSet(strSQL);
+
+                    //Delete All Rows, Reseed, and Save all rows again.
+                    db.ExecuteNonQuery("DELETE FROM RFile");
+                    db.ExecuteNonQuery("ALTER TABLE RFile ALTER COLUMN [ID] IDENTITY (1,1)");
+                    foreach (DataRow row in ds.Tables["DATA"].Rows)
+                    {
+                        RemoteFile rfile = new RemoteFile(row);
+                        rfile.Save();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _evt.WriteEntry("Sync Mirror: Compact Database Error: " + ex.Message);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                    db = null;
+                }
+                if (ds != null)
+                {
+                    ds.Clear();
+                    ds.Dispose();
+                    ds = null;
+                }
+                if (RFiles != null)
+                {
+                    RFiles.Clear();
+                    RFiles = null;
+                }
+            }
+            
+            
+            
+
+        }
+
+
+        public List<RemoteFile> GetMissingFiles(long SourceID, long DestinationID)
         {
             string strSQL = "";
-            DataTable dtRenamedOrDeleted;
-            SqlCEHelper db;
+            DataTable dtRenamedOrDeleted=null;
+            SqlCEHelper db=null;
             List<RemoteFile> RFiles = new List<RemoteFile>();
-            DataSet ds;
+            DataSet ds = null;
+            List<SqlCeParameter> list = null;
             try
             {
 
@@ -768,22 +884,14 @@ namespace BackupRetention
                 //strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@SourceID AND replace(FullName,@strSourceFolder,@strDestinationFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@DestinationID)";
 
                 //Missing or Modified Files
-                strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@SourceID AND replace(FullName,@strSourceFolder,@strDestinationFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@DestinationID)";
-                strSQL += " UNION SELECT RFile.ID,RFile.Name,RFile.FullName,RFile.FileLength,RFile.FileParentDirectory,RFile.IsDirectory,RFile.LastWriteTime,RFile.LastWriteTimeUTC,RFile.NewFileName,RFile.MD5,RFile.FolderActionID FROM RFile INNER JOIN RFile AS R2 ON R2.FolderActionID=@DestinationID AND R2.Name = RFile.Name AND R2.FullName = replace(RFile.FullName,@strSourceFolder,@strDestinationFolder)  WHERE RFile.FolderActionID=@SourceID AND (RFile.LastWriteTime <> R2.LastWriteTime OR RFile.FileLength <> R2.FileLength OR (LEN(R2.MD5)>0 AND LEN(RFile.MD5)>0 AND RFile.MD5 <> R2.MD5))";
-               
+                strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5 FROM RFile WHERE FolderActionID=@SourceID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@DestinationID)";
+                strSQL += " UNION SELECT RFile.ID,RFile.Name,RFile.FullName,RFile.FileLength,RFile.FileParentDirectory,RFile.IsDirectory,RFile.LastWriteTime,RFile.LastWriteTimeUTC,RFile.NewFileName,RFile.MD5,RFile.FolderActionID,RFile.ShortFullName,RFile.ShortFullNameMD5,RFile.SourceFolderMD5 FROM RFile INNER JOIN RFile AS R2 ON R2.FolderActionID=@DestinationID AND R2.ShortFullNameMD5 = RFile.ShortFullNameMD5  WHERE RFile.FolderActionID=@SourceID AND (RFile.LastWriteTime <> R2.LastWriteTime OR RFile.FileLength <> R2.FileLength OR (LEN(R2.MD5)>0 AND LEN(RFile.MD5)>0 AND RFile.MD5 <> R2.MD5))";
+
 
                 //not sure how strings with slashes are stored in sqlite!
-                List<SqlCeParameter> list = new List<SqlCeParameter>();
+                list = new List<SqlCeParameter>();
 
                 SqlCeParameter sp;
-
-                sp = new SqlCeParameter("@strDestinationFolder", SqlDbType.NVarChar, 3000);
-                sp.Value = strDestinationFolder;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@strSourceFolder", SqlDbType.NVarChar, 3000);
-                sp.Value = strSourceFolder;
-                list.Add(sp);
 
                 sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
                 sp.Value = SourceID;
@@ -807,6 +915,29 @@ namespace BackupRetention
                 RFiles.Clear();
                 RFiles = null;
                 _evt.WriteEntry("Sync Mirror: " + ex.Message);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+
+                }
+                if (dtRenamedOrDeleted != null)
+                {
+                    dtRenamedOrDeleted.Clear();
+                    dtRenamedOrDeleted.Dispose();
+                }
+                if (ds != null)
+                {
+                    ds.Clear();
+                    ds.Dispose();
+                }
+                if (list != null)
+                {
+                    list.Clear();
+                    list = null;
+                }
             }
             return RFiles;
 
@@ -870,10 +1001,10 @@ namespace BackupRetention
                     long lSourceFilesID=Save("MirrorSourceFiles");
                     long lDestinationFilesID = Save("MirrorDestinationFiles");
                     _evt.WriteEntry("Sync: Mirroring Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
-                    Common.SaveFileInfoList(lSourceFilesID,SourceFiles);
+                    Common.SaveFileInfoList(lSourceFilesID, SourceFiles, SourceFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
                     _evt.WriteEntry("Sync: Mirroring Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles);
+                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, DestinationFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                    
                     FilesDelOrRenamed=GetMirrorRenamedOrDeleted(lSourceFilesID, strSourceFolder,lDestinationFilesID, strDestinationFolder);
@@ -1024,7 +1155,7 @@ namespace BackupRetention
                         }
                     }
 
-                    FilesMissing = GetMissingFiles(lSourceFilesID,  strSourceFolder,lDestinationFilesID, strDestinationFolder);
+                    FilesMissing = GetMissingFiles(lSourceFilesID, lDestinationFilesID);
 
 
                     //Copy Files that are in the SourceFolder that are not in the DestinationFolder or if file is different
