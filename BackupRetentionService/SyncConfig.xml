@@ -14,7 +14,7 @@
     <DayOfMonth>0</DayOfMonth>
     <SourceFolder>c:\\BackupTest2</SourceFolder>
     <DestinationFolder>c:\\BackupTest</DestinationFolder>
-    <FileSyncReplicaOption>OneWay</FileSyncReplicaOption>
+    <FileSyncReplicaOption>OneWayBackup</FileSyncReplicaOption>
     <FileSyncReset>false</FileSyncReset>
     <FolderSyncDirectionOrder>Upload</FolderSyncDirectionOrder>
     <DefaultConflictResolutionPolicy>SourceWins</DefaultConflictResolutionPolicy>

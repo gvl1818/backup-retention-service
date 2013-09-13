@@ -51,8 +51,6 @@
     <Reference Include="AlexPilotti.FTPS.Client">
       <HintPath>..\BackupRetentionService\AlexPilotti.FTPS.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Synchronization.Files, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Org.Mentalis.Security">
       <HintPath>..\BackupRetentionService\Org.Mentalis.Security.dll</HintPath>
     </Reference>

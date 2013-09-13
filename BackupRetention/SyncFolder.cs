@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
-using Microsoft.Synchronization;
-using Microsoft.Synchronization.Files;
+//using Microsoft.Synchronization;
+//using Microsoft.Synchronization.Files;
 using System.IO;
 using System.Data;
 using System.Diagnostics;
@@ -22,6 +22,7 @@ namespace BackupRetention
 
         public System.Collections.Generic.List<System.IO.FileInfo> AllFiles;
         private System.Object lockMirror = new System.Object();
+        private System.Object lockMirrorDelete = new System.Object();
         /// <summary>
         /// Event Log Class
         /// </summary>
@@ -208,7 +209,7 @@ namespace BackupRetention
             }
         }
 
-        public FileSyncReplicaOptions _fileSyncReplicaOption = FileSyncReplicaOptions.OneWay;
+        public FileSyncReplicaOptions _fileSyncReplicaOption = FileSyncReplicaOptions.OneWayBackup;
         public FileSyncReplicaOptions FileSyncReplicaOption
         {
             get
@@ -238,6 +239,7 @@ namespace BackupRetention
         public SyncDirectionOrder _folderSyncDirectionOrder = SyncDirectionOrder.Upload;
         public SyncDirectionOrder FolderSyncDirectionOrder
         {
+           
             get
             {
                 return _folderSyncDirectionOrder;
@@ -345,7 +347,7 @@ namespace BackupRetention
             }
             catch (Exception)
             {
-                FileSyncReplicaOption = FileSyncReplicaOptions.OneWay;
+                FileSyncReplicaOption = FileSyncReplicaOptions.OneWayBackup;
             }
             FileSyncReset = Common.FixNullbool(row["FileSyncReset"]);
             try
@@ -435,7 +437,7 @@ namespace BackupRetention
             dtSyncConfig.Columns["Saturday"].DefaultValue = "true";
             dtSyncConfig.Columns["Sunday"].DefaultValue = "true";
             dtSyncConfig.Columns["DayOfMonth"].DefaultValue = "0";
-            dtSyncConfig.Columns["FileSyncReplicaOption"].DefaultValue = "OneWay";
+            dtSyncConfig.Columns["FileSyncReplicaOption"].DefaultValue = "OneWayBackup";
             dtSyncConfig.Columns["FileSyncReset"].DefaultValue = "false";
             dtSyncConfig.Columns["FolderSyncDirectionOrder"].DefaultValue = "Upload";
             dtSyncConfig.Columns["DefaultConflictResolutionPolicy"].DefaultValue = "SourceWins";
@@ -462,48 +464,79 @@ namespace BackupRetention
             SqlCEHelper db = null;
             List<SqlCeParameter> list = null;
             long lastid = 0;
-
+            object o=null;
+            SqlCeParameter sp;
             try
             {
                 db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
-                list = new List<SqlCeParameter>();
 
-                SqlCeParameter sp = new SqlCeParameter("@RunTime", SqlDbType.DateTime);
-                sp.Value = DateTime.Now;
+                list = new List<SqlCeParameter>();
+                
+                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(SourceFolder));
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@DestinationFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(DestinationFolder));
                 list.Add(sp);
 
                 sp = new SqlCeParameter("@FolderAction", SqlDbType.NVarChar, 100);
                 sp.Value = FileSyncReplicaOption.ToString();
                 list.Add(sp);
 
-                sp = new SqlCeParameter("@Direction", SqlDbType.NVarChar, 100);
-                sp.Value = FolderSyncDirectionOrder.ToString();
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@SourceFolder", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(SourceFolder);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@DestinationFolder", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(DestinationFolder);
-                list.Add(sp);
-
                 sp = new SqlCeParameter("@Comment", SqlDbType.NVarChar, 3000);
                 sp.Value = Common.FixNullstring(strComment);
                 list.Add(sp);
 
-                try
+                o = db.ExecuteScalar("SELECT ID FROM FolderAction WHERE SourceFolderMD5=@SourceFolderMD5 AND DestinationFolderMD5=@DestinationFolderMD5 AND FolderAction=@FolderAction AND Comment=@Comment",list);
+                
+                long.TryParse(Common.FixNullstring(o), out lastid);
+
+                list.Clear();
+                if (lastid == 0)
                 {
-                    lastid = db.Insert("INSERT INTO FolderAction (RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Comment) VALUES (@RunTime,@FolderAction,@Direction,@SourceFolder,@DestinationFolder,@Comment)", list);
-                }
-                catch (Exception ex)
-                {
-                    lastid = 0;
-                    _evt.WriteEntry("Sync: " + ex.Message);
+                    list = new List<SqlCeParameter>();
+
+                    sp = new SqlCeParameter("@RunTime", SqlDbType.DateTime);
+                    sp.Value = DateTime.Now;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FolderAction", SqlDbType.NVarChar, 100);
+                    sp.Value = FileSyncReplicaOption.ToString();
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@Direction", SqlDbType.NVarChar, 100);
+                    sp.Value = FolderSyncDirectionOrder.ToString();
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@SourceFolder", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(SourceFolder);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@DestinationFolder", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(DestinationFolder);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@Comment", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(strComment);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
+                    sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(SourceFolder));
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@DestinationFolderMD5", SqlDbType.NVarChar, 32);
+                    sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(DestinationFolder));
+                    list.Add(sp);
+
+                    
+                    lastid = db.Insert("INSERT INTO FolderAction (RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Comment, SourceFolderMD5, DestinationFolderMD5) VALUES (@RunTime,@FolderAction,@Direction,@SourceFolder,@DestinationFolder,@Comment,@SourceFolderMD5,@DestinationFolderMD5)", list);
+                    
                 }
             }
             catch (Exception ex)
             {
+                lastid = 0;
                 _evt.WriteEntry("Sync Mirror: Save() Error: " + ex.Message);
             }
             finally
@@ -521,12 +554,113 @@ namespace BackupRetention
             return lastid;
         }
 
-
+        /*
         //Microsoft Sync Methods
         //http://msdn.microsoft.com/en-us/sync/bb887623
         //http://www.microsoft.com/en-us/download/details.aspx?id=23217
 
 
+        public void MicrosoftFileSync(ref bool blShuttingDown)
+        {
+            // Set options for the synchronization session. In this case, options specify
+            // that the application will explicitly call FileSyncProvider.DetectChanges, and
+            // that items should be moved to the Recycle Bin instead of being permanently deleted.
+            FileSyncOptions options = FileSyncOptions.ExplicitDetectChanges |
+                     FileSyncOptions.RecycleDeletedFiles | FileSyncOptions.RecyclePreviousFileOnUpdates |
+                     FileSyncOptions.RecycleConflictLoserFiles;
+
+            // Create a filter that excludes all *.lnk files. The same filter should be used 
+            // by both providers.
+            FileSyncScopeFilter filter = new FileSyncScopeFilter();
+            filter.FileNameExcludes.Add("*.lnk");
+            filter.FileNameExcludes.Add("File.ID");
+            //filter.FileNameExcludes.Add("*.7z");
+
+            AllFiles.Clear();
+            AllFiles = Common.WalkDirectory(DestinationFolder, ref blShuttingDown);
+            //Exclude the compressed files on the destination without .7z extension on the source!!
+            foreach (System.IO.FileInfo file1 in AllFiles)
+            {
+                //Skip over already compressed files
+                if (file1.Extension.ToLower() == ".7z")
+                {
+                    //Compare LastModified of Source and Destination Files
+                    string strSFile = file1.FullName.Replace(DestinationFolder, SourceFolder);
+                    string strExclude = file1.Name.Substring(0, file1.Name.Length - 3);
+                    FileInfo SFile = null;
+
+                    strSFile = strSFile.Substring(0, strSFile.Length - 3);
+                    if (File.Exists(strSFile))
+                    {
+                        SFile = new FileInfo(strSFile);
+                    }
+
+                    if (SFile != null)
+                    {
+                        if (SFile.LastWriteTimeUtc == file1.LastWriteTimeUtc)
+                        {
+                            filter.FileNameExcludes.Add(strExclude);
+                        }
+                        else
+                        {
+                            if (SFile.Extension != file1.Extension)
+                            {
+                                //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                file1.IsReadOnly = false;
+                                File.Delete(file1.FullName);
+                                _evt.WriteEntry("Sync:  7z Compressed file in destination but source file modified Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 40);
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+            //Reset Synchronization so that files deleted in the destination are resynchronized
+            if (FileSyncReset)
+            {
+                if (File.Exists(SourceFolder + "\\filesync.metadata"))
+                {
+                    File.SetAttributes(SourceFolder + "\\filesync.metadata", FileAttributes.Normal);
+                    File.Delete(SourceFolder + "\\filesync.metadata");
+                }
+                if (File.Exists(SourceFolder + "\\File.ID"))
+                {
+                    File.SetAttributes(SourceFolder + "\\File.ID", FileAttributes.Normal);
+                    File.Delete(SourceFolder + "\\File.ID");
+                }
+                if (File.Exists(DestinationFolder + "\\filesync.metadata"))
+                {
+                    File.SetAttributes(DestinationFolder + "\\filesync.metadata", FileAttributes.Normal);
+                    File.Delete(DestinationFolder + "\\filesync.metadata");
+                }
+                if (File.Exists(DestinationFolder + "\\File.ID"))
+                {
+                    File.SetAttributes(DestinationFolder + "\\File.ID", FileAttributes.Normal);
+                    File.Delete(DestinationFolder + "\\File.ID");
+                }
+            }
+
+            // Explicitly detect changes on both replicas before syncyhronization occurs.
+            // This avoids two change detection passes for the bidirectional synchronization 
+            // that we will perform.
+            DetectChangesOnFileSystemReplica(
+                SourceFolder, filter, options);
+            DetectChangesOnFileSystemReplica(
+                DestinationFolder, filter, options);
+
+            // Synchronize the replicas in one directions. In the first session replica 1 is
+            // the source. The third parameter
+            // (the filter value) is null because the filter is specified in DetectChangesOnFileSystemReplica().
+            SyncFileSystemReplicasOneWay(SourceFolder, DestinationFolder, null, options, FolderSyncDirectionOrder, DefaultConflictResolutionPolicy);
+
+
+
+        }
+
+        */
 
         /// <summary>
         /// Synchronizes two folders with the specified options of this class
@@ -540,131 +674,38 @@ namespace BackupRetention
                 {
                     if (string.IsNullOrEmpty(SourceFolder) || string.IsNullOrEmpty(DestinationFolder) || !Directory.Exists(SourceFolder) || !Directory.Exists(DestinationFolder))
                     {
-                        _evt.WriteEntry("Sync: invalid source directory path 1 or invalid destination directory path 2",EventLogEntryType.Error);
+                        _evt.WriteEntry("Sync: invalid source directory path 1 or invalid destination directory path 2", EventLogEntryType.Error);
                         return;
                     }
 
-                    if (FileSyncReplicaOption == FileSyncReplicaOptions.OneWayMirror)
+                    switch (FileSyncReplicaOption)
                     {
-                        _evt.WriteEntry("Sync: Mirroring starting from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information,4120, 45);
-                        ExecuteMirror(ref blShuttingDown, true);
-                        _evt.WriteEntry("Sync: Mirroring ended from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information, 4130, 45);
-                    }
-                    else if (FileSyncReplicaOption == FileSyncReplicaOptions.OneWayBackup)
-                    {
-                        _evt.WriteEntry("Sync: OneWay Backup starting from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information,4120, 45);
-                        ExecuteMirror(ref blShuttingDown, false);
-                        _evt.WriteEntry("Sync: OneWay Backup ended from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information, 4130, 45);
-                    }
-                    else
-                    {
+                        case FileSyncReplicaOptions.OneWayMirror:
+                             _evt.WriteEntry("Sync: Mirroring starting from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information, 4120, 45);
+                            ExecuteMirror(ref blShuttingDown, true);
+                            _evt.WriteEntry("Sync: Mirroring ended from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information, 4130, 45);
+                            break;
+                        default: 
+                            //FileSyncReplicaOptions.OneWayBackup:
+                            _evt.WriteEntry("Sync: OneWay Backup starting from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information, 4120, 45);
+                            ExecuteMirror(ref blShuttingDown, false);
+                            _evt.WriteEntry("Sync: OneWay Backup ended from: " + SourceFolder + " to: " + DestinationFolder, EventLogEntryType.Information, 4130, 45);
+                            break;
+                        //default:
+                            //MicrosoftFileSync(ref blShuttingDown);
+                        //    break;
 
-                        // Set options for the synchronization session. In this case, options specify
-                        // that the application will explicitly call FileSyncProvider.DetectChanges, and
-                        // that items should be moved to the Recycle Bin instead of being permanently deleted.
-                        FileSyncOptions options = FileSyncOptions.ExplicitDetectChanges |
-                                 FileSyncOptions.RecycleDeletedFiles | FileSyncOptions.RecyclePreviousFileOnUpdates |
-                                 FileSyncOptions.RecycleConflictLoserFiles;
-
-                        // Create a filter that excludes all *.lnk files. The same filter should be used 
-                        // by both providers.
-                        FileSyncScopeFilter filter = new FileSyncScopeFilter();
-                        filter.FileNameExcludes.Add("*.lnk");
-                        filter.FileNameExcludes.Add("File.ID");
-                        //filter.FileNameExcludes.Add("*.7z");
-
-                        AllFiles.Clear();
-                        AllFiles = Common.WalkDirectory(DestinationFolder, ref blShuttingDown);
-                        //Exclude the compressed files on the destination without .7z extension on the source!!
-                        foreach (System.IO.FileInfo file1 in AllFiles)
-                        {
-                            //Skip over already compressed files
-                            if (file1.Extension.ToLower() == ".7z")
-                            {
-                                //Compare LastModified of Source and Destination Files
-                                string strSFile = file1.FullName.Replace(DestinationFolder,SourceFolder);
-                                string strExclude = file1.Name.Substring(0, file1.Name.Length - 3); 
-                                FileInfo SFile=null;
-                                
-                                strSFile = strSFile.Substring(0, strSFile.Length - 3);
-                                if (File.Exists(strSFile))
-                                {
-                                    SFile = new FileInfo(strSFile);
-                                }
-                                
-                                if (SFile != null)
-                                {
-                                    if (SFile.LastWriteTimeUtc == file1.LastWriteTimeUtc)
-                                    {
-                                        filter.FileNameExcludes.Add(strExclude);
-                                    }
-                                    else
-                                    {
-                                        if (SFile.Extension != file1.Extension)
-                                        {
-                                            //File.SetAttributes(file1.FullName, FileAttributes.Normal);
-                                            file1.IsReadOnly = false;
-                                            File.Delete(file1.FullName);
-                                            _evt.WriteEntry("Sync:  7z Compressed file in destination but source file modified Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 40);
-                            
-                                        }
-                                    }
-                                }   
-                            }
-                        }
-
-
-
-                        //Reset Synchronization so that files deleted in the destination are resynchronized
-                        if (FileSyncReset)
-                        {
-                            if (File.Exists(SourceFolder + "\\filesync.metadata"))
-                            {
-                                File.SetAttributes(SourceFolder + "\\filesync.metadata", FileAttributes.Normal);
-                                File.Delete(SourceFolder + "\\filesync.metadata");
-                            }
-                            if (File.Exists(SourceFolder + "\\File.ID"))
-                            {
-                                File.SetAttributes(SourceFolder + "\\File.ID", FileAttributes.Normal);
-                                File.Delete(SourceFolder + "\\File.ID");
-                            }
-                            if (File.Exists(DestinationFolder + "\\filesync.metadata"))
-                            {
-                                File.SetAttributes(DestinationFolder + "\\filesync.metadata", FileAttributes.Normal);
-                                File.Delete(DestinationFolder + "\\filesync.metadata");
-                            }
-                            if (File.Exists(DestinationFolder + "\\File.ID"))
-                            {
-                                File.SetAttributes(DestinationFolder + "\\File.ID", FileAttributes.Normal);
-                                File.Delete(DestinationFolder + "\\File.ID");
-                            }
-                        }
-
-                        // Explicitly detect changes on both replicas before syncyhronization occurs.
-                        // This avoids two change detection passes for the bidirectional synchronization 
-                        // that we will perform.
-                        DetectChangesOnFileSystemReplica(
-                            SourceFolder, filter, options);
-                        DetectChangesOnFileSystemReplica(
-                            DestinationFolder, filter, options);
-
-                        // Synchronize the replicas in one directions. In the first session replica 1 is
-                        // the source. The third parameter
-                        // (the filter value) is null because the filter is specified in DetectChangesOnFileSystemReplica().
-                        SyncFileSystemReplicasOneWay(SourceFolder, DestinationFolder, null, options, FolderSyncDirectionOrder, DefaultConflictResolutionPolicy);
-
-                        //If two way sync then reverse the source and destination
-                        if (FileSyncReplicaOption == FileSyncReplicaOptions.TwoWay)
-                        {
-                            SyncFileSystemReplicasOneWay(DestinationFolder, SourceFolder, null, options, FolderSyncDirectionOrder, DefaultConflictResolutionPolicy);
-
-                        }
                     }
                 }
             }
             catch (Exception e)
             {
                 _evt.WriteEntry("Sync: Exception from File Sync Provider:\n" + e.ToString());
+            }
+            finally
+            {
+                //Sync is finished clear all FileOperations in RFile table
+                ClearAllFileOperations();
             }
         }
 
@@ -673,7 +714,7 @@ namespace BackupRetention
         
 
 
-        public FileInfo GetRenamedFile(FileInfo file1, System.Collections.Generic.List<FileInfo> files)
+        public FileInfo GetRenamedFile(FileInfo file1, System.Collections.Generic.List<FileInfo> files,string strSourceFolder,string strDestinationFolder)
         {
             string strMD5 = "";
             string strPossibleMatchMD5 = "";
@@ -687,12 +728,11 @@ namespace BackupRetention
                     try
                     {
                         
-                        string strDestinationCheck = Common.WindowsPathClean(srcFile.FullName.Replace(SourceFolder, DestinationFolder));
-                        if (file1.Length == srcFile.Length && !File.Exists(strDestinationCheck))
-                        {
-
+                        string strDestinationCheck = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
+                        if (file1.Length == srcFile.Length && !File.Exists(strDestinationCheck) && File.Exists(file1.FullName))
+                        {  
                             strPossibleMatchMD5 = Common.GetMD5HashFromFile(srcFile.FullName);
-                            if (strMD5 == strPossibleMatchMD5)
+                            if (strMD5 == strPossibleMatchMD5 && !string.IsNullOrEmpty(strMD5))
                             {
                                 NewFile = srcFile;
                                 break;
@@ -727,7 +767,7 @@ namespace BackupRetention
                 db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
                 strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID, ShortFullName, ShortFullNameMD5, SourceFolderMD5 FROM RFile WHERE FolderActionID=@DestinationID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@SourceID)";
-                //not sure how strings with slashes are stored in sqlite!
+                
                 List<SqlCeParameter> list = new List<SqlCeParameter>();
 
                 SqlCeParameter sp;
@@ -782,61 +822,19 @@ namespace BackupRetention
             DataSet ds=null;
             SqlCEHelper db=null;
             List<RemoteFile> RFiles=null;
+            List<SqlCeParameter> listp = null;
             _evt = Common.GetEventLog;
             //Clear Database Old Records
             try
             {
-                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000; Max Buffer Size = 1024"));
-
-                RFiles = new List<RemoteFile>();
-                object o;
-                string strSQL = "";
-                int intCount = 0;
-                o = db.ExecuteScalar("SELECT COUNT(ID) FROM FolderAction");
-                int.TryParse(o.ToString(), out intCount);
-                if (intCount > 2)
-                {
-                    int intMaxID = 0;
-
-                    o = db.ExecuteScalar("SELECT MAX(ID) AS MaxID FROM FolderAction");
-                    int.TryParse(o.ToString(), out intMaxID);
-                    intMaxID--;  //Decrement so that most recent source and destination are kept.
-
-                    List<SqlCeParameter> listp = new List<SqlCeParameter>();
-
-                    SqlCeParameter sp = new SqlCeParameter("@MaxID", SqlDbType.BigInt);
-                    sp.Direction = ParameterDirection.Input;
-                    sp.Value = intMaxID;
-
-
-                    db.ExecuteNonQuery("DELETE FROM RFile WHERE FolderActionID < @MaxID", listp);
-                    db.ExecuteNonQuery("DELETE FROM FolderAction WHERE ID < @MaxID", listp);
-                    //Change RFile's FolderActionID to new ID about to be inserted
-                    db.ExecuteNonQuery("UPDATE RFile SET FolderActionID=((FolderActionID-1) % 2) + 1");
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+                db.ExecuteNonQuery("DELETE FROM RFile");
+                db.ExecuteNonQuery("DELETE FROM FolderAction");
+                db.ExecuteNonQuery("ALTER TABLE FolderAction ALTER COLUMN [ID] IDENTITY (1,1)");
+                db.ExecuteNonQuery("ALTER TABLE RFile ALTER COLUMN [ID] IDENTITY (1,1)");
                     
-                    //Reinsert FolderAction Rows with new ID's
-                    db.ExecuteNonQuery("SET IDENTITY_INSERT FolderAction ON");
-                    //Reinsert FolderAction Rows
-                    db.ExecuteNonQuery("INSERT INTO FolderAction (ID,RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Host,Port,Protocol,Username,Comment) SELECT ((ID - 1) % 2) + 1 AS ID,RunTime,FolderAction,Direction,SourceFolder,DestinationFolder,Host,Port,Protocol,Username,Comment FROM FolderAction");
-                    db.ExecuteNonQuery("SET IDENTITY_INSERT FolderAction OFF");
-                    //Delete the rows that were already inserted
-                    db.ExecuteNonQuery("DELETE FROM FolderAction WHERE ID >= @MaxID", listp);
-                    //Reseed FolderAction
-                    db.ExecuteNonQuery("ALTER TABLE FolderAction ALTER COLUMN [ID] IDENTITY (3,1)");
-
-                    //Save All Rows to DataSet
-                    strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5 FROM RFile";
-                    ds = db.ExecuteDataSet(strSQL);
-
-                    //Delete All Rows, Reseed, and Save all rows again.
-                    db.ExecuteNonQuery("DELETE FROM RFile");
-                    db.ExecuteNonQuery("ALTER TABLE RFile ALTER COLUMN [ID] IDENTITY (1,1)");
-                    foreach (DataRow row in ds.Tables["DATA"].Rows)
-                    {
-                        RemoteFile rfile = new RemoteFile(row);
-                        rfile.Save();
-                    }
-                }
+                _evt.WriteEntry("Sync Mirror: Compacted Database Successfully");
+                
             }
             catch (Exception ex)
             {
@@ -860,6 +858,11 @@ namespace BackupRetention
                     RFiles.Clear();
                     RFiles = null;
                 }
+                if (listp != null)
+                {
+                    listp.Clear();
+                    listp = null;
+                }
             }
             
             
@@ -868,7 +871,7 @@ namespace BackupRetention
         }
 
 
-        public List<RemoteFile> GetMissingFiles(long SourceID, long DestinationID)
+        public List<RemoteFile> GetMissingOrModifiedFiles(long SourceID, long DestinationID)
         {
             string strSQL = "";
             DataTable dtRenamedOrDeleted=null;
@@ -876,22 +879,28 @@ namespace BackupRetention
             List<RemoteFile> RFiles = new List<RemoteFile>();
             DataSet ds = null;
             List<SqlCeParameter> list = null;
+            SqlCeParameter sp;
             try
             {
-
+                if (this.FolderSyncDirectionOrder == SyncDirectionOrder.Download)
+                {
+                    long ltemp = SourceID;
+                    SourceID = DestinationID;
+                    DestinationID = ltemp;
+                }
                 db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
                 //strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@SourceID AND replace(FullName,@strSourceFolder,@strDestinationFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@DestinationID)";
 
                 //Missing or Modified Files
-                strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5 FROM RFile WHERE FolderActionID=@SourceID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@DestinationID)";
-                strSQL += " UNION SELECT RFile.ID,RFile.Name,RFile.FullName,RFile.FileLength,RFile.FileParentDirectory,RFile.IsDirectory,RFile.LastWriteTime,RFile.LastWriteTimeUTC,RFile.NewFileName,RFile.MD5,RFile.FolderActionID,RFile.ShortFullName,RFile.ShortFullNameMD5,RFile.SourceFolderMD5 FROM RFile INNER JOIN RFile AS R2 ON R2.FolderActionID=@DestinationID AND R2.ShortFullNameMD5 = RFile.ShortFullNameMD5  WHERE RFile.FolderActionID=@SourceID AND (RFile.LastWriteTime <> R2.LastWriteTime OR RFile.FileLength <> R2.FileLength OR (LEN(R2.MD5)>0 AND LEN(RFile.MD5)>0 AND RFile.MD5 <> R2.MD5))";
-
-
-                //not sure how strings with slashes are stored in sqlite!
+                //strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5 FROM RFile WHERE FolderActionID=@SourceID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@DestinationID)";
+                
+                //Find Files Not in Destination
+                strSQL = "UPDATE RFile SET FileOperation='Created' WHERE FolderActionID=@SourceID AND FileOperation='None' AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@DestinationID)";
+                
                 list = new List<SqlCeParameter>();
 
-                SqlCeParameter sp;
+                
 
                 sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
                 sp.Value = SourceID;
@@ -899,6 +908,29 @@ namespace BackupRetention
 
                 sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
                 sp.Value = DestinationID;
+                list.Add(sp);
+                db.ExecuteNonQuery(strSQL, list);
+
+                strSQL = "UPDATE RFile SET FileOperation='Modified' WHERE RFile.ID IN (SELECT RFile.ID FROM RFile INNER JOIN RFile AS R2 ON R2.FolderActionID=@DestinationID AND R2.ShortFullNameMD5 = RFile.ShortFullNameMD5  WHERE RFile.FolderActionID=@SourceID AND RFile.FileOperation='None' AND (RFile.LastWriteTime <> R2.LastWriteTime OR RFile.FileLength <> R2.FileLength OR (LEN(R2.MD5)>0 AND LEN(RFile.MD5)>0 AND RFile.MD5 <> R2.MD5)))";
+
+
+                list = new List<SqlCeParameter>();
+                sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                sp.Value = SourceID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
+                sp.Value = DestinationID;
+                list.Add(sp);
+                db.ExecuteNonQuery(strSQL, list);
+
+
+                strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5 FROM RFile WHERE RFile.FileOperation <> 'None' AND RFile.FolderActionID=@SourceID";
+
+
+                list.Clear();
+                sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                sp.Value = SourceID;
                 list.Add(sp);
 
                 ds = db.ExecuteDataSet(strSQL, list);
@@ -909,6 +941,7 @@ namespace BackupRetention
                     RFiles.Add(new RemoteFile(row));
                 }
 
+                
             }
             catch (Exception ex)
             {
@@ -943,33 +976,258 @@ namespace BackupRetention
 
         }
 
-        /// <summary>
-        /// Custom Mirror Method if blDelete if false then Mirrors without deletion of files
-        /// </summary>
-        /// <param name="blShuttingDown"></param>
-        /// <param name="blDelete"></param>
-        public void ExecuteMirror(ref bool blShuttingDown, bool blDelete)
+        public List<RemoteFile> GetOneWayFilesToDelete(long SourceID, long DestinationID)
         {
-            
-            lock (lockMirror)
+            string strSQL = "";
+            DataTable dtRenamedOrDeleted = null;
+            SqlCEHelper db = null;
+            List<RemoteFile> RFiles = new List<RemoteFile>();
+            DataSet ds = null;
+            List<SqlCeParameter> list = null;
+            SqlCeParameter sp;
+            try
             {
-                string strSourceFolder="";
-                string strDestinationFolder = "";
-                System.Collections.Generic.List<FileInfo> SourceFiles=null;
-                System.Collections.Generic.List<FileInfo> DestinationFiles=null;
 
-                System.Collections.Generic.List<DirectoryInfo> DestinationFolders = null;
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
 
-                List<RemoteFile> FilesDelOrRenamed = null;
+                //strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID FROM RFile WHERE FolderActionID=@SourceID AND replace(FullName,@strSourceFolder,@strDestinationFolder) NOT IN (SELECT FullName FROM RFile WHERE FolderActionID=@DestinationID)";
 
-                List<RemoteFile> FilesMissing = null;
+                //Missing or Modified Files
+                strSQL = "SELECT RFile.ID, RFile.Name, RFile.FullName, RFile.FileLength, RFile.FileParentDirectory, RFile.IsDirectory, RFile.LastWriteTime, RFile.LastWriteTimeUTC, RFile.NewFileName, RFile.MD5, RFile.FolderActionID, RFile.ShortFullName, RFile.ShortFullNameMD5, RFile.SourceFolderMD5 FROM RFile LEFT JOIN FolderAction ON FolderAction.ID=RFile.FolderActionID WHERE FolderAction.Comment='MirrorDestinationFiles' AND RFile.ShortFullNameMD5 IN (SELECT ShortFullNameMD5  FROM RFile WHERE FolderActionID=@DestinationID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@SourceID))";
+                
+                list = new List<SqlCeParameter>();
 
+                sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                sp.Value = SourceID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
+                sp.Value = DestinationID;
+                list.Add(sp);
+
+                ds = db.ExecuteDataSet(strSQL, list);
+
+                dtRenamedOrDeleted = ds.Tables["DATA"];
+                foreach (DataRow row in dtRenamedOrDeleted.Rows)
+                {
+                    RemoteFile rfile = new RemoteFile(row);
+                    rfile.FileOperation = FileOperations.Deleted;
+                    RFiles.Add(rfile);
+                }
+                   
+            }
+            catch (Exception ex)
+            {
+                RFiles.Clear();
+                RFiles = null;
+                _evt.WriteEntry("Sync Mirror: " + ex.Message);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+
+                }
+                if (dtRenamedOrDeleted != null)
+                {
+                    dtRenamedOrDeleted.Clear();
+                    dtRenamedOrDeleted.Dispose();
+                }
+                if (ds != null)
+                {
+                    ds.Clear();
+                    ds.Dispose();
+                }
+                if (list != null)
+                {
+                    list.Clear();
+                    list = null;
+                }
+            }
+            return RFiles;
+
+        }
+
+        public void DeleteFileFromDb(long lRFileID)
+        {
+            string strSQL = "";
+            SqlCEHelper db = null;
+            List<SqlCeParameter> list = null;
+            int intRA = 0;
+            if (lRFileID > 0)
+            {
                 try
                 {
 
+                    db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+
+                    strSQL = "DELETE FROM RFile WHERE ID=@ID";
+                    list = new List<SqlCeParameter>();
+
+                    SqlCeParameter sp;
+
+                    sp = new SqlCeParameter("@ID", SqlDbType.BigInt);
+                    sp.Value = lRFileID;
+                    list.Add(sp);
+
+                    intRA = db.ExecuteNonQuery(strSQL, list);
+
+                }
+                catch (Exception ex)
+                {
+                    _evt.WriteEntry("Sync Mirror: Delete from db Failed ID: " + lRFileID + " Error: " + ex.Message);
+                }
+                finally
+                {
+                    if (db != null)
+                    {
+                        db.Dispose();
+
+                    }
+
+                    if (list != null)
+                    {
+                        list.Clear();
+                        list = null;
+                    }
+                }
+            }
+        }
+
+        public void DeleteFileFromDb(string ShortFullNameMD5)
+        {
+            string strSQL = "";
+            SqlCEHelper db = null;
+            List<SqlCeParameter> list = null;
+            int intRA = 0;
+            if (!string.IsNullOrEmpty(ShortFullNameMD5))
+            {
+                try
+                {
+
+                    db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+
+                    strSQL = "DELETE FROM RFile WHERE ShortFullNameMD5=@ShortFullNameMD5";
+                    list = new List<SqlCeParameter>();
+
+                    SqlCeParameter sp;
+
+                    sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar,32);
+                    sp.Value = ShortFullNameMD5;
+                    list.Add(sp);
+
+                    intRA = db.ExecuteNonQuery(strSQL, list);
+
+                }
+                catch (Exception ex)
+                {
+                    _evt.WriteEntry("Sync Mirror: Delete from db Failed ShortFullNameMD5: " + ShortFullNameMD5 + " Error: " + ex.Message);
+                }
+                finally
+                {
+                    if (db != null)
+                    {
+                        db.Dispose();
+
+                    }
+
+                    if (list != null)
+                    {
+                        list.Clear();
+                        list = null;
+                    }
+                }
+            }
+        }
 
 
-                    if (this.FolderSyncDirectionOrder == SyncDirectionOrder.Download || this.FolderSyncDirectionOrder == SyncDirectionOrder.DownloadAndUpload)
+        public void DeleteFromDb(long lSourceFilesID,long lDestinationFilesID)
+        {
+            object o;
+            long lID = 0;
+            List<SqlCeParameter> list = null;
+            SqlCEHelper db = null;
+            SqlCeParameter sp;
+            //Clear Comparison Data from the Database
+            try
+            {
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+
+                list = new List<SqlCeParameter>();
+
+                sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
+                sp.Value = lDestinationFilesID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                sp.Value = lSourceFilesID;
+                list.Add(sp);
+
+                db.ExecuteNonQuery("DELETE FROM RFile WHERE FolderActionID=@DestinationID OR FolderActionID=@SourceID", list);
+                ////db.ExecuteNonQuery("DELETE FROM RFile WHERE FolderActionID=@SourceID", list);
+
+                list.Clear();
+                list = new List<SqlCeParameter>();
+
+                sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
+                sp.Value = lDestinationFilesID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                sp.Value = lSourceFilesID;
+                list.Add(sp);
+                db.ExecuteNonQuery("DELETE FROM FolderAction WHERE ID=@DestinationID OR ID=@SourceID", list);
+                ////db.ExecuteNonQuery("DELETE FROM FolderAction WHERE ID=@SourceID", list);
+
+                //Reseed tables
+
+                o = db.ExecuteScalar("SELECT Max(ID) + 1 AS Seed1 FROM RFile");
+                lID = Common.FixNulllong(o);
+                if (lID > 0)
+                {
+                    db.ExecuteNonQuery("ALTER TABLE RFile ALTER COLUMN [ID] IDENTITY (" + lID.ToString() + ",1)");
+                }
+                o = db.ExecuteScalar("SELECT Max(ID) + 1 AS Seed1 FROM FolderAction");
+                lID = Common.FixNulllong(o);
+                if (lID > 0)
+                {
+                    db.ExecuteNonQuery("ALTER TABLE FolderAction ALTER COLUMN [ID] IDENTITY (" + lID.ToString() + ",1)");
+                }
+            }
+            catch (Exception ex)
+            {
+                _evt.WriteEntry("Sync Mirror: Delete from db source and destination Error: " + ex.Message);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+
+                }
+
+                if (list != null)
+                {
+                    list.Clear();
+                    list = null;
+                }
+            }
+            
+        }
+
+        public List<RemoteFile> ExecuteMirrorDelete(ref bool blShuttingDown, bool blDelete, List<FileInfo> SourceFiles, List<FileInfo> DestinationFiles, List<DirectoryInfo> SrcFolders, List<DirectoryInfo> DestFolders)
+        {
+            List<RemoteFile> FilesDeleted = null;
+            List<RemoteFile> FilesDeletedOneWay = null;
+            lock (lockMirrorDelete)
+            {
+                string strSourceFolder="";
+                string strDestinationFolder = "";
+
+                try
+                {
+                    if (this.FolderSyncDirectionOrder == SyncDirectionOrder.Download)
                     {
                         //Download is the reverse of upload
                         strSourceFolder = Common.WindowsPathClean(DestinationFolder);
@@ -989,117 +1247,413 @@ namespace BackupRetention
                             Common.CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
                         }
                     }
+
+
+                    //This will be used to compare files from the source and destination
+                    long lSourceFilesID = Save("MirrorSourceDeleteFiles");
+                    long lDestinationFilesID = 0;
+
+                    lDestinationFilesID = Save("MirrorDestinationDeleteFiles");
+
+                    _evt.WriteEntry("Sync: Mirroring Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                    Common.SaveFileInfoList(lSourceFilesID, SourceFiles, strSourceFolder);
+                    Common.SaveFolderInfoList(lSourceFilesID, SrcFolders, strSourceFolder);
+                    _evt.WriteEntry("Sync: Mirroring Finished Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+
+                    _evt.WriteEntry("Sync: Mirroring Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, strDestinationFolder);
+                    Common.SaveFolderInfoList(lDestinationFilesID, DestFolders, strDestinationFolder);
+                    _evt.WriteEntry("Sync: Mirroring Finished Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
+
+                    FilesDeleted = GetMirrorDeleted(lSourceFilesID, lDestinationFilesID);
+
+                    //OneWay Mirror Destination Files need to match source files add the missing files to the FilesDeleted collection
+                    if (this.FileSyncReplicaOption == FileSyncReplicaOptions.OneWayMirror)
+                    {
+                        FilesDeletedOneWay = GetOneWayFilesToDelete(lSourceFilesID, lDestinationFilesID);
+
+                        if (FilesDeletedOneWay != null)
+                        {
+                            foreach (RemoteFile rfile in FilesDeletedOneWay)
+                            {
+                                FilesDeleted.Add(rfile);
+                            }
+                            FilesDeletedOneWay.Clear();
+                            FilesDeletedOneWay = null;
+                        }
+                    }
+
+                    DeleteFromDb(lSourceFilesID, lDestinationFilesID);
+                    foreach (RemoteFile rfile in FilesDeleted)
+                    {
+
+                        FileInfo destinationFile = new FileInfo(rfile.FullName);
+                        string strSource = "";
+                        strSource = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, strSourceFolder));
+
+
+
+                        if (!rfile.IsDirectory)
+                        {
+                            FileInfo FileRenamed = GetRenamedFile(destinationFile, SourceFiles, strSourceFolder, strDestinationFolder);
+                            if (FileRenamed != null && !FileSyncReset)
+                            {
+                                string strRenamedDest = Common.WindowsPathClean(FileRenamed.FullName.Replace(strSourceFolder, strDestinationFolder));
+
+                                string strRenamedDir = Common.WindowsPathClean(FileRenamed.DirectoryName.Replace(strSourceFolder, strDestinationFolder));
+                                if (!Directory.Exists(strRenamedDir))
+                                {
+                                    Directory.CreateDirectory(strRenamedDir);
+                                }
+                                //Rename Existing File
+                                File.Move(destinationFile.FullName, strRenamedDest);
+                                _evt.WriteEntry("Sync: File Renamed: " + FileRenamed.FullName + " from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
+                                RemoteFile rmoved = new RemoteFile(new FileInfo(strRenamedDest), strDestinationFolder);
+                                rmoved.FolderActionID = rfile.FolderActionID;
+                                rmoved.Comment = rfile.Comment;
+                                rmoved.MD5 = rfile.MD5;
+                                rmoved.FileOperation = rfile.FileOperation;
+                                DeleteFileFromDb(rfile.ID);
+                                rmoved.Save();
+
+                            }
+                            else
+                            {
+
+                                if (File.Exists(Common.WindowsPathCombine(strSourceFolder, rfile.ShortFullName)) ^ File.Exists(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName)))
+                                {
+                                    if (File.Exists(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName)))
+                                    {
+                                        if (ArchiveDeleted && Directory.Exists(ArchiveFolder) && blDelete)
+                                        {
+                                            FileInfo afile = new FileInfo(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName));
+                                            string strRenamedDest = Common.WindowsPathCombine(ArchiveFolder, rfile.ShortFullName) + "." + System.Guid.NewGuid().ToString() + afile.Extension;
+                                            File.Move(afile.FullName, strRenamedDest);
+                                            _evt.WriteEntry("Sync: Mirroring File Archived from:" + afile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
+                                        }
+                                        else
+                                        {
+                                            if (blDelete)
+                                            {
+                                                File.Delete(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName));
+                                            }
+                                        }
+                                        
+                                    }
+                                    DeleteFileFromDb(rfile.ShortFullNameMD5);
+                                    
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (Directory.Exists(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName)))
+                            {
+                                DirectoryInfo dirdel = new DirectoryInfo(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName));
+                                if (Common.GetFilesInDirectory(dirdel).Count == 0)
+                                {
+                                    if (ArchiveDeleted && Directory.Exists(ArchiveFolder) && blDelete)
+                                    {
+                                        string strRenamedDest = Common.WindowsPathCombine(ArchiveFolder, rfile.ShortFullName) + "." + System.Guid.NewGuid().ToString();
+                                        Directory.Move(dirdel.FullName, strRenamedDest);
+                                        _evt.WriteEntry("Sync: Mirroring File Archived from:" + dirdel.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
+                                    }
+                                    else
+                                    {
+                                        if (blDelete)
+                                        {
+                                            Directory.Delete(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName));
+                                        }
+                                    }
+                                }
+                            }
+                            DeleteFileFromDb(rfile.ShortFullNameMD5);
+                        }
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                }
+                finally
+                {
+                    if (FilesDeletedOneWay != null)
+                    {
+                        FilesDeletedOneWay.Clear();
+                        FilesDeletedOneWay = null;
+                    }
+                }
+            }
+            return FilesDeleted;
+
+        }
+
+
+        public void ClearAllFileOperations()
+        {
+            SqlCEHelper db = null;
+            string strSQL = "";
+            try
+            {
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+
+                strSQL = "UPDATE RFile SET FileOperation='None' WHERE FileOperation <> 'None'";
+                db.ExecuteNonQuery(strSQL);
+            }
+            catch (Exception ex)
+            {
+                _evt.WriteEntry("Sync Mirror: ClearFileOperation Error: " + ex.Message);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                    db = null;
+                }
+            }
+           
+        }
+
+        public List<RemoteFile> GetMirrorDeleted(long lSourceID, long lDestinationID)
+        {
+            string strSQL = "";
+            DataTable dtRenamedOrDeleted = null;
+            SqlCEHelper db = null;
+            object o = null;
+            List<RemoteFile> RFiles = new List<RemoteFile>();
+            DataSet ds = null;
+            List<SqlCeParameter> list=null;
+            SqlCeParameter sp=null;
+            long lPrevSourceID = 0;
+            long lPrevDestinationID = 0;
+            try
+            {
+
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+
+                //Get Previous SourceID
+                list = new List<SqlCeParameter>();
+                
+                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar,32);
+                sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(SourceFolder));
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@DestinationFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(DestinationFolder));
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FolderAction", SqlDbType.NVarChar, 100);
+                sp.Value = FileSyncReplicaOption.ToString(); ;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@Comment", SqlDbType.NVarChar, 3000);
+                sp.Value = "MirrorSourceFiles";
+                list.Add(sp);
+
+                o = db.ExecuteScalar("SELECT ID FROM FolderAction WHERE SourceFolderMD5=@SourceFolderMD5 AND DestinationFolderMD5=@DestinationFolderMD5 AND FolderAction=@FolderAction AND Comment=@Comment", list);
+                lPrevSourceID = Common.FixNulllong(o);
+                
+                
+                //Get Previous DestinationID
+                list.Clear();
+                list = new List<SqlCeParameter>();
+
+                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(SourceFolder));
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@DestinationFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.GetMD5HashFromString(Common.FixNullstring(DestinationFolder));
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FolderAction", SqlDbType.NVarChar, 100);
+                sp.Value = FileSyncReplicaOption.ToString(); ;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@Comment", SqlDbType.NVarChar, 3000);
+                sp.Value = "MirrorDestinationFiles";
+                list.Add(sp);
+
+                o = db.ExecuteScalar("SELECT ID FROM FolderAction WHERE SourceFolderMD5=@SourceFolderMD5 AND DestinationFolderMD5=@DestinationFolderMD5 AND FolderAction=@FolderAction AND Comment=@Comment", list);
+                lPrevDestinationID = Common.FixNulllong(o);
+
+                //Find Deleted Source Files
+
+                if (lSourceID > 0 && lPrevSourceID > 0)
+                {
+                    strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID, ShortFullName, ShortFullNameMD5, SourceFolderMD5 FROM RFile WHERE FolderActionID=@PrevSourceID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@SourceID)";
+                    list.Clear();
+                    list = new List<SqlCeParameter>();
+
+                    sp = new SqlCeParameter("@SourceID", SqlDbType.BigInt);
+                    sp.Value = lSourceID;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@PrevSourceID", SqlDbType.BigInt);
+                    sp.Value = lPrevSourceID;
+                    list.Add(sp);
+
+                    ds = db.ExecuteDataSet(strSQL, list);
+
+                    dtRenamedOrDeleted = ds.Tables["DATA"];
+                    foreach (DataRow row in dtRenamedOrDeleted.Rows)
+                    {
+                        RemoteFile rfile = new RemoteFile(row);
+                        rfile.FileOperation = FileOperations.Deleted;
+                        rfile.Comment = "Source";
+                        RFiles.Add(rfile);
+                    }
+                }
+
+                
+                //Find Deleted Destination Files
+                if (lDestinationID > 0 && lPrevDestinationID > 0)
+                {
+                    strSQL = "SELECT ID,Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,NewFileName,MD5,FolderActionID, ShortFullName, ShortFullNameMD5, SourceFolderMD5 FROM RFile WHERE FolderActionID=@PrevDestinationID AND ShortFullNameMD5 NOT IN (SELECT ShortFullNameMD5 FROM RFile WHERE FolderActionID=@DestinationID)";
+                    list.Clear();
+                    ds.Clear();
+                    dtRenamedOrDeleted.Clear();
+                    dtRenamedOrDeleted.Dispose();
+                    list = new List<SqlCeParameter>();
+
+                    sp = new SqlCeParameter("@DestinationID", SqlDbType.BigInt);
+                    sp.Value = lDestinationID;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@PrevDestinationID", SqlDbType.BigInt);
+                    sp.Value = lPrevDestinationID;
+                    list.Add(sp);
+
+
+                    ds = db.ExecuteDataSet(strSQL, list);
+
+                    dtRenamedOrDeleted = ds.Tables["DATA"];
+                    foreach (DataRow row in dtRenamedOrDeleted.Rows)
+                    {
+                        RemoteFile rfile = new RemoteFile(row);
+                        rfile.FileOperation = FileOperations.Deleted;
+                        rfile.Comment = "Destination";
+                        RFiles.Add(rfile);
+                    }
+                }
+                
+               
+
+            }
+            catch (Exception ex)
+            {
+                RFiles.Clear();
+                RFiles = null;
+                _evt.WriteEntry("Sync Mirror: " + ex.Message);
+            }
+            finally
+            {
+                if (dtRenamedOrDeleted != null)
+                {
+                    dtRenamedOrDeleted.Clear();
+                    dtRenamedOrDeleted.Dispose();
+                }
+                if (ds != null)
+                {
+                    ds.Clear();
+                    ds.Dispose();
+                }
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+                if (list != null)
+                {
+                    list.Clear();
+                    list = null;
+                }
+                sp = null;
+            }
+            return RFiles;
+
+        }
+
+        /// <summary>
+        /// Custom Mirror Method if blDelete if false then Mirrors without deletion of files
+        /// </summary>
+        /// <param name="blShuttingDown"></param>
+        /// <param name="blDelete"></param>
+        public void ExecuteMirror(ref bool blShuttingDown, bool blDelete)
+        {
+            
+            lock (lockMirror)
+            {
+                string strSourceFolder="";
+                string strDestinationFolder = "";
+                System.Collections.Generic.List<FileInfo> SourceFiles=null;
+                System.Collections.Generic.List<FileInfo> DestinationFiles=null;
+                System.Collections.Generic.List<DirectoryInfo> SrcFolders = null;
+                System.Collections.Generic.List<DirectoryInfo> DestFolders = null;
+
+
+                System.Collections.Generic.List<DirectoryInfo> DestinationFolders = null;
+
+                List<RemoteFile> FilesDelOrRenamed = null;
+
+                List<RemoteFile> FilesMissing = null;
+
+                try
+                {
+
+                    if (this.FolderSyncDirectionOrder == SyncDirectionOrder.Download)
+                    {
+                        //Download is the reverse of upload
+                        strSourceFolder = Common.WindowsPathClean(DestinationFolder);
+                        strDestinationFolder = Common.WindowsPathClean(SourceFolder);
+
+                    }
+                    else
+                    {
+                        //Upload
+                        strSourceFolder = Common.WindowsPathClean(SourceFolder);
+                        strDestinationFolder = Common.WindowsPathClean(DestinationFolder);
+                    }
+                    
+                    //Common.CreateDestinationFolders(strSourceFolder, strDestinationFolder);
+                   
+                    if (ArchiveFolder.Length > 0 && ArchiveDeleted)
+                    {
+                        if (Directory.Exists(ArchiveFolder))
+                        {
+                            Common.CreateDestinationFolders(strDestinationFolder, ArchiveFolder);
+                        }
+                    }
                     _evt.WriteEntry("Sync: Mirroring Crawling SourceFolder: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
                     SourceFiles = Common.WalkDirectory(strSourceFolder, ref blShuttingDown);
+                    SrcFolders = Common.GetAllDirectories(strSourceFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Crawling SourceFolder: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                     _evt.WriteEntry("Sync: Mirroring Crawling DestinationFolder: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                     DestinationFiles = Common.WalkDirectory(strDestinationFolder, ref blShuttingDown);
+                    DestFolders = Common.GetAllDirectories(strDestinationFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Crawling DestinationFolder: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                    
+
 
                     //This will be used to compare files from the source and destination
                     long lSourceFilesID=Save("MirrorSourceFiles");
                     long lDestinationFilesID = Save("MirrorDestinationFiles");
                     _evt.WriteEntry("Sync: Mirroring Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
-                    Common.SaveFileInfoList(lSourceFilesID, SourceFiles, SourceFolder);
+                    Common.SaveFileInfoList(lSourceFilesID, SourceFiles, strSourceFolder);
+                    Common.SaveFolderInfoList(lSourceFilesID, SrcFolders, strSourceFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
                     _evt.WriteEntry("Sync: Mirroring Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, DestinationFolder);
+                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, strDestinationFolder);
+                    Common.SaveFolderInfoList(lDestinationFilesID, DestFolders, strDestinationFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                    
-                    FilesDelOrRenamed=GetMirrorRenamedOrDeleted(lSourceFilesID, strSourceFolder,lDestinationFilesID, strDestinationFolder);
+                    //FilesDelOrRenamed=GetMirrorRenamedOrDeleted(lSourceFilesID, strSourceFolder,lDestinationFilesID, strDestinationFolder);
 
 
-                    
-                    //Delete Files in DestinationFolder that are not in the SourceFolder or Fix Renamed File
-                    foreach (RemoteFile dFile in FilesDelOrRenamed)
-                    {
-                        FileInfo destinationFile = new FileInfo(dFile.FullName);
-                        try
-                        {
-
-                            string strSource = "";
-                            strSource = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, strSourceFolder));
-                            if (blShuttingDown)
-                            {
-                                _evt.WriteEntry("Sync: Mirroring Shutting Down about to possibly delete mirror file: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                                return;
-                            }
-
-                            if (!File.Exists(strSource))
-                            {
-                                if (!Common.IsFileLocked(destinationFile))
-                                {
-                                    FileInfo FileRenamed = GetRenamedFile(destinationFile, SourceFiles);
-                                    if (FileRenamed != null && !FileSyncReset)
-                                    {
-                                        string strRenamedDest = Common.WindowsPathClean(FileRenamed.FullName.Replace(strSourceFolder, strDestinationFolder));
-                                        //Rename Existing File
-                                        File.Move(destinationFile.FullName, strRenamedDest);
-                                        _evt.WriteEntry("Sync: File Renamed: " + FileRenamed.FullName + " from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
-
-                                    }
-                                    else
-                                    {
-
-                                        //destinationFile without .7z exists and does not in the source and destinationFile does not in the source
-                                        //if true then delete the file
-                                        if (File.Exists(Common.Strip7zExtension(destinationFile.FullName)) && !File.Exists(Common.Strip7zExtension(strSource)) )
-                                        {
-                                            if (ArchiveDeleted && Directory.Exists(ArchiveFolder) && blDelete)
-                                            {
-                                                string strRenamedDest = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destinationFile.Extension;
-                                                File.Move(destinationFile.FullName, strRenamedDest);
-                                                _evt.WriteEntry("Sync: Mirroring File Archived from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
-                                            }
-                                            else
-                                            {
-                                                if (blDelete)
-                                                {
-                                                    //File.SetAttributes(destinationFile.FullName, FileAttributes.Normal);
-                                                    destinationFile.IsReadOnly = false;
-                                                    File.Delete(destinationFile.FullName);
-                                                    _evt.WriteEntry("Sync: Mirroring File Deleted: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                                                }
-                                            }
-                                        }
-
-
-                                        //File Not Found and Same File Uncompressed not found so Delete
-                                        if (!(destinationFile.Extension == ".7z"  && File.Exists(Common.Strip7zExtension(strSource))))
-                                        {
-                                            
-                                            if (ArchiveDeleted && Directory.Exists(ArchiveFolder) && blDelete)
-                                            {
-                                                string strRenamedDest = Common.WindowsPathClean(destinationFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destinationFile.Extension;
-                                                File.Move(destinationFile.FullName, strRenamedDest);
-                                                _evt.WriteEntry("Sync: Mirroring File Archived from:" + destinationFile.FullName + " to: " + strRenamedDest, System.Diagnostics.EventLogEntryType.Information, 4080, 45);
-                                            }
-                                            else
-                                            {
-                                                if (blDelete)
-                                                {
-                                                    //File.SetAttributes(destinationFile.FullName, FileAttributes.Normal);
-                                                    destinationFile.IsReadOnly = false;
-                                                    File.Delete(destinationFile.FullName);
-                                                    _evt.WriteEntry("Sync: Mirroring File Deleted: " + destinationFile.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _evt.WriteEntry("Sync: Mirroring File Failed to Delete: " + destinationFile.FullName + " " + ex.Message, System.Diagnostics.EventLogEntryType.Warning, 4070, 45);
-                        }
-                    }
+                    FilesDelOrRenamed = ExecuteMirrorDelete(ref blShuttingDown, blDelete, SourceFiles, DestinationFiles, SrcFolders, DestFolders);
 
                     if (blDelete)
                     {
-                      
                         //Delete Folders that no longer exist in the source
                         DestinationFolders = Common.GetAllDirectories(strDestinationFolder);
                         foreach (DirectoryInfo dir1 in DestinationFolders)
@@ -1133,8 +1687,9 @@ namespace BackupRetention
 
                                             }
                                         }
-
-
+                                        //Directory.Move(dir1.FullName,strRenamedDest);
+                                        
+                                        
                                         Directory.Delete(dir1.FullName, true);
                                         _evt.WriteEntry("Sync: Mirroring Folder and sub folders and files Deleted: " + dir1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                     }
@@ -1144,6 +1699,8 @@ namespace BackupRetention
 
                                         _evt.WriteEntry("Sync: Mirroring Folder and sub folders and files Deleted: " + dir1.FullName, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                     }
+                                    RemoteFile dfile = new RemoteFile(dir1, strDestinationFolder);
+                                    DeleteFileFromDb(dfile.ShortFullNameMD5);
 
                                 }
                             }
@@ -1155,7 +1712,8 @@ namespace BackupRetention
                         }
                     }
 
-                    FilesMissing = GetMissingFiles(lSourceFilesID, lDestinationFilesID);
+                    //Missing or Modified Files after Deletions have been removed from the database
+                    FilesMissing = GetMissingOrModifiedFiles(lSourceFilesID, lDestinationFilesID);
 
 
                     //Copy Files that are in the SourceFolder that are not in the DestinationFolder or if file is different
@@ -1173,54 +1731,92 @@ namespace BackupRetention
                                 return;
                             }
 
-                            if (!File.Exists(strDestination))
+                            if (!rsourceFile.IsDirectory)
                             {
-                                if (File.Exists(strDestination + ".7z"))
+                                if (!File.Exists(strDestination))
                                 {
-                                    strDestination += ".7z";
-                                }
-                            }
-                        
-                            if (!Common.IsFileLocked(srcFile) && srcFile.Name.ToLower() != "file.id" && srcFile.Name.ToLower() != "filesync.metadata")
-                            {
-                                if (File.Exists(strDestination))
-                                {
-                                    FileInfo destFile = new FileInfo(strDestination);
-
-                                    //Copy the Modified file
-                                    if ((srcFile.Length != destFile.Length && destFile.Extension == srcFile.Extension) || srcFile.LastWriteTimeUtc != destFile.LastWriteTimeUtc)
+                                    if (File.Exists(strDestination + ".7z"))
                                     {
-                                        strDestination = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
-                                        if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
+                                        strDestination += ".7z";
+                                    }
+                                }
+
+                                if (!Common.IsFileLocked(srcFile) && srcFile.Name.ToLower() != "file.id" && srcFile.Name.ToLower() != "filesync.metadata")
+                                {
+                                    if (File.Exists(strDestination))
+                                    {
+                                        FileInfo destFile = new FileInfo(strDestination);
+
+                                        
+                                        //Copy the Modified file
+                                        switch (this.DefaultConflictResolutionPolicy)
                                         {
-                                            string strRenamedDest = Common.WindowsPathClean(destFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destFile.Extension;
-                                            File.Move(strDestination,strRenamedDest);
-                                            File.Copy(srcFile.FullName, strDestination, true);
-                                            _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                            case ConflictResolutionPolicy.SourceWins:
+                                                //One Way Sync
+                                                //Source Wins
+                                                if ((srcFile.Length != destFile.Length && destFile.Extension == srcFile.Extension) || srcFile.LastWriteTimeUtc != destFile.LastWriteTimeUtc)
+                                                {
+                                                    strDestination = Common.WindowsPathClean(srcFile.FullName.Replace(strSourceFolder, strDestinationFolder));
+                                                    if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
+                                                    {
+                                                        string strRenamedDest = Common.WindowsPathClean(destFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + destFile.Extension;
+                                                        File.Move(strDestination, strRenamedDest);
+                                                        File.Copy(srcFile.FullName, strDestination, true);
+                                                        _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                                    }
+                                                    else
+                                                    {
+                                                        System.IO.File.Copy(srcFile.FullName, strDestination, true);
+                                                        _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                                    }
+
+                                                }
+                                                break;
+
+                                            case ConflictResolutionPolicy.DestinationWins:
+                                                //One Way Sync
+                                                //Copy the Modified file Destination Wins
+                                                if ((srcFile.Length != destFile.Length && destFile.Extension == srcFile.Extension) || srcFile.LastWriteTimeUtc != destFile.LastWriteTimeUtc)
+                                                {
+                                                    strDestination = Common.WindowsPathClean(destFile.FullName.Replace(strDestinationFolder, strSourceFolder));
+                                                    if (ArchiveDeleted && Directory.Exists(ArchiveFolder))
+                                                    {
+                                                        string strRenamedDest = Common.WindowsPathClean(srcFile.FullName.Replace(strDestinationFolder, ArchiveFolder)) + "." + System.Guid.NewGuid().ToString() + srcFile.Extension;
+                                                        File.Move(strDestination, strRenamedDest);
+                                                        File.Copy(srcFile.FullName, strDestination, true);
+                                                        _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                                    }
+                                                    else
+                                                    {
+                                                        System.IO.File.Copy(destFile.FullName, strDestination, true);
+                                                        _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                                    }
+
+                                                }
+                                                break;
+
+                                            }
+
                                         }
                                         else
                                         {
+                                            //Copy the File
                                             System.IO.File.Copy(srcFile.FullName, strDestination, true);
-                                            _evt.WriteEntry("Sync: Mirroring File Modified Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+                                            _evt.WriteEntry("Sync: Mirroring File Created Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
+
                                         }
 
                                     }
-                                }
-                                else
-                                {
-                                    //Copy the File
-                                    System.IO.File.Copy(srcFile.FullName, strDestination, true);
-                                    _evt.WriteEntry("Sync: Mirroring File Created Copied from: " + srcFile.FullName + " to: " + strDestination, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
-
+                                    
                                 }
                             }
-                        }
+                        
                         catch (Exception ex)
                         {
                             _evt.WriteEntry("Sync: Mirroring File Modified Copy failed from: " + srcFile.FullName + " to: " + strDestination + " " + ex.Message, System.Diagnostics.EventLogEntryType.Information, 4090, 45);
                         }
                     }
-
+                    
                 }
                 catch (Exception ex)
                 {
@@ -1228,6 +1824,7 @@ namespace BackupRetention
                 }
                 finally
                 {
+                    
                     if (SourceFiles != null)
                     {
                         SourceFiles.Clear();
@@ -1247,12 +1844,27 @@ namespace BackupRetention
                     {
                         FilesDelOrRenamed.Clear();
                     }
-                    
+
+                    if (SrcFolders != null)
+                    {
+                        SrcFolders.Clear();
+                    }
+
+                    if (DestFolders != null)
+                    {
+                        DestFolders.Clear();
+                    }
+
+                    if (DestinationFolders != null)
+                    {
+                        DestinationFolders.Clear();
+                    }
+
                 }
             }
         }
 
-
+        /*
         /// <summary>
         /// Create a provider, and detect changes on the replica that the provider
         /// represents.
@@ -1347,13 +1959,13 @@ namespace BackupRetention
                 // Register event handlers so that we can write information
                 // to the console.
 
-                /*//Additional Events
-                    provider.DestinationCallbacks.FullEnumerationNeeded += this.FullEnumerationNeededCallback;
-                    destinationProvider.ItemChangeSkipped += this.ItemChangeSkippedCallback;
-                    destinationProvider.ItemChanging += this.ItemChangingCallback;                    
-                    destinationProvider.ItemConstraint += this.ItemConstraintCallback;
-                    destinationProvider.ProgressChanged += this.ProgressChangedCallback;
-                 */
+                //Additional Events
+                //    provider.DestinationCallbacks.FullEnumerationNeeded += this.FullEnumerationNeededCallback;
+                //    destinationProvider.ItemChangeSkipped += this.ItemChangeSkippedCallback;
+                //    destinationProvider.ItemChanging += this.ItemChangingCallback;                    
+                //    destinationProvider.ItemConstraint += this.ItemConstraintCallback;
+                //    destinationProvider.ProgressChanged += this.ProgressChangedCallback;
+                // 
 
                 //Document Changes if needed
                 destinationProvider.AppliedChange +=
@@ -1447,6 +2059,7 @@ namespace BackupRetention
             strMessage = "Sync: Concurrency conflict detected for item " + args.DestinationChange.ItemId.ToString();
             _evt.WriteEntry(strMessage, System.Diagnostics.EventLogEntryType.Warning, 4110, 40);
         }
+        */
         #endregion
     }
 }

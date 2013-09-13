@@ -22,6 +22,20 @@ namespace BackupRetention
 {
 
 
+
+    public enum ConflictResolutionPolicy
+    {
+        DestinationWins
+        ,SourceWins
+    }
+
+    public enum SyncDirectionOrder
+    {
+        Download
+        ,Upload
+    }
+
+
     /// <summary>
     /// Enum for retention algorithm options GFS (Grandfather, father, son), KeepAll (No deleting), etc.
     /// </summary>
@@ -44,9 +58,8 @@ namespace BackupRetention
 
     public enum FileSyncReplicaOptions
     {
-        OneWay
-        ,TwoWay
-        ,OneWayMirror
+        //OneWay
+        OneWayMirror
         ,OneWayBackup
     }
 
@@ -85,6 +98,7 @@ namespace BackupRetention
         ,Modified
         ,Deleted
         ,Renamed
+        ,None
     }
 
     public interface IFolderConfig
@@ -654,15 +668,10 @@ namespace BackupRetention
             try
             {
                 strPath = WindowsPathClean(strPath);
-                if (isNetworkDrive(strPath))
-                {
-                    strPath = WindowsPathClean(strPath);
-                }
                 blSuccess = Directory.Exists(strPath);
             }
             catch (Exception)
             {
-                
                 
             }
             return blSuccess;
@@ -1032,9 +1041,30 @@ namespace BackupRetention
                     rfile.FolderActionID = lFolderActionID;
                     rfile.Save();
                 }
+                
             }
         }
 
+        /// <summary>
+        /// Saves DirectoryInfo list to SQL Server Compact Database
+        /// </summary>
+        /// <param name="lFolderActionID"></param>
+        /// <param name="flist"></param>
+        /// <param name="strSource"></param>
+        public static void SaveFolderInfoList(long lFolderActionID, System.Collections.Generic.List<System.IO.DirectoryInfo> flist, string strSource)
+        {
+            if (flist != null && lFolderActionID > 0)
+            {
+                foreach (DirectoryInfo dir in flist)
+                {
+                    RemoteFile rfile = new RemoteFile(dir, strSource);
+                    rfile.FolderActionID = lFolderActionID;
+                    rfile.Save();
+                }
+
+            }
+
+        }
        
         /// <summary>
         /// Walks Entire Path and returns Generic List of the files in the entire directory and sub directories
@@ -1359,6 +1389,8 @@ namespace BackupRetention
     public class RemoteFile
     {
         #region "Properties"
+
+        public long ID { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
         public long Length { get; set; }
@@ -1405,62 +1437,16 @@ namespace BackupRetention
 
             //left off here need! finally 
             long lastid = 0;
+            object o;
             SqlCEHelper db = null;
             SqlCeParameter sp=null;
             List<SqlCeParameter> list = null;
-
+            long lID = 0;
             try
             {
                 db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
                 list = new List<SqlCeParameter>();
 
-                sp = new SqlCeParameter("@Name", SqlDbType.NVarChar, 260);
-                sp.Value = Common.FixNullstring(Name);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(FullName);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-                sp.Value = Length;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(ParentDirectory);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
-                sp.Value = IsDirectory;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
-                sp.Value = LastWriteTime;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
-                sp.Value = LastWriteTimeUtc;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
-                sp.Value = Common.FixNullstring(FileOperation);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(NewFullName);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 32);
-                sp.Value = Common.FixNullstring(MD5);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
-                sp.Value = FolderActionID;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@ShortFullName", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(ShortFullName);
-                list.Add(sp);
 
                 sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
                 sp.Value = Common.FixNullstring(ShortFullNameMD5);
@@ -1469,7 +1455,135 @@ namespace BackupRetention
                 sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
                 sp.Value = Common.FixNullstring(SourceFolderMD5);
                 list.Add(sp);
-                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID,@ShortFullName,@ShortFullNameMD5,@SourceFolderMD5)", list);
+
+                sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
+                sp.Value = FolderActionID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+                sp.Value = Length;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
+                sp.Value = LastWriteTime;
+                list.Add(sp);
+
+                o=db.ExecuteScalar("SELECT ID FROM RFile WHERE FolderActionID=@FolderActionID AND ShortFullNameMD5=@ShortFullNameMD5 AND SourceFolderMD5=@SourceFolderMD5", list);
+
+                long.TryParse(Common.FixNullstring(o), out lastid);
+
+                if (lastid != 0)
+                {
+                    lID = lastid;
+                    lastid = 0;
+                    list.Clear();
+                    list = new List<SqlCeParameter>();
+
+
+                    sp = new SqlCeParameter("@ID", SqlDbType.BigInt);
+                    sp.Value = lID;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+                    sp.Value = Length;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
+                    sp.Value = LastWriteTime;
+                    list.Add(sp);
+
+                    o = db.ExecuteScalar("SELECT ID FROM RFile WHERE ID=@ID AND FileLength=@FileLength AND LastWriteTime=@LastWriteTime", list);
+                    lastid = Common.FixNulllong(o);
+
+                    //File has been modified new insert is needed
+                    if (lastid == 0)
+                    {
+                        FileOperation = FileOperations.Modified;
+                    }
+                    else
+                    {
+                        //Update FileOperation to None no insert needed.
+                        FileOperation = FileOperations.None;
+                    }
+                    list.Clear();
+                    list = new List<SqlCeParameter>();
+
+                    sp = new SqlCeParameter("@ID", SqlDbType.BigInt);
+                    sp.Value = lID;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
+                    sp.Value = Common.FixNullstring(FileOperation);
+                    list.Add(sp);
+
+                    db.ExecuteNonQuery("UPDATE RFile SET FileOperation=@FileOperation WHERE ID=@ID", list);
+                }
+                else
+                {
+                    //File is newly created and needs to be copied to the destination
+                    list.Clear();
+                    list = new List<SqlCeParameter>();
+
+                    FileOperation = FileOperations.Created;
+
+                    sp = new SqlCeParameter("@Name", SqlDbType.NVarChar, 260);
+                    sp.Value = Common.FixNullstring(Name);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(FullName);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+                    sp.Value = Length;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(ParentDirectory);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
+                    sp.Value = IsDirectory;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
+                    sp.Value = LastWriteTime;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
+                    sp.Value = LastWriteTimeUtc;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
+                    sp.Value = Common.FixNullstring(FileOperation);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(NewFullName);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 32);
+                    sp.Value = Common.FixNullstring(MD5);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
+                    sp.Value = FolderActionID;
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@ShortFullName", SqlDbType.NVarChar, 3000);
+                    sp.Value = Common.FixNullstring(ShortFullName);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
+                    sp.Value = Common.FixNullstring(ShortFullNameMD5);
+                    list.Add(sp);
+
+                    sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
+                    sp.Value = Common.FixNullstring(SourceFolderMD5);
+                    list.Add(sp);
+                    lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID,@ShortFullName,@ShortFullNameMD5,@SourceFolderMD5)", list);
+                    this.ID = lastid;
+                }
             }
             catch (Exception ex)
             {
@@ -1539,12 +1653,26 @@ namespace BackupRetention
             this.SourceFolderMD5 = Common.GetMD5HashFromString(strSource);
         }
 
+        public RemoteFile(DirectoryInfo dir, string strSource)
+        {
+            this.Name = dir.Name;
+            this.FullName = dir.FullName;
+            this.Length = 0;
+            this.ParentDirectory = dir.Parent.FullName;
+            this.IsDirectory = true;
+            this.LastWriteTime = dir.LastWriteTime;
+            this.LastWriteTimeUtc = dir.LastWriteTimeUtc;
+            this.ShortFullName = dir.FullName.Replace(strSource, "");
+            this.SourceFolderMD5 = Common.GetMD5HashFromString(strSource);
+        }
+
 
 
         public RemoteFile(DataRow row)
         {
             DateTime dtLastWriteTime;
             DateTime dtLastWriteTimeUTC;
+            this.ID = Common.FixNulllong(row["ID"]);
             this.Name = Common.FixNullstring(row["Name"]);
             this.FullName = Common.FixNullstring(row["FullName"]);
             this.Length = Common.FixNulllong(row["FileLength"]);

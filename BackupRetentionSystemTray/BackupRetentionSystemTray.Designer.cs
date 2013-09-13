@@ -190,7 +190,7 @@
             this.tabControl.Location = new System.Drawing.Point(1, 247);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(614, 429);
+            this.tabControl.Size = new System.Drawing.Size(617, 429);
             this.tabControl.TabIndex = 16;
             // 
             // tabRetention
@@ -199,7 +199,7 @@
             this.tabRetention.Location = new System.Drawing.Point(4, 22);
             this.tabRetention.Name = "tabRetention";
             this.tabRetention.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRetention.Size = new System.Drawing.Size(606, 403);
+            this.tabRetention.Size = new System.Drawing.Size(609, 403);
             this.tabRetention.TabIndex = 0;
             this.tabRetention.Text = "Retention";
             this.tabRetention.UseVisualStyleBackColor = true;
@@ -230,7 +230,7 @@
             this.dgvRetention.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRetention.Location = new System.Drawing.Point(3, 3);
             this.dgvRetention.Name = "dgvRetention";
-            this.dgvRetention.Size = new System.Drawing.Size(600, 397);
+            this.dgvRetention.Size = new System.Drawing.Size(603, 397);
             this.dgvRetention.TabIndex = 9;
             this.dgvRetention.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRetention_CellDoubleClick);
             this.dgvRetention.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvRetention_CellValidating);
@@ -430,7 +430,7 @@
             this.tabCompress.Location = new System.Drawing.Point(4, 22);
             this.tabCompress.Name = "tabCompress";
             this.tabCompress.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCompress.Size = new System.Drawing.Size(606, 403);
+            this.tabCompress.Size = new System.Drawing.Size(609, 403);
             this.tabCompress.TabIndex = 1;
             this.tabCompress.Text = "Compression";
             this.tabCompress.UseVisualStyleBackColor = true;
@@ -659,7 +659,7 @@
             this.tabSync.Location = new System.Drawing.Point(4, 22);
             this.tabSync.Name = "tabSync";
             this.tabSync.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSync.Size = new System.Drawing.Size(606, 403);
+            this.tabSync.Size = new System.Drawing.Size(609, 403);
             this.tabSync.TabIndex = 2;
             this.tabSync.Text = "Synchronization";
             this.tabSync.UseVisualStyleBackColor = true;
@@ -691,7 +691,7 @@
             this.dgvSync.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSync.Location = new System.Drawing.Point(3, 3);
             this.dgvSync.Name = "dgvSync";
-            this.dgvSync.Size = new System.Drawing.Size(600, 397);
+            this.dgvSync.Size = new System.Drawing.Size(603, 397);
             this.dgvSync.TabIndex = 13;
             this.dgvSync.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSync_CellDoubleClick);
             this.dgvSync.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvSync_CellValidating);
@@ -702,7 +702,7 @@
             this.tabRemote.Location = new System.Drawing.Point(4, 22);
             this.tabRemote.Name = "tabRemote";
             this.tabRemote.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRemote.Size = new System.Drawing.Size(606, 403);
+            this.tabRemote.Size = new System.Drawing.Size(609, 403);
             this.tabRemote.TabIndex = 3;
             this.tabRemote.Text = "Remote Sync";
             this.tabRemote.UseVisualStyleBackColor = true;
@@ -968,16 +968,17 @@
             this.tabEvents.Location = new System.Drawing.Point(4, 22);
             this.tabEvents.Name = "tabEvents";
             this.tabEvents.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEvents.Size = new System.Drawing.Size(606, 403);
+            this.tabEvents.Size = new System.Drawing.Size(609, 403);
             this.tabEvents.TabIndex = 4;
             this.tabEvents.Text = "Log";
             this.tabEvents.UseVisualStyleBackColor = true;
             // 
             // lblSearch
             // 
+            this.lblSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSearch.AutoSize = true;
             this.lblSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(357, 12);
+            this.lblSearch.Location = new System.Drawing.Point(360, 12);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(49, 15);
             this.lblSearch.TabIndex = 42;
@@ -985,19 +986,21 @@
             // 
             // txtSearch
             // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(412, 9);
+            this.txtSearch.Location = new System.Drawing.Point(415, 9);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(103, 21);
             this.txtSearch.TabIndex = 41;
             // 
             // chkInformation
             // 
+            this.chkInformation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkInformation.AutoSize = true;
             this.chkInformation.Checked = true;
             this.chkInformation.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkInformation.Location = new System.Drawing.Point(263, 11);
+            this.chkInformation.Location = new System.Drawing.Point(266, 11);
             this.chkInformation.Name = "chkInformation";
             this.chkInformation.Size = new System.Drawing.Size(88, 19);
             this.chkInformation.TabIndex = 40;
@@ -1006,11 +1009,12 @@
             // 
             // chkWarning
             // 
+            this.chkWarning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkWarning.AutoSize = true;
             this.chkWarning.Checked = true;
             this.chkWarning.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkWarning.Location = new System.Drawing.Point(185, 11);
+            this.chkWarning.Location = new System.Drawing.Point(188, 11);
             this.chkWarning.Name = "chkWarning";
             this.chkWarning.Size = new System.Drawing.Size(72, 19);
             this.chkWarning.TabIndex = 39;
@@ -1019,11 +1023,12 @@
             // 
             // chkError
             // 
+            this.chkError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkError.AutoSize = true;
             this.chkError.Checked = true;
             this.chkError.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkError.Location = new System.Drawing.Point(126, 11);
+            this.chkError.Location = new System.Drawing.Point(129, 11);
             this.chkError.Name = "chkError";
             this.chkError.Size = new System.Drawing.Size(53, 19);
             this.chkError.TabIndex = 38;
@@ -1032,8 +1037,9 @@
             // 
             // btnRefreshEventLog
             // 
+            this.btnRefreshEventLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefreshEventLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefreshEventLog.Location = new System.Drawing.Point(521, 6);
+            this.btnRefreshEventLog.Location = new System.Drawing.Point(524, 6);
             this.btnRefreshEventLog.Name = "btnRefreshEventLog";
             this.btnRefreshEventLog.Size = new System.Drawing.Size(79, 27);
             this.btnRefreshEventLog.TabIndex = 37;
@@ -1043,7 +1049,6 @@
             // 
             // btnClearLogs
             // 
-            this.btnClearLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClearLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClearLogs.Location = new System.Drawing.Point(3, 5);
             this.btnClearLogs.Name = "btnClearLogs";
@@ -1070,7 +1075,7 @@
             this.dgvColEventEventID});
             this.dgvEvents.Location = new System.Drawing.Point(0, 39);
             this.dgvEvents.Name = "dgvEvents";
-            this.dgvEvents.Size = new System.Drawing.Size(606, 361);
+            this.dgvEvents.Size = new System.Drawing.Size(609, 361);
             this.dgvEvents.TabIndex = 17;
             // 
             // dgvEventImage
@@ -1130,7 +1135,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(621, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(624, 24);
             this.menuStrip1.TabIndex = 19;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1190,7 +1195,7 @@
             this.panel1.Controls.Add(this.pbLeftIcon);
             this.panel1.Location = new System.Drawing.Point(0, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(621, 211);
+            this.panel1.Size = new System.Drawing.Size(624, 211);
             this.panel1.TabIndex = 20;
             // 
             // txtServiceStatus
@@ -1465,11 +1470,10 @@
             this.dgvColSyncFileSyncReplicaOption.DataPropertyName = "FileSyncReplicaOption";
             this.dgvColSyncFileSyncReplicaOption.HeaderText = "FileSyncReplicaOption";
             this.dgvColSyncFileSyncReplicaOption.Items.AddRange(new object[] {
-            "OneWay",
             "OneWayMirror",
             "OneWayBackup"});
             this.dgvColSyncFileSyncReplicaOption.Name = "dgvColSyncFileSyncReplicaOption";
-            this.dgvColSyncFileSyncReplicaOption.ToolTipText = "OneWay, TwoWay Synchronization, or OneWay Mirror which will delete files in the d" +
+            this.dgvColSyncFileSyncReplicaOption.ToolTipText = "OneWayBackup or OneWay Mirror which will delete files in the d" +
     "estination folder that no longer exist on the source folder.";
             this.dgvColSyncFileSyncReplicaOption.Width = 120;
             // 
@@ -1491,9 +1495,7 @@
             this.dgvColSyncFolderSyncDirectionOrder.HeaderText = "FolderSyncDirectionOrder";
             this.dgvColSyncFolderSyncDirectionOrder.Items.AddRange(new object[] {
             "Upload",
-            "UploadAndDownload",
-            "Download",
-            "DownloadAndUpload"});
+            "Download"});
             this.dgvColSyncFolderSyncDirectionOrder.Name = "dgvColSyncFolderSyncDirectionOrder";
             this.dgvColSyncFolderSyncDirectionOrder.ToolTipText = resources.GetString("dgvColSyncFolderSyncDirectionOrder.ToolTipText");
             this.dgvColSyncFolderSyncDirectionOrder.Width = 134;
@@ -1533,7 +1535,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(621, 676);
+            this.ClientSize = new System.Drawing.Size(624, 676);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.menuStrip1);

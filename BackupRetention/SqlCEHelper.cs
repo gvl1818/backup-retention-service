@@ -67,11 +67,14 @@ namespace BackupRetention
         /// <summary>
         /// Opens SqlCeConnection
         /// </summary>
-        private void OpenConnection()
+        public void OpenConnection()
         {
             if (LocalConnection != null)
             {
-                LocalConnection.Open();
+                if (LocalConnection.State != ConnectionState.Open)
+                {
+                    LocalConnection.Open();
+                }
             }
             else
             {
@@ -81,12 +84,14 @@ namespace BackupRetention
         /// <summary>
         /// Closes SqlCeConnection
         /// </summary>
-        private void CloseConnection()
+        public void CloseConnection()
         {
             if (LocalConnection != null)
             {
-                LocalConnection.Close();
-                //LocalConnection.Dispose();
+                if (LocalConnection.State == ConnectionState.Open)
+                {
+                    LocalConnection.Close();
+                }
             }
         }
  
@@ -260,7 +265,7 @@ namespace BackupRetention
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public object ExecuteScalar(string query)
+        public object ExecuteScalar(string query, bool blCloseConnection = true)
         {
           object localScalarObject = string.Empty;
           SqlCeCommand localCommand = null;
@@ -285,7 +290,10 @@ namespace BackupRetention
           finally
           {
             if (localCommand != null) localCommand.Dispose();
-            CloseConnection();
+            if (blCloseConnection)
+            {
+                CloseConnection();
+            }
           }
           return localScalarObject;
         }
@@ -296,7 +304,7 @@ namespace BackupRetention
         /// <param name="query"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public object ExecuteScalar(string query, List<SqlCeParameter> parameters)
+        public object ExecuteScalar(string query, List<SqlCeParameter> parameters, bool blCloseConnection=true)
         {
           object localScalarObject = string.Empty;
           SqlCeCommand localCommand = null;
@@ -327,7 +335,10 @@ namespace BackupRetention
           finally
           {
             if (localCommand != null) localCommand.Dispose();
-            CloseConnection();
+            if (blCloseConnection)
+            {
+                CloseConnection();
+            }
           }
           return localScalarObject;
         }
@@ -339,7 +350,7 @@ namespace BackupRetention
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public int ExecuteNonQuery(string query)
+        public int ExecuteNonQuery(string query, bool blCloseConnection=true)
         {
           int rowsAffected = 0;
           SqlCeCommand localCommand = null;
@@ -364,7 +375,10 @@ namespace BackupRetention
           finally
           {
             if (localCommand != null) localCommand.Dispose();
-            CloseConnection();
+            if (blCloseConnection)
+            {
+                CloseConnection();
+            }
           }
  
           return (rowsAffected);
@@ -376,7 +390,7 @@ namespace BackupRetention
         /// <param name="query"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public int ExecuteNonQuery(string query, List<SqlCeParameter> parameters)
+        public int ExecuteNonQuery(string query, List<SqlCeParameter> parameters, bool blCloseConnection=true)
         {
           int rowsAffected = 0;
           SqlCeCommand localCommand = null;
@@ -406,7 +420,10 @@ namespace BackupRetention
           finally
           {
             if (localCommand != null) localCommand.Dispose();
-            CloseConnection();
+            if (blCloseConnection)
+            {
+                CloseConnection();
+            }
           }
           return (rowsAffected);
         }
@@ -419,7 +436,7 @@ namespace BackupRetention
         /// <param name="query"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public long Insert(string query, List<SqlCeParameter> parameters)
+        public long Insert(string query, List<SqlCeParameter> parameters, bool blCloseConnection=true)
         {
             long lastID = 0;
             int rowsAffected = 0;
@@ -458,7 +475,10 @@ namespace BackupRetention
             {
                 if (localCommand != null) localCommand.Dispose();
                 if (localCommand2 != null) localCommand2.Dispose();
-                CloseConnection();
+                if (blCloseConnection)
+                {
+                    CloseConnection();
+                }
             }
             return lastID;
         }

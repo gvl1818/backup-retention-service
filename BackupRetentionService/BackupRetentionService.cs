@@ -341,6 +341,9 @@ namespace BackupRetention
                 RetentionThread = new Thread(new ThreadStart(Retention));
                 
                 CompressThread = new Thread(new ThreadStart(Compress));
+
+                SyncFolder.CompactDatabase();
+
                 _evt.WriteEntry("BackupRetentionService Started", System.Diagnostics.EventLogEntryType.Information, 0, 0);
                   
             }
@@ -689,11 +692,6 @@ namespace BackupRetention
                 //Sync
                 if (!SyncThread.IsAlive)
                 {
-                    if (!RemoteSyncThread.IsAlive)
-                    {
-                        SyncFolder.CompactDatabase();
-                        
-                    }
                     SyncThread = new Thread(new ThreadStart(Sync));
                     SyncThread.Start();
                 }
