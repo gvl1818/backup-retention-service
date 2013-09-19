@@ -39,6 +39,9 @@
             // 
             // serviceInstaller1
             // 
+            this.serviceInstaller1.Description = "Manages local backup storage space using retention plans, compresses backups usin" +
+    "g 7Zip, and will synchronize folders to shares, folders or to ftp, sftp, or ftps" +
+    ".";
             this.serviceInstaller1.DisplayName = "BackupRetentionService";
             this.serviceInstaller1.ServiceName = "BackupRetentionService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;

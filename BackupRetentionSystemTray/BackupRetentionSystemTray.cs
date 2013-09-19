@@ -1650,7 +1650,32 @@ namespace BackupRetention
             Application.DoEvents();
         }
 
+
+        /// <summary>
+        /// Help Menu Click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://code.google.com/p/backup-retention-service/");
+        }
+
+        /// <summary>
+        /// Launches Services Windows MMC
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void servicesConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("services.msc");
+        }
+
         #endregion
+
+        
+
+        
 
 
 

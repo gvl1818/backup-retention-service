@@ -246,8 +246,6 @@ namespace BackupRetention
             InitializeComponent();
             _evt = Common.GetEventLog;
             
-            
-            
         }
 
         /// <summary>

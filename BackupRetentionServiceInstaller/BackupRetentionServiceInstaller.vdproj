@@ -22,31 +22,31 @@
         "Entry"
         {
         "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
-        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
         "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
+        "MsmKey" = "8:_0DE730F41F4EA98D4ADAE0ECF233221D"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0DE730F41F4EA98D4ADAE0ECF233221D"
         "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0DE730F41F4EA98D4ADAE0ECF233221D"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -112,13 +112,13 @@
         "Entry"
         {
         "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -172,7 +172,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -190,25 +196,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
+        "OwnerKey" = "8:_0DE730F41F4EA98D4ADAE0ECF233221D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -413,14 +413,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_10BABB1D2C431E0B1F31F365D217D6EE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0DE730F41F4EA98D4ADAE0ECF233221D"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:AlexPilotti.FTPS.Client, Version=1.1.0.27735, Culture=neutral, PublicKeyToken=48316da1e84b328d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_10BABB1D2C431E0B1F31F365D217D6EE"
+                    "_0DE730F41F4EA98D4ADAE0ECF233221D"
                     {
                     "Name" = "8:AlexPilotti.FTPS.Client.dll"
                     "Attributes" = "3:512"
@@ -805,7 +805,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Backup Retention Service"
         "ProductCode" = "8:{242340CB-B359-4EE0-AD96-EBF24077A98F}"
-        "PackageCode" = "8:{1DB5B7AE-FB15-48A7-9D31-94350CF07F3A}"
+        "PackageCode" = "8:{A7D64F33-353F-46C3-AE01-75E72562FBC8}"
         "UpgradeCode" = "8:{13942A01-A7FC-4553-AC0C-A2A82F17C5F3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -820,7 +820,7 @@
         "Subject" = "8:"
         "ARPCONTACT" = "8:Preston Cooper"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:Manages Local Backup Storage space using retention plans,  compresses backups using 7Zip, and will Synchronize folders."
+        "ARPCOMMENTS" = "8:Manages local backup storage space using retention plans, compresses backups using 7Zip, and will synchronize folders to shares, folders or to ftp, sftp, or ftps."
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:_4C0B02D6AB4F44CB979C7CE47E95DF3E"
         "ARPIconIndex" = "3:0"
