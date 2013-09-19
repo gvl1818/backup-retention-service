@@ -52,8 +52,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BackupRetention">
-      <HintPath>..\BackupRetention\bin\Debug\BackupRetention.dll</HintPath>
+    <Reference Include="BackupRetention, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\BackupRetention\bin\Release\BackupRetention.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

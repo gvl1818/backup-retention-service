@@ -16,37 +16,37 @@
         "Entry"
         {
         "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -57,26 +57,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_241F697A165844FA83633FB76A29C523"
+        "MsmKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
-        "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "MsmKey" = "8:_241F697A165844FA83633FB76A29C523"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -93,38 +81,44 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4DC95728950D696DC7CDCD9EE68F21AA"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4DC95728950D696DC7CDCD9EE68F21AA"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4DC95728950D696DC7CDCD9EE68F21AA"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4FAC9420B0D449E7886EB74545B19A25"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -135,20 +129,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "MsmKey" = "8:_89F62414D2934618B7F3EDB520403314"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -159,44 +141,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C1E799D188259667BBA1B9318B81D084"
-        "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -219,44 +171,32 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+        "OwnerKey" = "8:_A1BA5DAD12E770A81190D421DE73B7B5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
+        "OwnerKey" = "8:_4DC95728950D696DC7CDCD9EE68F21AA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -269,30 +209,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_27C224F79EECD165EE9A2D030D486F81"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C1E799D188259667BBA1B9318B81D084"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -364,10 +280,15 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.SQL.Server.Compact.3.5"
+                    {
+                    "Name" = "8:SQL Server Compact 3.5 SP2"
+                    "ProductCode" = "8:Microsoft.SQL.Server.Compact.3.5"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -382,59 +303,59 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_19100D0CEB624DE39BEDE85AE117BFA3"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_01C2E34A612C4B9A9C07063C313AB234"
             {
             "Name" = "8:Primary output from BackupRetentionService (Active)"
             "Condition" = "8:"
-            "Object" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-            "FileType" = "3:2"
-            "InstallAction" = "3:2"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_48B58DA3_5CB3_4820_812D_6B9C295743F1"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_2FADAB28347E44A6AB8435246A43E6CC"
-            {
-            "Name" = "8:Primary output from BackupRetentionService (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-            "FileType" = "3:2"
-            "InstallAction" = "3:4"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_F87CD2F1_5FB6_4DF8_B521_58156FFFBAFB"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_BC6DF5BA6EDB440980F513762C6391EE"
-            {
-            "Name" = "8:Primary output from BackupRetentionService (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_AAC84AA0231341CCA297BC7CE9286398"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_35C7A3FF_F999_4894_995B_EB984744EBFE"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E493B34943844530B259E164D825C375"
-            {
-            "Name" = "8:Primary output from BackupRetentionService (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_AAC84AA0231341CCA297BC7CE9286398"
+            "Object" = "8:_1839C751573444A68729B56F0AEE3EC7"
             "FileType" = "3:2"
             "InstallAction" = "3:3"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_730C2DB8_6604_493D_A110_3EE4035A0BA0"
+            "Identifier" = "8:_E66104B1_7621_4455_BB32_23095B873292"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_5627F9A82E1741DC84E0F6FE4186CFA7"
+            {
+            "Name" = "8:Primary output from BackupRetentionService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_1839C751573444A68729B56F0AEE3EC7"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_4205AD25_B0B9_4DB1_B235_900CB91D6191"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_CFEDD5110413469E95195BE3BAF10A05"
+            {
+            "Name" = "8:Primary output from BackupRetentionService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_1839C751573444A68729B56F0AEE3EC7"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_7E68C8CD_46AD_4317_B782_3C8349BA4E53"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_D82899479E4B41E9BA36F9B165588044"
+            {
+            "Name" = "8:Primary output from BackupRetentionService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_1839C751573444A68729B56F0AEE3EC7"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_1969BB50_934E_4E59_A039_CBFAE7FBD692"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -563,37 +484,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_27C224F79EECD165EE9A2D030D486F81"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization.MetadataStorage, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_27C224F79EECD165EE9A2D030D486F81"
-                    {
-                    "Name" = "8:Microsoft.Synchronization.MetadataStorage.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.Synchronization.MetadataStorage.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_36475001ED1E4E9FBD0BFB58337B1CED"
             {
             "SourcePath" = "8:..\\BackupRetentionService\\RetentionConfig.xml"
@@ -634,6 +524,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4DC95728950D696DC7CDCD9EE68F21AA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Renci.SshNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4DC95728950D696DC7CDCD9EE68F21AA"
+                    {
+                    "Name" = "8:Renci.SshNet.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Renci.SshNet.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4FAC9420B0D449E7886EB74545B19A25"
             {
             "SourcePath" = "8:..\\BackupRetentionService\\Renci.SshNet License.txt"
@@ -652,37 +573,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5379844BFA40B330231809CB6363C476"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_5379844BFA40B330231809CB6363C476"
-                    {
-                    "Name" = "8:BackupRetention.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:BackupRetention.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5930837A9491D859A72079DB8B20D1B3"
@@ -736,37 +626,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_946E992E3911708BA4D98766DEFFC4A8"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Renci.SshNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_946E992E3911708BA4D98766DEFFC4A8"
-                    {
-                    "Name" = "8:Renci.SshNet.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Renci.SshNet.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_973E1E1FD3E74C03ADD75C0E5F9BC054"
             {
             "SourcePath" = "8:..\\BackupRetentionService\\CompressConfig.xml"
@@ -787,20 +646,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C1E799D188259667BBA1B9318B81D084"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A1BA5DAD12E770A81190D421DE73B7B5"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C1E799D188259667BBA1B9318B81D084"
+                    "_A1BA5DAD12E770A81190D421DE73B7B5"
                     {
-                    "Name" = "8:Microsoft.Synchronization.dll"
+                    "Name" = "8:BackupRetention.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Microsoft.Synchronization.dll"
+            "SourcePath" = "8:BackupRetention.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
@@ -878,37 +737,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Synchronization.Files, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_FDB0BECA8816E1FCF1FA147C8DBB50DE"
-                    {
-                    "Name" = "8:Microsoft.Synchronization.Files.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.Synchronization.Files.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -977,7 +805,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Backup Retention Service"
         "ProductCode" = "8:{242340CB-B359-4EE0-AD96-EBF24077A98F}"
-        "PackageCode" = "8:{79EEC9BF-66D8-4A79-B8B0-FBC87CC8521C}"
+        "PackageCode" = "8:{1DB5B7AE-FB15-48A7-9D31-94350CF07F3A}"
         "UpgradeCode" = "8:{13942A01-A7FC-4553-AC0C-A2A82F17C5F3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1097,30 +925,44 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_656BAE8EBDB8490D911C12E24DFF6424"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_176DEBFEED21401EA6DB5B236656DD72"
             {
-            "Name" = "8:Backup Retention System Tray"
+            "Name" = "8:Backup Retention Tray"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-            "Folder" = "8:_9A475F3D14304F1980FCEA76A4B5326A"
+            "Target" = "8:_89F62414D2934618B7F3EDB520403314"
+            "Folder" = "8:_7A28857A1FDD4484A7E5142C98D974B6"
             "WorkingFolder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
             "Icon" = "8:_4C0B02D6AB4F44CB979C7CE47E95DF3E"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BDDA880370144D57BC18DEC9ADFA3ED0"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_96D98EB8312E4C8D8DCE282ED4BDBB8F"
             {
-            "Name" = "8:Backup Retention System Tray"
+            "Name" = "8:Backup Retention Tray"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_E50F1F5CBD604D48A72D13B13DE5F036"
-            "Folder" = "8:_7A28857A1FDD4484A7E5142C98D974B6"
+            "Target" = "8:_89F62414D2934618B7F3EDB520403314"
+            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
+            "WorkingFolder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_EF7EA9DFB6BE4276A9EF421A6BBC4406"
+            {
+            "Name" = "8:Backup Retention Tray"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_89F62414D2934618B7F3EDB520403314"
+            "Folder" = "8:_9A475F3D14304F1980FCEA76A4B5326A"
             "WorkingFolder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
             "Icon" = "8:_4C0B02D6AB4F44CB979C7CE47E95DF3E"
             "Feature" = "8:"
@@ -1524,9 +1366,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AAC84AA0231341CCA297BC7CE9286398"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_1839C751573444A68729B56F0AEE3EC7"
             {
-            "SourcePath" = "8:..\\BackupRetentionService\\obj\\x86\\Debug\\BackupRetentionService.exe"
+            "SourcePath" = "8:..\\BackupRetentionService\\obj\\x86\\Release\\BackupRetentionService.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
@@ -1552,9 +1394,9 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E50F1F5CBD604D48A72D13B13DE5F036"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_89F62414D2934618B7F3EDB520403314"
             {
-            "SourcePath" = "8:..\\BackupRetentionSystemTray\\obj\\x86\\Debug\\BackupRetentionSystemTray.exe"
+            "SourcePath" = "8:..\\BackupRetentionSystemTray\\obj\\x86\\Release\\BackupRetentionSystemTray.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"

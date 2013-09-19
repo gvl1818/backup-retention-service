@@ -1,0 +1,10 @@
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\BackupRetention.dll.config
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\BackupRetention.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\BackupRetention.pdb
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\AlexPilotti.FTPS.Client.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\Org.Mentalis.Security.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\Renci.SshNet.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\bin\Release\SevenZipSharp.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\obj\Release\ResolveAssemblyReference.cache
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\obj\Release\BackupRetention.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetention\obj\Release\BackupRetention.pdb

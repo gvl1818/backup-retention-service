@@ -23,6 +23,7 @@ namespace BackupRetention
         public System.Collections.Generic.List<System.IO.FileInfo> AllFiles;
         private System.Object lockMirror = new System.Object();
         private System.Object lockMirrorDelete = new System.Object();
+
         /// <summary>
         /// Event Log Class
         /// </summary>
@@ -1232,7 +1233,7 @@ namespace BackupRetention
                     NewFiles = GetSourceNewFiles(lSourceFilesID, lDestinationFilesID);
 
                     
-                    //FilesDeleted = GetDeletedOrRenamed(lSourceFilesID, lDestinationFilesID);
+                    
 
                         
                     //Fix Renamed Files 
@@ -1307,6 +1308,7 @@ namespace BackupRetention
                                             if (blDelete)
                                             {
                                                 //Delete the File
+                                                _evt.WriteEntry("Sync: Mirroring File Deleted: " + Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName), System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                                 File.Delete(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName));
                                             }
                                         }
@@ -1331,9 +1333,10 @@ namespace BackupRetention
                                         }
                                         else
                                         {
-                                            //Delete the File
+                                            //Delete the Directory
                                             if (blDelete)
                                             {
+                                                _evt.WriteEntry("Sync: Mirroring files Directory Deleted: " + Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName), System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                                                 Directory.Delete(Common.WindowsPathCombine(strDestinationFolder, rfile.ShortFullName));
                                             }
                                         }
