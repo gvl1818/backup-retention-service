@@ -63,6 +63,52 @@ namespace BackupRetention
 
         }
 
+        private string _endTime = "";
+        public string EndTime
+        {
+            get
+            {
+                return _endTime;
+            }
+
+            set
+            {
+                _endTime = value;
+            }
+
+        }
+
+        private string _intervalType = "";
+        public string IntervalType
+        {
+            get
+            {
+                return _intervalType;
+            }
+
+            set
+            {
+                _intervalType = value;
+            }
+
+        }
+
+        private int _interval = 0;
+        public int EndTime
+        {
+            get
+            {
+                return _interval;
+            }
+
+            set
+            {
+                _interval = value;
+            }
+
+        }
+
+
         private bool _monday = false;
         public bool Monday
         {
@@ -441,6 +487,33 @@ namespace BackupRetention
 
         }
 
+
+        protected string Get7ZipFolder()
+        {
+
+            string str7zPath = "";
+            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\7-Zip"))
+            {
+                str7zPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\7-Zip\\7z.dll";
+            }
+            else if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\Program Files\\7-Zip"))
+            {
+                str7zPath = Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\Program Files\\7-Zip\\7z.dll";
+            }
+            else if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\Program Files (x86)\\7-Zip"))
+            {
+                str7zPath = Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\Program Files (x86)\\7-Zip\\7z.dll";
+            }
+            else
+            {
+                //_evt.WriteEntry("Compress: 7Zip Installation Not Found", System.Diagnostics.EventLogEntryType.Error, 5130, 50);
+                throw new Exception("7zip Installation Not Found.");
+            }
+            return Common.WindowsPathClean(str7zPath);
+
+        }
+
+
         /// <summary>
         /// Implements Archive Verify Settings
         /// </summary>
@@ -573,7 +646,7 @@ namespace BackupRetention
         /// <param name="blShuttingDown"></param>
         private void compressFile(ref bool blShuttingDown)
         {
-            SevenZip.SevenZipBase.SetLibraryPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\7-zip\\7z.dll");
+            
             SevenZip.SevenZipCompressor compressor = null;
             SevenZip.SevenZipExtractor extractor = null;
             Stream exreader = null;
@@ -584,6 +657,7 @@ namespace BackupRetention
 
             try
             {
+                SevenZip.SevenZipBase.SetLibraryPath(Get7ZipFolder());
                 if (SourceFolder != DestinationFolder)
                 {
                     Common.CreateDestinationFolders(SourceFolder, DestinationFolder);
@@ -814,7 +888,8 @@ namespace BackupRetention
         /// <param name="blShuttingDown"></param>
         private void compressFolder(ref bool blShuttingDown)
         {
-            SevenZip.SevenZipBase.SetLibraryPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\7-zip\\7z.dll");
+            
+            
             SevenZip.SevenZipCompressor compressor = null;
             SevenZip.SevenZipExtractor extractor = null;
             Stream exreader = null;
@@ -825,6 +900,7 @@ namespace BackupRetention
             
             try
             {
+                SevenZip.SevenZipBase.SetLibraryPath(Get7ZipFolder());
                 string[] Directories = Directory.GetDirectories(SourceFolder);
 
                 //Loop through every local directory
@@ -1037,7 +1113,7 @@ namespace BackupRetention
         /// <param name="blShuttingDown"></param>
         private void extract(ref bool blShuttingDown)
         {
-            SevenZip.SevenZipBase.SetLibraryPath(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\7-zip\\7z.dll");
+           
             SevenZip.SevenZipExtractor extractor = null;
             Stream exreader = null;
             
@@ -1046,6 +1122,7 @@ namespace BackupRetention
 
             try
             {
+                SevenZip.SevenZipBase.SetLibraryPath(Get7ZipFolder());
                 AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown);
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {

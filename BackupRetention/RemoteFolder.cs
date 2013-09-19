@@ -81,6 +81,51 @@ namespace BackupRetention
 
         }
 
+        private string _endTime = "";
+        public string EndTime
+        {
+            get
+            {
+                return _endTime;
+            }
+
+            set
+            {
+                _endTime = value;
+            }
+
+        }
+
+        private string _intervalType = "";
+        public string IntervalType
+        {
+            get
+            {
+                return _intervalType;
+            }
+
+            set
+            {
+                _intervalType = value;
+            }
+
+        }
+
+        private int _interval = 0;
+        public int EndTime
+        {
+            get
+            {
+                return _interval;
+            }
+
+            set
+            {
+                _interval = value;
+            }
+
+        }
+
         private bool _monday = false;
         public bool Monday
         {

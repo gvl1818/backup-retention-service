@@ -101,6 +101,13 @@ namespace BackupRetention
         ,None
     }
 
+    public enum IntervalType
+    {
+        Time
+        ,Hourly
+        ,Daily
+        ,Monthly
+    }
     public interface IFolderConfig
     {
         int ID
@@ -110,6 +117,24 @@ namespace BackupRetention
         }
 
         string Time
+        {
+            get;
+            set;
+        }
+
+        string EndTime
+        {
+            get;
+            set;
+        }
+
+        string IntervalType
+        {
+            get;
+            set;
+        }
+
+        int Interval
         {
             get;
             set;
@@ -181,9 +206,6 @@ namespace BackupRetention
         out ulong lpFreeBytesAvailable,
         out ulong lpTotalNumberOfBytes,
         out ulong lpTotalNumberOfFreeBytes);
-
-
-        
 
 
         public static EventLog _evt = null;

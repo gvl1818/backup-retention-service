@@ -65,6 +65,51 @@ namespace BackupRetention
 
         }
 
+        private string _endTime = "";
+        public string EndTime
+        {
+            get
+            {
+                return _endTime;
+            }
+
+            set
+            {
+                _endTime = value;
+            }
+
+        }
+
+        private string _intervalType = "";
+        public string IntervalType
+        {
+            get
+            {
+                return _intervalType;
+            }
+
+            set
+            {
+                _intervalType = value;
+            }
+
+        }
+
+        private int _interval = 0;
+        public int EndTime
+        {
+            get
+            {
+                return _interval;
+            }
+
+            set
+            {
+                _interval = value;
+            }
+
+        }
+
         private bool _monday = false;
         public bool Monday
         {
@@ -332,6 +377,8 @@ namespace BackupRetention
             ID = Common.FixNullInt32(row["ID"]);
             Enabled = Common.FixNullbool(row["Enabled"]);
             Time = Common.FixNullstring(row["Time"]);
+            //left off here!
+            EndTime=Common.FixNullstring(row["EndTime"]);
             Monday = Common.FixNullbool(row["Monday"]);
             Tuesday = Common.FixNullbool(row["Tuesday"]);
             Wednesday = Common.FixNullbool(row["Wednesday"]);
