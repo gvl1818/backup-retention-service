@@ -96,8 +96,8 @@ namespace BackupRetention
 
         }
 
-        private string _intervalType = "";
-        public string IntervalType
+        private IntervalTypes _intervalType = IntervalTypes.Daily;
+        public IntervalTypes IntervalType
         {
             get
             {
@@ -111,8 +111,8 @@ namespace BackupRetention
 
         }
 
-        private int _interval = 0;
-        public int EndTime
+        private long _interval = 0;
+        public long Interval
         {
             get
             {
@@ -215,20 +215,6 @@ namespace BackupRetention
             {
                 _sunday = value;
             }
-        }
-
-        private int _dayOfMonth = 0;
-        public int DayOfMonth
-        {
-            get
-            {
-                return _dayOfMonth;
-            }
-            set
-            {
-                _dayOfMonth = value;
-            }
-
         }
 
         private bool _enabled = true;
@@ -484,6 +470,9 @@ namespace BackupRetention
             //Create Columns
             dtRemote.Columns.Add(new DataColumn("Enabled", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Time", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("EndTime", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("IntervalType", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("Interval", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Monday", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Tuesday", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Wednesday", typeof(String)));
@@ -491,7 +480,6 @@ namespace BackupRetention
             dtRemote.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Sunday", typeof(String)));
-            dtRemote.Columns.Add(new DataColumn("DayOfMonth", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Host", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Protocol", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Port", typeof(Int32)));
@@ -507,6 +495,8 @@ namespace BackupRetention
             dtRemote.Columns.Add(new DataColumn("Timeout", typeof(Int32)));
 
             dtRemote.Columns["Enabled"].DefaultValue = "true";
+            dtRemote.Columns["IntervalType"].DefaultValue = "Daily";
+            dtRemote.Columns["Interval"].DefaultValue = "0";
             dtRemote.Columns["Monday"].DefaultValue = "true";
             dtRemote.Columns["Tuesday"].DefaultValue = "true";
             dtRemote.Columns["Wednesday"].DefaultValue = "true";
@@ -514,7 +504,7 @@ namespace BackupRetention
             dtRemote.Columns["Friday"].DefaultValue = "true";
             dtRemote.Columns["Saturday"].DefaultValue = "true";
             dtRemote.Columns["Sunday"].DefaultValue = "true";
-            dtRemote.Columns["DayOfMonth"].DefaultValue = "0";
+           
             dtRemote.Columns["Time"].DefaultValue = "00:00";
             dtRemote.Columns["Protocol"].DefaultValue = "SFTP";
             dtRemote.Columns["TransferDirection"].DefaultValue = "Upload";
@@ -552,6 +542,16 @@ namespace BackupRetention
             ID = Common.FixNullInt32(row["ID"]);
             Enabled = Common.FixNullbool(row["Enabled"]);
             Time = Common.FixNullstring(row["Time"]);
+            EndTime = Common.FixNullstring(row["EndTime"]);
+            try
+            {
+                IntervalType = (IntervalTypes)System.Enum.Parse(typeof(IntervalTypes), Common.FixNullstring(row["IntervalType"]));
+            }
+            catch (Exception)
+            {
+                IntervalType = IntervalTypes.Daily;
+            }
+            Interval = Common.FixNulllong(row["Interval"]);
             Monday = Common.FixNullbool(row["Monday"]);
             Tuesday = Common.FixNullbool(row["Tuesday"]);
             Wednesday = Common.FixNullbool(row["Wednesday"]);
@@ -559,7 +559,7 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
-            DayOfMonth = Common.FixNullInt32(row["DayOfMonth"]);
+            
             Host = Common.FixNullstring(row["Host"]);
             str = Common.FixNullstring(row["Protocol"]);
             try

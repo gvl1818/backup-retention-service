@@ -101,10 +101,9 @@ namespace BackupRetention
         ,None
     }
 
-    public enum IntervalType
+    public enum IntervalTypes
     {
-        Time
-        ,Hourly
+        Hourly
         ,Daily
         ,Monthly
     }
@@ -128,13 +127,13 @@ namespace BackupRetention
             set;
         }
 
-        string IntervalType
+        IntervalTypes IntervalType
         {
             get;
             set;
         }
 
-        int Interval
+        long Interval
         {
             get;
             set;
@@ -177,12 +176,6 @@ namespace BackupRetention
         }
 
         bool Sunday
-        {
-            get;
-            set;
-        }
-
-        int DayOfMonth
         {
             get;
             set;

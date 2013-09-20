@@ -93,6 +93,7 @@
   <ItemGroup>
     <Content Include="AlexPilotti.FTPS.Client License.txt" />
     <Content Include="AlexPilotti.FTPS.Client.dll" />
+    <Content Include="Backup Retention License.txt" />
     <Content Include="BackupRetention.sdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

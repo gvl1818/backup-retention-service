@@ -1072,7 +1072,25 @@ namespace BackupRetention
                         e.Cancel = true;
                     }
                 }
-                else if (dgvRetention.Columns[e.ColumnIndex].HeaderText == "DayOfMonth")
+                else if (dgvRetention.Columns[e.ColumnIndex].HeaderText == "StartTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvRetention.Columns[e.ColumnIndex].HeaderText == "EndTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvRetention.Columns[e.ColumnIndex].HeaderText == "Interval")
                 {
                     if (!CellEventArgIsNumeric2(ref e))
                     {
@@ -1122,7 +1140,25 @@ namespace BackupRetention
                         e.Cancel = true;
                     }
                 }
-                else if (dgvCompress.Columns[e.ColumnIndex].HeaderText == "DayOfMonth")
+                else if (dgvCompress.Columns[e.ColumnIndex].HeaderText == "StartTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvCompress.Columns[e.ColumnIndex].HeaderText == "EndTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvCompress.Columns[e.ColumnIndex].HeaderText == "Interval")
                 {
                     if (!CellEventArgIsNumeric2(ref e))
                     {
@@ -1161,7 +1197,25 @@ namespace BackupRetention
                             e.Cancel = true;
                         }
                     }
-                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "DayOfMonth")
+                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "StartTime")
+                    {
+                        //validates text boxes that are supposed to be a military time 00:00
+                        if (!CellEventArgIsTime(ref e))
+                        {
+                            MessageBox.Show("You have to enter numbers or a colon only");
+                            e.Cancel = true;
+                        }
+                    }
+                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "EndTime")
+                    {
+                        //validates text boxes that are supposed to be a military time 00:00
+                        if (!CellEventArgIsTime(ref e))
+                        {
+                            MessageBox.Show("You have to enter numbers or a colon only");
+                            e.Cancel = true;
+                        }
+                    }
+                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "Interval")
                     {
                         if (!CellEventArgIsNumeric2(ref e))
                         {
@@ -1213,7 +1267,7 @@ namespace BackupRetention
                         e.Cancel = true;
                     }
                 }
-                else if (dgvRemote.Columns[e.ColumnIndex].HeaderText == "Time")
+                else if (dgvRemote.Columns[e.ColumnIndex].HeaderText == "StartTime")
                 {
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
@@ -1222,9 +1276,18 @@ namespace BackupRetention
                         e.Cancel = true;
                     }
                 }
-                else if (dgvRemote.Columns[e.ColumnIndex].HeaderText == "DayOfMonth")
+                else if (dgvRemote.Columns[e.ColumnIndex].HeaderText == "EndTime")
                 {
-                    if (!CellEventArgIsNumeric2(ref e) )
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvRemote.Columns[e.ColumnIndex].HeaderText == "Interval")
+                {
+                    if (!CellEventArgIsNumeric2(ref e))
                     {
                         MessageBox.Show("You have to enter numbers only");
                         e.Cancel = true;

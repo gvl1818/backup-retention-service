@@ -67,8 +67,8 @@ namespace BackupRetention
 
         }
 
-        private string _intervalType = "";
-        public string IntervalType
+        private IntervalTypes _intervalType = IntervalTypes.Daily;
+        public IntervalTypes IntervalType
         {
             get
             {
@@ -82,8 +82,8 @@ namespace BackupRetention
 
         }
 
-        private int _interval = 0;
-        public int EndTime
+        private long _interval = 0;
+        public long Interval
         {
             get
             {
@@ -186,20 +186,6 @@ namespace BackupRetention
             {
                 _sunday = value;
             }
-        }
-
-        private int _dayOfMonth = 0;
-        public int DayOfMonth
-        {
-            get
-            {
-                return _dayOfMonth;
-            }
-            set
-            {
-                _dayOfMonth = value;
-            }
-
         }
 
         private bool _enabled = false;
@@ -373,6 +359,16 @@ namespace BackupRetention
             ID = Common.FixNullInt32(row["ID"]);
             Enabled = Common.FixNullbool(row["Enabled"]);
             Time = Common.FixNullstring(row["Time"]);
+            EndTime = Common.FixNullstring(row["EndTime"]);
+            try
+            {
+                IntervalType = (IntervalTypes)System.Enum.Parse(typeof(IntervalTypes), Common.FixNullstring(row["IntervalType"]));
+            }
+            catch (Exception)
+            {
+                IntervalType = IntervalTypes.Daily;
+            }
+            Interval = Common.FixNulllong(row["Interval"]);
             Monday = Common.FixNullbool(row["Monday"]);
             Tuesday = Common.FixNullbool(row["Tuesday"]);
             Wednesday = Common.FixNullbool(row["Wednesday"]);
@@ -380,7 +376,7 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
-            DayOfMonth = Common.FixNullInt32(row["DayOfMonth"]);
+            
             BackupFolder = Common.FixNullstring(row["BackupFolder"]);
             MinFileCount = Common.FixNullInt32(row["MinFileCount"]);
             str = Common.FixNullstring(row["DayOfWeekToKeep"]);
@@ -449,6 +445,9 @@ namespace BackupRetention
             //Create Columns
             dtRetentionConfig.Columns.Add(new DataColumn("Enabled", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Time", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("EndTime", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("IntervalType", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("Interval", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Monday", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Tuesday", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Wednesday", typeof(String)));
@@ -456,7 +455,6 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Sunday", typeof(String)));
-            dtRetentionConfig.Columns.Add(new DataColumn("DayOfMonth", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("BackupFolder", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("MinFileCount", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("DayOfWeekToKeep", typeof(String)));
@@ -466,6 +464,8 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("RetentionAlgorithm", typeof(String)));
 
             dtRetentionConfig.Columns["Enabled"].DefaultValue = "true";
+            dtRetentionConfig.Columns["IntervalType"].DefaultValue = "Daily";
+            dtRetentionConfig.Columns["Interval"].DefaultValue = "0";
             dtRetentionConfig.Columns["Monday"].DefaultValue = "true";
             dtRetentionConfig.Columns["Tuesday"].DefaultValue = "true";
             dtRetentionConfig.Columns["Wednesday"].DefaultValue = "true";
@@ -473,7 +473,7 @@ namespace BackupRetention
             dtRetentionConfig.Columns["Friday"].DefaultValue = "true";
             dtRetentionConfig.Columns["Saturday"].DefaultValue = "true";
             dtRetentionConfig.Columns["Sunday"].DefaultValue = "true";
-            dtRetentionConfig.Columns["DayOfMonth"].DefaultValue = "0";
+            
             dtRetentionConfig.Columns["MinFileCount"].DefaultValue = 10;
             dtRetentionConfig.Columns["DayOfWeekToKeep"].DefaultValue = "Monday";
             dtRetentionConfig.Columns["DailyMaxDaysOld"].DefaultValue = 7;

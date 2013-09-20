@@ -69,11 +69,6 @@ namespace BackupRetention
 
         #region "Properties"
 
-
-        
-
-
-
         
 
         private long _serviceInterval = ServiceIntervalDefault;
@@ -433,18 +428,31 @@ namespace BackupRetention
         /// </summary>
         /// <param name="strExecutionTime"></param>
         /// <returns></returns>
-        public bool TimeToExecute(string strExecutionTime)
+        public bool TimeToExecute(IFolderConfig folder)
         {
-            
+            string strExecutionTime = "";
+            bool blTimeStart = false;
+            bool blFinalTimeEnd = false;
+            TimeSpan timeStart;
+            TimeSpan timeEnd;
+            TimeSpan FinalTimeEnd;
+            int intIntervalSecondsDoubled;
+            int intIntervalDoubled;
+            int intHours = 0;
+            int intMinutes = 0;
             try
             {
+
+
+                strExecutionTime = folder.Time;
                 TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
+                
                 //Interval in Minutes Doubled and Subtracted by 1 so that the time window code will only execute once
-                int intIntervalSecondsDoubled = (int) ((ServiceInterval) / 1000 ) * 2;
-                intIntervalSecondsDoubled -= 1;  
+                intIntervalSecondsDoubled = (int)((ServiceInterval) / 1000) * 2;
+                intIntervalSecondsDoubled -= 2;
 
-                int intIntervalDoubled = (int) ((ServiceInterval) / 1000 / 60) * 2;
+                intIntervalDoubled = (int)((ServiceInterval) / 1000 / 60) * 2;
                 if (intIntervalSecondsDoubled <= 60000)
                 {
                     intIntervalDoubled = 0;
@@ -453,38 +461,80 @@ namespace BackupRetention
                 {
                     intIntervalSecondsDoubled = 0;
                 }
+                        
+                blTimeStart = TimeSpan.TryParse(strExecutionTime, out timeStart);
 
-                TimeSpan timeStart;
-                TimeSpan.TryParse(strExecutionTime, out timeStart);
-
-                TimeSpan timeEnd = timeStart + new TimeSpan(0, intIntervalDoubled, intIntervalSecondsDoubled);
-
-
-                if (currentTime >= timeStart && currentTime <= timeEnd) 
+                if (blTimeStart)
                 {
-                    return true;
+                    timeEnd = timeStart + new TimeSpan(0, intIntervalDoubled, intIntervalSecondsDoubled);
+                }
+                else
+                {
+                    //No Time to Start Specified
+                    return false;
+                }
+
+                blFinalTimeEnd = TimeSpan.TryParse(folder.EndTime, out FinalTimeEnd);
+
+                if (blTimeStart && currentTime >= timeStart && (currentTime <= timeEnd || (folder.IntervalType == IntervalTypes.Hourly )) && (!blFinalTimeEnd || currentTime <= FinalTimeEnd))
+                {
+                    switch (folder.IntervalType)
+                    {
+                        case IntervalTypes.Hourly:
+                            //Hourly Repetitive Interval
+
+                            //folder.Interval is in Minutes for Hourly
+
+                            intHours = (int)(folder.Interval / (long)60);
+                            intHours = intHours % 24;
+
+                            intMinutes = (int)((double)folder.Interval % (double)60.0);
+                           
+                            if ((((double)currentTime.Minutes % (double)intMinutes) == 0) && (intHours == 0 || ((double)currentTime.Hours % (double)intHours) == 0))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                                    
+                            
+                        default:   //Daily or Monthly the repetitive time doesn't matter, should only execute once
+                            return true;
+                            
+                    }
+                              
                 }
                 else
                 {
                     return false;
                 }
+
+                
             }
             catch (Exception ex)
             {
                 _evt.WriteEntry(ex.Message);
                 return false;
             }
+               
 
         }
 
+        /// <summary>
+        /// Nth Day of the Month for example the 3rd Monday of the Month
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
         private bool NthDayOfMonth(IFolderConfig folder)
         {
             DateTime today = DateTime.Now;
             bool blExecuteToday = false;
             int n = 0;
-            n = Math.Abs(folder.DayOfMonth);
+            n = (int)Math.Abs(folder.Interval);
 
-            if (DayToExecute(folder) && folder.DayOfMonth < 0)
+            if (DayToExecute(folder) && folder.Interval < 0 && folder.IntervalType == IntervalTypes.Monthly)
             {   
                 return (today.Day - 1) / 7 == (n - 1);
             }
@@ -492,18 +542,28 @@ namespace BackupRetention
         }
 
         
-
+        /// <summary>
+        /// Day of the Month to Execute for example the 5th day of the month or the 20th of the month
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
         public bool DayOfMonthToExecute(IFolderConfig folder)
         {
             DateTime today = DateTime.Now;
             bool blExecuteToday = false;
-            if (today.Day == folder.DayOfMonth && folder.DayOfMonth > 0)
+            if (today.Day == folder.Interval && folder.Interval > 0 && folder.IntervalType == IntervalTypes.Monthly)
             {
                 blExecuteToday = true;
             }
             return blExecuteToday;
         }
 
+
+        /// <summary>
+        /// Day to Execute for example if Monday is selected and Today is Monday then this returns true
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
         public bool DayToExecute(IFolderConfig folder)
         {
             DateTime today =DateTime.Now;
@@ -560,6 +620,9 @@ namespace BackupRetention
 
 
         private System.Object lockSync = new System.Object();
+        /// <summary>
+        /// Thread Procedure for Synchronizing LAN Folder and sub folder Contents
+        /// </summary>
         public void Sync()
         {
             lock (lockSync)
@@ -570,7 +633,7 @@ namespace BackupRetention
                     SyncFolder SFolder = new SyncFolder(row);
                     if (SFolder.Enabled)
                     {
-                        if (string.IsNullOrEmpty(SFolder.Time) || TimeToExecute(SFolder.Time))
+                        if (string.IsNullOrEmpty(SFolder.Time) || TimeToExecute(SFolder))
                         {
                             if (DayToExecute(SFolder) || DayOfMonthToExecute(SFolder) || NthDayOfMonth(SFolder))
                             {
@@ -592,6 +655,9 @@ namespace BackupRetention
         }
 
         private System.Object lockRemoteSync = new System.Object();
+        /// <summary>
+        /// Thread Procedure for Remotely synchronizing folders and subfolder contents to a remote ftp,ftps, or sftp site
+        /// </summary>
         public void RemoteSync()
         {
             lock (lockRemoteSync)
@@ -602,7 +668,7 @@ namespace BackupRetention
                     RemoteFolder RemFolder = new RemoteFolder(row);
                     if (RemFolder.Enabled)
                     {
-                        if (string.IsNullOrEmpty(RemFolder.Time) || TimeToExecute(RemFolder.Time))
+                        if (string.IsNullOrEmpty(RemFolder.Time) || TimeToExecute(RemFolder))
                         {
                             if (DayToExecute(RemFolder) || DayOfMonthToExecute(RemFolder) || NthDayOfMonth(RemFolder))
                             {
@@ -624,6 +690,9 @@ namespace BackupRetention
         }
 
         private System.Object lockRetention = new System.Object();
+        /// <summary>
+        /// Thread Procedure for Backup Retention algorithm
+        /// </summary>
         public void Retention()
         {
             lock (lockRetention)
@@ -636,7 +705,7 @@ namespace BackupRetention
                     RetentionFolder RFolder = new RetentionFolder(row);
                     if (RFolder.Enabled)
                     {
-                        if (string.IsNullOrEmpty(RFolder.Time) || TimeToExecute(RFolder.Time))
+                        if (string.IsNullOrEmpty(RFolder.Time) || TimeToExecute(RFolder))
                         {
                             if (DayToExecute(RFolder) || DayOfMonthToExecute(RFolder) || NthDayOfMonth(RFolder))
                             {
@@ -651,7 +720,9 @@ namespace BackupRetention
         }
 
         private System.Object lockCompress = new System.Object();
-
+        /// <summary>
+        /// File Compression thread for files or folder and sub folder contents
+        /// </summary>
         public void Compress()
         {
             
@@ -663,7 +734,7 @@ namespace BackupRetention
                     CompressFolder CFolder = new CompressFolder(row);
                     if (CFolder.Enabled)
                     {
-                        if (string.IsNullOrEmpty(CFolder.Time) || TimeToExecute(CFolder.Time))
+                        if (string.IsNullOrEmpty(CFolder.Time) || TimeToExecute(CFolder))
                         {
                             if (DayToExecute(CFolder) || DayOfMonthToExecute(CFolder) || NthDayOfMonth(CFolder))
                             {

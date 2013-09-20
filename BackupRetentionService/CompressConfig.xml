@@ -4,6 +4,9 @@
     <ID>1</ID>
     <Enabled>false</Enabled>
     <Time></Time>
+    <EndTime></EndTime>
+    <IntervalType>Daily</IntervalType>
+    <Interval>0</Interval>
     <Monday>false</Monday>
     <Tuesday>false</Tuesday>
     <Wednesday>false</Wednesday>

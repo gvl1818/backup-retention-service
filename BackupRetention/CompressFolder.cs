@@ -78,8 +78,8 @@ namespace BackupRetention
 
         }
 
-        private string _intervalType = "";
-        public string IntervalType
+        private IntervalTypes _intervalType = IntervalTypes.Daily;
+        public IntervalTypes IntervalType
         {
             get
             {
@@ -93,8 +93,8 @@ namespace BackupRetention
 
         }
 
-        private int _interval = 0;
-        public int EndTime
+        private long _interval = 0;
+        public long Interval
         {
             get
             {
@@ -200,19 +200,7 @@ namespace BackupRetention
             }
         }
 
-        private int _dayOfMonth = 0;
-        public int DayOfMonth
-        {
-            get
-            {
-                return _dayOfMonth;
-            }
-            set
-            {
-                _dayOfMonth = value;
-            }
-
-        }
+        
 
         private bool _enabled = false;
         public bool Enabled
@@ -369,6 +357,16 @@ namespace BackupRetention
             ID = Common.FixNullInt32(row["ID"]);
             Enabled = Common.FixNullbool(row["Enabled"]);
             Time = Common.FixNullstring(row["Time"]);
+            EndTime = Common.FixNullstring(row["EndTime"]);
+            try
+            {
+                IntervalType = (IntervalTypes)System.Enum.Parse(typeof(IntervalTypes), Common.FixNullstring(row["IntervalType"]));
+            }
+            catch (Exception)
+            {
+                IntervalType = IntervalTypes.Daily;
+            }
+            Interval = Common.FixNulllong(row["Interval"]);
             Monday = Common.FixNullbool(row["Monday"]);
             Tuesday = Common.FixNullbool(row["Tuesday"]);
             Wednesday = Common.FixNullbool(row["Wednesday"]);
@@ -376,7 +374,7 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
-            DayOfMonth = Common.FixNullInt32(row["DayOfMonth"]);
+            
             str = Common.FixNullstring(row["Compress"]);
             try
             {
@@ -453,6 +451,9 @@ namespace BackupRetention
             //Create Columns
             dtCompressConfig.Columns.Add(new DataColumn("Enabled", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Time", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("EndTime", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("IntervalType", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("Interval", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Monday", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Tuesday", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Wednesday", typeof(String)));
@@ -460,7 +461,6 @@ namespace BackupRetention
             dtCompressConfig.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Sunday", typeof(String)));
-            dtCompressConfig.Columns.Add(new DataColumn("DayOfMonth", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Compress", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("SourceOption", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("SourceFolder", typeof(String)));
@@ -471,6 +471,8 @@ namespace BackupRetention
             dtCompressConfig.Columns.Add(new DataColumn("StartCompressingAfterDays", typeof(String)));
             
             dtCompressConfig.Columns["Enabled"].DefaultValue = "true";
+            dtCompressConfig.Columns["IntervalType"].DefaultValue = "Daily";
+            dtCompressConfig.Columns["Interval"].DefaultValue = "0";
             dtCompressConfig.Columns["Monday"].DefaultValue = "true";
             dtCompressConfig.Columns["Tuesday"].DefaultValue = "true";
             dtCompressConfig.Columns["Wednesday"].DefaultValue = "true";
@@ -478,7 +480,7 @@ namespace BackupRetention
             dtCompressConfig.Columns["Friday"].DefaultValue = "true";
             dtCompressConfig.Columns["Saturday"].DefaultValue = "true";
             dtCompressConfig.Columns["Sunday"].DefaultValue = "true";
-            dtCompressConfig.Columns["DayOfMonth"].DefaultValue = "0";
+            
             dtCompressConfig.Columns["CompressionLvl"].DefaultValue = "Normal";
             dtCompressConfig.Columns["KeepOriginalFile"].DefaultValue = "true";
             dtCompressConfig.Columns["StartCompressingAfterDays"].DefaultValue = "2";
