@@ -449,10 +449,10 @@ namespace BackupRetention
 
                 
                 //Interval in Minutes Doubled and Subtracted by 1 so that the time window code will only execute once
-                intIntervalSecondsDoubled = (int)((ServiceInterval) / 1000) * 2;
-                intIntervalSecondsDoubled -= 2;
+                intIntervalSecondsDoubled = (int)((ServiceInterval) / 1000);
+                intIntervalSecondsDoubled += 1;
 
-                intIntervalDoubled = (int)((ServiceInterval) / 1000 / 60) * 2;
+                intIntervalDoubled = (int)((ServiceInterval) / 1000 / 60);
                 if (intIntervalSecondsDoubled <= 60000)
                 {
                     intIntervalDoubled = 0;

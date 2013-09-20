@@ -1197,34 +1197,35 @@ namespace BackupRetention
                             e.Cancel = true;
                         }
                     }
-                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "StartTime")
-                    {
-                        //validates text boxes that are supposed to be a military time 00:00
-                        if (!CellEventArgIsTime(ref e))
-                        {
-                            MessageBox.Show("You have to enter numbers or a colon only");
-                            e.Cancel = true;
-                        }
-                    }
-                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "EndTime")
-                    {
-                        //validates text boxes that are supposed to be a military time 00:00
-                        if (!CellEventArgIsTime(ref e))
-                        {
-                            MessageBox.Show("You have to enter numbers or a colon only");
-                            e.Cancel = true;
-                        }
-                    }
-                    else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "Interval")
-                    {
-                        if (!CellEventArgIsNumeric2(ref e))
-                        {
-                            MessageBox.Show("You have to enter numbers only");
-                            e.Cancel = true;
-                        }
-                    }
-
                 }
+                else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "StartTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "EndTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers or a colon only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "Interval")
+                {
+                    if (!CellEventArgIsNumeric2(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers only");
+                        e.Cancel = true;
+                    }
+                }
+
+                
             }
             catch (Exception ex)
             {
