@@ -547,11 +547,20 @@ namespace BackupRetention
 
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
+                if (blShuttingDown)
+                {
+                    throw new Exception("Shutting Down");
+                }
+
                 if (AllFiles != null)
                 {
 
                     foreach (System.IO.FileInfo file1 in AllFiles)
                     {
+                        if (blShuttingDown)
+                        {
+                            throw new Exception("Shutting Down");
+                        }
                         try
                         {
                             if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
@@ -716,8 +725,17 @@ namespace BackupRetention
                 FilesDeleted.Clear();
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
+                if (blShuttingDown)
+                {
+                    throw new Exception("Shutting Down");
+                }
+
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     try
                     {
                         if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
@@ -779,14 +797,14 @@ namespace BackupRetention
                     }
                     catch (Exception ex)
                     {
-                        _evt.WriteEntry(ex.Message);
+                        _evt.WriteEntry("Retention Error: " + ex.Message);
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                _evt.WriteEntry(ex.Message);
+                _evt.WriteEntry("Retention Error: " + ex.Message);
             }
             _evt.WriteEntry("Retention: Keep Daily Complete Files Deleted: " + FilesDeleted.Count, System.Diagnostics.EventLogEntryType.Information, 6000, 60);
                 
@@ -806,8 +824,17 @@ namespace BackupRetention
                 FilesDeleted.Clear();
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
+                if (blShuttingDown)
+                {
+                    throw new Exception("Shutting Down");
+                }
+
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     try
                     {
                         if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
@@ -871,7 +898,7 @@ namespace BackupRetention
                     }
                     catch (Exception ex)
                     {
-                        _evt.WriteEntry(ex.Message);
+                        _evt.WriteEntry("Retention Error Weekly: " + ex.Message);
 
                     }
 
@@ -879,7 +906,7 @@ namespace BackupRetention
             }
             catch (Exception ex)
             {
-                _evt.WriteEntry(ex.Message);
+                _evt.WriteEntry("Retention Error Weekly: " + ex.Message);
             }
             _evt.WriteEntry("Retention: Keep Weekly Complete Files Deleted: " + FilesDeleted.Count, System.Diagnostics.EventLogEntryType.Information, 6000, 60);
             
@@ -899,10 +926,17 @@ namespace BackupRetention
                 FilesDeleted.Clear();
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
-
+                if (blShuttingDown)
+                {
+                    throw new Exception("Shutting Down");
+                }
 
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     try
                     {
                         if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
@@ -966,7 +1000,7 @@ namespace BackupRetention
                     }
                     catch (Exception ex)
                     {
-                        _evt.WriteEntry(ex.Message);
+                        _evt.WriteEntry("Retention Error Monthly: " + ex.Message);
 
                     }
 
@@ -974,7 +1008,7 @@ namespace BackupRetention
             }
             catch (Exception ex)
             {
-                _evt.WriteEntry(ex.Message);
+                _evt.WriteEntry("Retention Error: " + ex.Message);
             }
             _evt.WriteEntry("Retention: Keep Monthly Complete Files Deleted: " + FilesDeleted.Count, System.Diagnostics.EventLogEntryType.Information, 6000, 60);
             

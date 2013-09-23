@@ -664,7 +664,10 @@ namespace BackupRetention
                 {
                     Common.CreateDestinationFolders(SourceFolder, DestinationFolder);
                 }
-
+                if (blShuttingDown)
+                {
+                    throw new Exception("Shutting Down");
+                }
                 //Loop through every file
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
@@ -677,7 +680,7 @@ namespace BackupRetention
                     if (blShuttingDown)
                     {
                         _evt.WriteEntry("Compress: Shutting Down, about to Compress: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 5130, 50);
-                        return;
+                        throw new Exception("Shutting Down");
                     }
 
                     //Skip over already compressed files

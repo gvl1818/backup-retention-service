@@ -1663,7 +1663,10 @@ namespace BackupRetention
                     DestinationFiles = Common.WalkDirectory(strDestinationFolder, ref blShuttingDown);
                     DestFolders = Common.GetAllDirectories(strDestinationFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Crawling DestinationFolder: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
 
                     //This will be used to compare files from the source and destination
                     lSourceFilesID=Save("MirrorSourceFiles");
@@ -1676,7 +1679,10 @@ namespace BackupRetention
                     Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, strDestinationFolder);
                     Common.SaveFolderInfoList(lDestinationFilesID, DestFolders, strDestinationFolder);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                   
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     //FilesDelOrRenamed=GetMirrorRenamedOrDeleted(lSourceFilesID, strSourceFolder,lDestinationFilesID, strDestinationFolder);
 
 
@@ -1746,7 +1752,10 @@ namespace BackupRetention
                     //Missing or Modified Files after Deletions have been removed from the database
                     FilesMissing = GetMissingOrModifiedFiles(lSourceFilesID, lDestinationFilesID);
 
-
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     //Copy Files that are in the SourceFolder that are not in the DestinationFolder or if file is different
                     foreach (RemoteFile rsourceFile in FilesMissing)
                     {
