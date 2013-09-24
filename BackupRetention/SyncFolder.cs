@@ -1672,12 +1672,12 @@ namespace BackupRetention
                     lSourceFilesID=Save("MirrorSourceFiles");
                     lDestinationFilesID = Save("MirrorDestinationFiles");
                     _evt.WriteEntry("Sync: Mirroring Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
-                    Common.SaveFileInfoList(lSourceFilesID, SourceFiles, strSourceFolder);
-                    Common.SaveFolderInfoList(lSourceFilesID, SrcFolders, strSourceFolder);
+                    Common.SaveFileInfoList(lSourceFilesID, SourceFiles, strSourceFolder, ref blShuttingDown);
+                    Common.SaveFolderInfoList(lSourceFilesID, SrcFolders, strSourceFolder, ref blShuttingDown);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving SourceFolder files to db: " + strSourceFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);          
                     _evt.WriteEntry("Sync: Mirroring Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
-                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, strDestinationFolder);
-                    Common.SaveFolderInfoList(lDestinationFilesID, DestFolders, strDestinationFolder);
+                    Common.SaveFileInfoList(lDestinationFilesID, DestinationFiles, strDestinationFolder, ref blShuttingDown);
+                    Common.SaveFolderInfoList(lDestinationFilesID, DestFolders, strDestinationFolder, ref blShuttingDown);
                     _evt.WriteEntry("Sync: Mirroring Finished Saving DestinationFolder files to db: " + strDestinationFolder, System.Diagnostics.EventLogEntryType.Information, 4070, 45);
                     if (blShuttingDown)
                     {

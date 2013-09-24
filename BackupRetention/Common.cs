@@ -1046,12 +1046,16 @@ namespace BackupRetention
         /// </summary>
         /// <param name="lFolderActionID"></param>
         /// <param name="flist"></param>
-        public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist, string strSource)
+        public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist, string strSource, ref bool blShuttingDown)
         {
             if (flist != null && lFolderActionID > 0)
             {
                 foreach (FileInfo file in flist)
                 {
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     RemoteFile rfile = new RemoteFile(file, strSource);
                     rfile.FolderActionID = lFolderActionID;
                     rfile.Save();
@@ -1066,12 +1070,16 @@ namespace BackupRetention
         /// <param name="lFolderActionID"></param>
         /// <param name="flist"></param>
         /// <param name="strSource"></param>
-        public static void SaveFolderInfoList(long lFolderActionID, System.Collections.Generic.List<System.IO.DirectoryInfo> flist, string strSource)
+        public static void SaveFolderInfoList(long lFolderActionID, System.Collections.Generic.List<System.IO.DirectoryInfo> flist, string strSource,ref bool blShuttingDown)
         {
             if (flist != null && lFolderActionID > 0)
             {
                 foreach (DirectoryInfo dir in flist)
                 {
+                    if (blShuttingDown)
+                    {
+                        throw new Exception("Shutting Down");
+                    }
                     RemoteFile rfile = new RemoteFile(dir, strSource);
                     rfile.FolderActionID = lFolderActionID;
                     rfile.Save();

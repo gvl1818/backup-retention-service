@@ -547,11 +547,6 @@ namespace BackupRetention
 
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
-                if (blShuttingDown)
-                {
-                    throw new Exception("Shutting Down");
-                }
-
                 if (AllFiles != null)
                 {
 
@@ -725,11 +720,6 @@ namespace BackupRetention
                 FilesDeleted.Clear();
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
-                if (blShuttingDown)
-                {
-                    throw new Exception("Shutting Down");
-                }
-
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
                     if (blShuttingDown)
@@ -824,10 +814,6 @@ namespace BackupRetention
                 FilesDeleted.Clear();
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
 
-                if (blShuttingDown)
-                {
-                    throw new Exception("Shutting Down");
-                }
 
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
@@ -925,11 +911,6 @@ namespace BackupRetention
                 AllFiles.Clear();
                 FilesDeleted.Clear();
                 AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
-
-                if (blShuttingDown)
-                {
-                    throw new Exception("Shutting Down");
-                }
 
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
