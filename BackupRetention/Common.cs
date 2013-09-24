@@ -1447,6 +1447,107 @@ namespace BackupRetention
 
         #region "Methods"
 
+        
+        public long Save()
+        {
+
+            //left off here need! finally 
+            long lastid = 0;
+            
+            SqlCEHelper db = null;
+            SqlCeParameter sp=null;
+            List<SqlCeParameter> list = null;
+            try
+            {
+                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
+                list = new List<SqlCeParameter>();
+
+                //FileOperation = FileOperations.Created;
+
+                sp = new SqlCeParameter("@Name", SqlDbType.NVarChar, 260);
+                sp.Value = Common.FixNullstring(Name);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(FullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
+                sp.Value = Length;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(ParentDirectory);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
+                sp.Value = IsDirectory;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
+                sp.Value = LastWriteTime;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
+                sp.Value = LastWriteTimeUtc;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
+                sp.Value = Common.FixNullstring(FileOperation);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(NewFullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.FixNullstring(MD5);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
+                sp.Value = FolderActionID;
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@ShortFullName", SqlDbType.NVarChar, 3000);
+                sp.Value = Common.FixNullstring(ShortFullName);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.FixNullstring(ShortFullNameMD5);
+                list.Add(sp);
+
+                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
+                sp.Value = Common.FixNullstring(SourceFolderMD5);
+                list.Add(sp);
+                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID,@ShortFullName,@ShortFullNameMD5,@SourceFolderMD5)", list);
+                this.ID = lastid;
+                
+            }
+            catch (Exception ex)
+            {
+                lastid = 0;
+
+                throw ex;
+
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+                if (list != null)
+                {
+                    list.Clear();
+                }
+                sp = null;
+            }
+            return lastid;
+
+        }
+
+
+        /*
         public long Save()
         {
 
@@ -1621,7 +1722,7 @@ namespace BackupRetention
             }
             return lastid;
 
-        }
+        }*/
 
         /// <summary>
         ///  A list of all the files/folder in a specific location.

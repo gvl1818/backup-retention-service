@@ -738,7 +738,10 @@ namespace BackupRetention
                             Dirs = Common.GetAllDirectories(BackupFolder);
                             foreach (DirectoryInfo dir in Dirs)
                             {
-
+                                if (blShuttingDown)
+                                {
+                                    throw new Exception("Shutting Down");
+                                }
                                 try
                                 {
                                     strRemotePath = dir.FullName;
@@ -775,7 +778,12 @@ namespace BackupRetention
                                 {
                                     bool blFileFound = false;
                                     bool blOverwriteFile = false;
-                                    
+
+                                    if (blShuttingDown)
+                                    {
+                                        throw new Exception("Shutting Down");
+                                    }
+
                                     strRemotePath = ufile.DirectoryName;
                                     strRemotePath = Common.RemotePathCombine(Common.FixNullstring(RemoteDirectory),strRemotePath,Common.FixNullstring(BackupFolder));
                                     
@@ -888,6 +896,10 @@ namespace BackupRetention
                                 string DownloadPath = "";
                                 string strLocalFilePath = "";
                                 string strRemoteFilePath = "";
+                                if (blShuttingDown)
+                                {
+                                    throw new Exception("Shutting Down");
+                                }
                                 try
                                 {
                                     DownloadPath = Common.RemotePathCombine(RemoteDirectory,ftpfile.ParentDirectory);
@@ -1090,6 +1102,10 @@ namespace BackupRetention
                             {
                                 string strRemotePath = "";
                                 strRemotePath=Common.RemotePathCombine(RemoteDirectory, dir.FullName, BackupFolder);
+                                if (blShuttingDown)
+                                {
+                                    throw new Exception("Shutting Down");
+                                }
 
                                 if (blShuttingDown)
                                 {
@@ -1113,6 +1129,10 @@ namespace BackupRetention
                             //Upload Each File
                             foreach (FileInfo fileU in UploadFiles)
                             {
+                                if (blShuttingDown)
+                                {
+                                    throw new Exception("Shutting Down");
+                                }
                                 try
                                 {
                                     string strRemotePath = "";
@@ -1216,6 +1236,11 @@ namespace BackupRetention
                             {
                                 string strLocalFile = "";
                                 string strRemoteFile = "";
+
+                                if (blShuttingDown)
+                                {
+                                    throw new Exception("Shutting Down");
+                                }
                                 try
                                 {
                                     if (!FileD.IsDirectory)
