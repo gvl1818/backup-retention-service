@@ -1095,6 +1095,29 @@ namespace BackupRetention
         /// <param name="strPath"></param>
         /// <param name="blShuttingDown"></param>
         /// <returns></returns>
+        public static System.Collections.Generic.List<System.IO.FileInfo> WalkDirectory(string strPath, ref bool blShuttingDown, string strFilter="")
+        {
+            if (DirectoryExists(strPath))
+            {
+                System.Collections.Generic.List<System.IO.FileInfo> Files;
+                Files = new System.Collections.Generic.List<System.IO.FileInfo>();
+                System.IO.DirectoryInfo rootDir = new System.IO.DirectoryInfo(strPath);
+                WalkDirectoryTree(rootDir, ref Files, ref blShuttingDown, strFilter);
+                return Files;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /*
+        /// <summary>
+        /// Walks Entire Path and returns Generic List of the files in the entire directory and sub directories
+        /// </summary>
+        /// <param name="strPath"></param>
+        /// <param name="blShuttingDown"></param>
+        /// <returns></returns>
         public static System.Collections.Generic.List<System.IO.FileInfo> WalkDirectory(string strPath, ref bool blShuttingDown)
         {
             if (DirectoryExists(strPath))
@@ -1109,7 +1132,7 @@ namespace BackupRetention
             {
                 return null;
             }
-        }
+        }*/
 
         /// <summary>
         /// Walks Path and returns all Directories and sub directories
@@ -1343,16 +1366,23 @@ namespace BackupRetention
         /// <param name="root"></param>
         /// <param name="AllFiles"></param>
         /// <param name="blShuttingDown"></param>
-        private static void WalkDirectoryTree(System.IO.DirectoryInfo root, ref System.Collections.Generic.List<System.IO.FileInfo> AllFiles, ref bool blShuttingDown)
+        private static void WalkDirectoryTree(System.IO.DirectoryInfo root, ref System.Collections.Generic.List<System.IO.FileInfo> AllFiles, ref bool blShuttingDown, string strFilter = "")
         {
             System.IO.FileInfo[] files = null;
             System.IO.DirectoryInfo[] subDirs = null;
             EventLog _evt = GetEventLog;
-
+            strFilter = Common.FixNullstring(strFilter);
             // First, process all the files directly under this folder 
             try
             {
-                files = root.GetFiles("*.*");
+                if (strFilter == "")
+                {
+                    files = root.GetFiles("*.*");
+                }
+                else
+                {
+                    files = root.GetFiles(strFilter);
+                }
             }
             // This is thrown if even one of the files requires permissions greater 
             // than the application provides. 
@@ -1398,7 +1428,7 @@ namespace BackupRetention
                         return;
                     }
                     // Resursive call for each subdirectory.
-                    WalkDirectoryTree(dirInfo, ref AllFiles, ref blShuttingDown);
+                    WalkDirectoryTree(dirInfo, ref AllFiles, ref blShuttingDown, strFilter);
                 }
             }
         }

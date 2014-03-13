@@ -296,6 +296,18 @@ namespace BackupRetention
             }
         }
 
+        public static string _fileNameFilter = "";
+        public string FileNameFilter
+        {
+            get
+            {
+                return _fileNameFilter;
+            }
+            set
+            {
+                _fileNameFilter = value;
+            }
+        }
 
 
         public RetentionAlgorithmOptions _retentionAlgorithm = RetentionAlgorithmOptions.KeepDaily;
@@ -392,7 +404,7 @@ namespace BackupRetention
             DailyMaxDaysOld = Common.FixNullInt32(row["DailyMaxDaysOld"]);
             WeeklyMaxDaysOld = Common.FixNullInt32(row["WeeklyMaxDaysOld"]);
             MonthlyMaxDaysOld = Common.FixNullInt32(row["MonthlyMaxDaysOld"]);
-
+            FileNameFilter = Common.FixNullstring(row["FileNameFilter"]);
             //RetentionAlgorithm
             str = Common.FixNullstring(row["RetentionAlgorithm"]);
             try
@@ -462,6 +474,7 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("WeeklyMaxDaysOld", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("MonthlyMaxDaysOld", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("RetentionAlgorithm", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
 
             dtRetentionConfig.Columns["Enabled"].DefaultValue = "true";
             dtRetentionConfig.Columns["IntervalType"].DefaultValue = "Daily";
@@ -545,7 +558,7 @@ namespace BackupRetention
                 
 
 
-                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
 
                 if (AllFiles != null)
                 {
@@ -718,7 +731,7 @@ namespace BackupRetention
                 
                 AllFiles.Clear();
                 FilesDeleted.Clear();
-                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
 
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
@@ -812,7 +825,7 @@ namespace BackupRetention
                 
                 AllFiles.Clear();
                 FilesDeleted.Clear();
-                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
 
 
                 foreach (System.IO.FileInfo file1 in AllFiles)
@@ -910,7 +923,7 @@ namespace BackupRetention
                 
                 AllFiles.Clear();
                 FilesDeleted.Clear();
-                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                AllFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
 
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {

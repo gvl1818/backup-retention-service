@@ -180,6 +180,12 @@
   <data name="dgvColRetentionRetentionAlgorithm.ToolTipText" xml:space="preserve">
     <value>GFS is Grandfather, father, son (Daily, Weekly, and Monthly backup kept up to max days old for each. KeepAll means no deleting.   KeepDaily keeps backups up to DailyMaxDaysOld, KeepWeekly keeps backups up to WeeklyMaxDaysOld and deletes all backups not on DayOfWeekToKeep.  KeepMonthly keeps first DayOfWeekToKeep of the month up to MonthlyMaxDaysOld. </value>
   </data>
+  <metadata name="dgvColRetentionFileNameFilter.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="dgvColRetentionFileNameFilter.ToolTipText" xml:space="preserve">
+    <value>e.g. "*.*" or "*" or "file?.bak" or "*.bak" or "*.trn".  Regular expressions not supported only. The search string to match against the names of files. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters.</value>
+  </data>
   <metadata name="dgvColCompressID.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

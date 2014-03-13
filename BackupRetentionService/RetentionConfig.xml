@@ -22,5 +22,6 @@
     <WeeklyMaxDaysOld>7</WeeklyMaxDaysOld>
     <MonthlyMaxDaysOld>31</MonthlyMaxDaysOld>
     <RetentionAlgorithm>GFS</RetentionAlgorithm>
+    <FileNameFilter></FileNameFilter>
   </RetentionConfig>
 </DocumentElement>
