@@ -25,7 +25,7 @@ namespace BackupRetention
         public System.Diagnostics.EventLog _evt;
 
         //ISincerely!HopeThisIsNotUsed@
-        private string ep = "ISincerely!HopeThisIsNotUsed@";
+        private string ep = "9BFD444C-8F19-4D3C-947C-03A8884502AE";
 
         #endregion
 
@@ -322,6 +322,19 @@ namespace BackupRetention
             }
         }
 
+        public static string _fileNameFilter = "";
+        public string FileNameFilter
+        {
+            get
+            {
+                return _fileNameFilter;
+            }
+            set
+            {
+                _fileNameFilter = value;
+            }
+        }
+
         #endregion
 
 
@@ -410,7 +423,7 @@ namespace BackupRetention
 
             
             StartCompressingAfterDays = Common.FixNullInt32(row["StartCompressingAfterDays"]);
-
+            FileNameFilter = Common.FixNullstring(row["FileNameFilter"]);
         }
 
         /// <summary>
@@ -469,7 +482,8 @@ namespace BackupRetention
             dtCompressConfig.Columns.Add(new DataColumn("KeepOriginalFile", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("CompressionLvl", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("StartCompressingAfterDays", typeof(String)));
-            
+            dtCompressConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
+
             dtCompressConfig.Columns["Enabled"].DefaultValue = "true";
             dtCompressConfig.Columns["IntervalType"].DefaultValue = "Daily";
             dtCompressConfig.Columns["Interval"].DefaultValue = "0";
@@ -655,7 +669,7 @@ namespace BackupRetention
             Stream creader = null;
             Stream extestreader = null;
             string[] strfilearr = new string[1];
-            AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown);
+            AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown, FileNameFilter);
 
             try
             {
@@ -1128,7 +1142,7 @@ namespace BackupRetention
             try
             {
                 SevenZip.SevenZipBase.SetLibraryPath(Get7ZipFolder());
-                AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown);
+                AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown, FileNameFilter);
                 foreach (System.IO.FileInfo file1 in AllFiles)
                 {
                     bool blArchiveOk = false;

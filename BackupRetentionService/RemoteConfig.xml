@@ -28,5 +28,6 @@
       <Overwrite>ForceOverwrite</Overwrite>
       <AllowAnyCertificate>true</AllowAnyCertificate>
       <Timeout>120000</Timeout>
+      <FileNameFilter></FileNameFilter>
     </RemoteConfig>
 </DocumentElement>

@@ -23,5 +23,6 @@
     <KeepOriginalFile>false</KeepOriginalFile>
     <CompressionLvl>Normal</CompressionLvl>
     <StartCompressingAfterDays>2</StartCompressingAfterDays>
+    <FileNameFilter></FileNameFilter>
   </CompressConfig>
 </DocumentElement>

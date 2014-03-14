@@ -42,7 +42,7 @@ namespace BackupRetention
         private System.Collections.Generic.List<System.IO.FileInfo> FilesDownloaded=null;
 
         private System.Diagnostics.EventLog _evt;
-        private string ep = "ISincerely!HopeThisIsNotUsed@";
+        private string ep = "9BFD444C-8F19-4D3C-947C-03A8884502AE";
         #endregion
 
         #region "Properties"
@@ -425,7 +425,7 @@ namespace BackupRetention
             }
         }
 
-        private OverwriteOptions _overwrite = OverwriteOptions.LastModifiedChangeOverwrite;
+        private OverwriteOptions _overwrite = OverwriteOptions.FileSizeChangeOverwrite;
         /// <summary>
         /// Whether to Overwrite files, not overwrite, or overwrite based on last modified.
         /// </summary>
@@ -438,6 +438,19 @@ namespace BackupRetention
             set
             {
                 _overwrite = value;
+            }
+        }
+
+        public static string _fileNameFilter = "";
+        public string FileNameFilter
+        {
+            get
+            {
+                return _fileNameFilter;
+            }
+            set
+            {
+                _fileNameFilter = value;
             }
         }
         #endregion
@@ -493,6 +506,7 @@ namespace BackupRetention
             dtRemote.Columns.Add(new DataColumn("Overwrite", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("AllowAnyCertificate", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Timeout", typeof(Int32)));
+            dtRemote.Columns.Add(new DataColumn("FileNameFilter", typeof(string)));
 
             dtRemote.Columns["Enabled"].DefaultValue = "true";
             dtRemote.Columns["IntervalType"].DefaultValue = "Daily";
@@ -599,7 +613,7 @@ namespace BackupRetention
             {
                 Overwrite = OverwriteOptions.ForceOverwrite;
             }
-
+            FileNameFilter = Common.FixNullstring(row["FileNameFilter"]);
 
 
         }
@@ -705,7 +719,7 @@ namespace BackupRetention
                 }
                 
                 BackupFolder = BackupFolder.Replace("\\\\", "\\");
-                UploadFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                UploadFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
                 sftp.Connect();
                 upassword = "";
                 _evt.WriteEntry("Remote Sync SFTP: Connected successfully to Host: " + Host, System.Diagnostics.EventLogEntryType.Information,1005, 10);
@@ -714,6 +728,7 @@ namespace BackupRetention
                 {
                     case TransferDirectionOptions.Upload:
                         List<DirectoryInfo> Dirs = null;
+                        Stream ureader = null;
                         try
                         {
                             string strRemotePath = "";
@@ -770,7 +785,7 @@ namespace BackupRetention
                             }
 
                             //Upload every file found and place in the correct directory
-                            UploadFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                            UploadFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
                             foreach (FileInfo ufile in UploadFiles)
                             {
 
@@ -840,9 +855,14 @@ namespace BackupRetention
                                                 sftp.SetAttributes(ufile.FullName,fa);
                                                 sftp.DeleteFile(ufile.FullName);
                                             }*/
-                                            sftp.UploadFile(File.OpenRead(ufile.FullName), strRemotePath);
+                                            
+                                            ureader = new FileStream(ufile.FullName, FileMode.Open);
+                                            //sftp.UploadFile(File.OpenRead(ufile.FullName), strRemotePath);
+                                            sftp.UploadFile(ureader, strRemotePath);
+                                            
                                             _evt.WriteEntry("Remote Sync SFTP: File Uploaded: " + ufile.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 1010, 10);
-                                        
+                                            ureader.Close();
+                                            ureader = null;
                                             //sftp.SetLastWriteTime(ufile.Name, ufile.LastWriteTimeUtc); //not implemented yet 
                                         }
                                     }
@@ -867,6 +887,11 @@ namespace BackupRetention
                                 Dirs.Clear();
                             }
                             Dirs = null;
+                            if (ureader != null)
+                            {
+                                ureader.Close();
+                                ureader = null;
+                            }
                             if (UploadFiles != null)
                             {
                                 UploadFiles.Clear();
@@ -926,18 +951,41 @@ namespace BackupRetention
                                         {
                                             if (Common.DownloadFile(strLocalFilePath, strRemoteFilePath, ftpfile, Overwrite))
                                             {
-                                                if (File.Exists(strLocalFilePath))
-                                                {
-                                                    File.SetAttributes(strLocalFilePath, FileAttributes.Normal);
-                                                    File.Delete(strLocalFilePath);
-                                                }
-                                                using (FileStream fs = new FileStream(strLocalFilePath, FileMode.Create))
-                                                {
 
-                                                    sftp.DownloadFile(strRemoteFilePath, fs);
-                                                    _evt.WriteEntry("Remote Sync SFTP: File Downloaded: " + strRemoteFilePath + " Host: " + Host + " To: " + strLocalFilePath, System.Diagnostics.EventLogEntryType.Information, 1020, 10);
+                                                if (Common.FixNullstring(FileNameFilter) != "" && Common.VerifyPattern(FileNameFilter))
+                                                {
+                                                    if (Common.FileNameMatchesPattern(FileNameFilter, ftpfile.Name))
+                                                    {
+                                                        if (File.Exists(strLocalFilePath))
+                                                        {
+                                                            File.SetAttributes(strLocalFilePath, FileAttributes.Normal);
+                                                            File.Delete(strLocalFilePath);
+                                                        }
+                                                        using (FileStream fs = new FileStream(strLocalFilePath, FileMode.Create))
+                                                        {
 
+                                                            sftp.DownloadFile(strRemoteFilePath, fs);
+                                                            _evt.WriteEntry("Remote Sync SFTP: File Downloaded: " + strRemoteFilePath + " Host: " + Host + " To: " + strLocalFilePath, System.Diagnostics.EventLogEntryType.Information, 1020, 10);
+                                                            fs.Close();
+                                                        }
+                                                    }
                                                 }
+                                                else
+                                                {
+                                                    if (File.Exists(strLocalFilePath))
+                                                    {
+                                                        File.SetAttributes(strLocalFilePath, FileAttributes.Normal);
+                                                        File.Delete(strLocalFilePath);
+                                                    }
+                                                    using (FileStream fs = new FileStream(strLocalFilePath, FileMode.Create))
+                                                    {
+
+                                                        sftp.DownloadFile(strRemoteFilePath, fs);
+                                                        _evt.WriteEntry("Remote Sync SFTP: File Downloaded: " + strRemoteFilePath + " Host: " + Host + " To: " + strLocalFilePath, System.Diagnostics.EventLogEntryType.Information, 1020, 10);
+                                                        fs.Close();
+                                                    }
+                                                }
+
                                             }
                                         }
 
@@ -1095,7 +1143,7 @@ namespace BackupRetention
                         {
                             FTPS.SetCurrentDirectory(RemoteDirectory);
                             RemoteFilesU = FTPS.GetDirectoryList();
-                            UploadFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown);
+                            UploadFiles = Common.WalkDirectory(BackupFolder, ref blShuttingDown, FileNameFilter);
 
                             //CreateRemote Directories
                             foreach (DirectoryInfo dir in Common.GetAllDirectories(BackupFolder))
@@ -1262,8 +1310,20 @@ namespace BackupRetention
                                         {
                                             if (Common.DownloadFile(strLocalFile, strRemoteFile, FileD, Overwrite))
                                             {
-                                                FTPS.GetFile(strRemoteFile, strLocalFile);
-                                                _evt.WriteEntry("Remote Sync FTPS: File Downloaded: " + strRemoteFile + " Host: " + Host + " To: " + strLocalFile, System.Diagnostics.EventLogEntryType.Information, 2020, 20);
+                                                if (Common.FixNullstring(FileNameFilter) != "" && Common.VerifyPattern(FileNameFilter))
+                                                {
+                                                    if (Common.FileNameMatchesPattern(FileNameFilter, FileD.Name))
+                                                    {
+                                                        FTPS.GetFile(strRemoteFile, strLocalFile);
+                                                        _evt.WriteEntry("Remote Sync FTPS: File Downloaded: " + strRemoteFile + " Host: " + Host + " To: " + strLocalFile, System.Diagnostics.EventLogEntryType.Information, 2020, 20);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    FTPS.GetFile(strRemoteFile, strLocalFile);
+                                                    _evt.WriteEntry("Remote Sync FTPS: File Downloaded: " + strRemoteFile + " Host: " + Host + " To: " + strLocalFile, System.Diagnostics.EventLogEntryType.Information, 2020, 20);
+                                                }
+                                                
                                             }
                                         }
 

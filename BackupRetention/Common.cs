@@ -15,7 +15,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Data.SqlServerCe;
-
+using System.Text.RegularExpressions;
 
 
 namespace BackupRetention
@@ -83,6 +83,7 @@ namespace BackupRetention
         NoOverwrite
         ,ForceOverwrite
         ,LastModifiedChangeOverwrite
+        ,FileSizeChangeOverwrite
     }
 
     public enum CompressOption
@@ -1375,7 +1376,7 @@ namespace BackupRetention
             // First, process all the files directly under this folder 
             try
             {
-                if (strFilter == "")
+                if (strFilter == "" || !Common.VerifyPattern(strFilter))
                 {
                     files = root.GetFiles("*.*");
                 }
@@ -1430,6 +1431,100 @@ namespace BackupRetention
                     // Resursive call for each subdirectory.
                     WalkDirectoryTree(dirInfo, ref AllFiles, ref blShuttingDown, strFilter);
                 }
+            }
+        }
+
+        public static bool FileNameMatchesPattern(string pattern, string filename)
+        {
+            try
+            {
+                Regex regex = FindFilesPatternToRegex.Convert(pattern);
+
+                if (regex.IsMatch(filename))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static bool VerifyPattern(string pattern)
+        {
+
+            try
+            {
+                Regex regex = FindFilesPatternToRegex.Convert(pattern);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        public static string[] FindFilesEmulator(string pattern, string[] names)
+        {
+            List<string> matches = new List<string>();
+            Regex regex = FindFilesPatternToRegex.Convert(pattern);
+            foreach (string s in names)
+            {
+                if (regex.IsMatch(s))
+                {
+                    matches.Add(s);
+                }
+            }
+            return matches.ToArray();
+        }
+
+        internal static class FindFilesPatternToRegex
+        {
+            private static Regex HasQuestionMarkRegEx = new Regex(@"\?", RegexOptions.Compiled);
+            private static Regex IlegalCharactersRegex = new Regex("[" + @"\/:<>|" + "\"]", RegexOptions.Compiled);
+            private static Regex CatchExtentionRegex = new Regex(@"^\s*.+\.([^\.]+)\s*$", RegexOptions.Compiled);
+            private static string NonDotCharacters = @"[^.]*";
+            public static Regex Convert(string pattern)
+            {
+                if (pattern == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                pattern = pattern.Trim();
+                if (pattern.Length == 0)
+                {
+                    throw new ArgumentException("Pattern is empty.");
+                }
+                if (IlegalCharactersRegex.IsMatch(pattern))
+                {
+                    throw new ArgumentException("Patterns contains ilegal characters.");
+                }
+                bool hasExtension = CatchExtentionRegex.IsMatch(pattern);
+                bool matchExact = false;
+                if (HasQuestionMarkRegEx.IsMatch(pattern))
+                {
+                    matchExact = true;
+                }
+                else if (hasExtension)
+                {
+                    matchExact = CatchExtentionRegex.Match(pattern).Groups[1].Length != 3;
+                }
+                string regexString = Regex.Escape(pattern);
+                regexString = "^" + Regex.Replace(regexString, @"\\\*", ".*");
+                regexString = Regex.Replace(regexString, @"\\\?", ".");
+                if (!matchExact && hasExtension)
+                {
+                    regexString += NonDotCharacters;
+                }
+                regexString += "$";
+                Regex regex = new Regex(regexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                return regex;
             }
         }
     }
@@ -1907,4 +2002,5 @@ namespace BackupRetention
         #endregion
     }
     
+
 }

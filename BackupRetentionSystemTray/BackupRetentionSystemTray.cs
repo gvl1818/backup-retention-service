@@ -50,7 +50,7 @@ namespace BackupRetention
         private BindingSource bs;
        
 
-        private string ep = "ISincerely!HopeThisIsNotUsed@";
+        private string ep = "9BFD444C-8F19-4D3C-947C-03A8884502AE";
 
         /// <summary>
         /// About Box
