@@ -8,7 +8,7 @@ using System.Configuration;
 //using System.Net.Mail;
 using System.IO;
 using System.Threading;
-using System.Data.SqlServerCe;
+//using System.Data.SqlServerCe;
 
 namespace BackupRetention
 {
@@ -30,7 +30,7 @@ namespace BackupRetention
         /// </summary>
         private System.Timers.Timer _t;
 
-        Thread SyncThread;
+        //Thread SyncThread;
         Thread RemoteSyncThread;
         Thread RetentionThread;
         Thread CompressThread;
@@ -43,7 +43,7 @@ namespace BackupRetention
         /// <summary>
         /// Synchronization configuration table
         /// </summary>
-        private static DataTable dtSyncConfig;
+        //private static DataTable dtSyncConfig;
         /// <summary>
         /// Retention configuration table
         /// </summary>
@@ -268,14 +268,6 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Initializes Sync configuration table
-        /// </summary>
-        private void init_dtSyncConfig()
-        {
-            dtSyncConfig = SyncFolder.init_dtConfig();
-        }
-
-        /// <summary>
         /// Initializes Retention Configuration table
         /// </summary>
         private void init_dtRetentionConfig()
@@ -321,10 +313,6 @@ namespace BackupRetention
                 _t.Elapsed += TimerFired;
                 _t.Enabled = true;
 
-                //Load Configuration Files
-                init_dtSyncConfig();
-                dtSyncConfig.ReadXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\SyncConfig.xml");
-
                 init_dtRetentionConfig();
                 dtRetentionConfig.ReadXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\RetentionConfig.xml");
 
@@ -339,7 +327,7 @@ namespace BackupRetention
 
                 //Timer_Execute();
 
-                SyncThread = new Thread(new ThreadStart(Sync));
+                
                 
                 RemoteSyncThread = new Thread(new ThreadStart(RemoteSync));
 
@@ -349,7 +337,7 @@ namespace BackupRetention
 
                 ScriptThread = new Thread(new ThreadStart(ScriptExecute));
 
-                SyncFolder.CompactDatabase();
+                
 
                 _evt.WriteEntry("BackupRetentionService Started", System.Diagnostics.EventLogEntryType.Information, 0, 0);
                   
@@ -377,16 +365,13 @@ namespace BackupRetention
                 _t.Dispose();
                 _t = null;
                 long lwait = 0;
-                while (SyncThread.IsAlive || RemoteSyncThread.IsAlive || RetentionThread.IsAlive || CompressThread.IsAlive || ScriptThread.IsAlive)
+                while (RemoteSyncThread.IsAlive || RetentionThread.IsAlive || CompressThread.IsAlive || ScriptThread.IsAlive)
                 {
                     Thread.Sleep(3000);
                     lwait += 3;
                     if (lwait > 3600)
                     {
-                        if (SyncThread.IsAlive)
-                        {
-                            SyncThread.Abort();
-                        }
+                        
                         if (RemoteSyncThread.IsAlive)
                         {
                             RemoteSyncThread.Abort();
@@ -408,7 +393,7 @@ namespace BackupRetention
                     }
                 }
                 
-                SyncThread = null;
+                
                 RemoteSyncThread = null;
                 RetentionThread = null;
                 CompressThread = null;
@@ -637,42 +622,7 @@ namespace BackupRetention
             return blExecuteToday;
         }
 
-
-        private System.Object lockSync = new System.Object();
-        /// <summary>
-        /// Thread Procedure for Synchronizing LAN Folder and sub folder Contents
-        /// </summary>
-        public void Sync()
-        {
-            lock (lockSync)
-            {
-                //Synchronize Windows or Windows Shares Folders
-                foreach (DataRow row in dtSyncConfig.Rows)
-                {
-                    SyncFolder SFolder = new SyncFolder(row);
-                    if (SFolder.Enabled)
-                    {
-                        if (string.IsNullOrEmpty(SFolder.Time) || TimeToExecute(SFolder))
-                        {
-                            if (DayToExecute(SFolder) || DayOfMonthToExecute(SFolder) || NthDayOfMonth(SFolder))
-                            {
-                                if (Common.DriveSpaceUsed(SFolder.DestinationFolder) < MaxDriveSpaceUsedPercent)
-                                {
-                                    SFolder.Execute(ref blShuttingDown);
-                                }
-                                else
-                                {
-                                    _evt.WriteEntry("Sync: Max Drive Space Used Percent Exceeded!");
-                                }
-                            }
-                        }
-                    }
-                    SFolder = null;
-
-                }
-            }
-        }
-
+        
         private System.Object lockRemoteSync = new System.Object();
         /// <summary>
         /// Thread Procedure for Remotely synchronizing folders and subfolder contents to a remote ftp,ftps, or sftp site
@@ -813,29 +763,7 @@ namespace BackupRetention
         public void Timer_Execute()
         {
             try
-            {
-               
-                //Sync
-                if (!SyncThread.IsAlive)
-                {
-                    SyncThread = new Thread(new ThreadStart(Sync));
-                    SyncThread.Start();
-                }
-                else
-                {
-                    _evt.WriteEntry("BackupRetentionService Sync: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.",System.Diagnostics.EventLogEntryType.Information,4000,40);
-                }
-
-                //Remote Sync
-                if (!RemoteSyncThread.IsAlive)
-                {
-                    RemoteSyncThread = new Thread(new ThreadStart(RemoteSync));
-                    RemoteSyncThread.Start();
-                }
-                else
-                {
-                    _evt.WriteEntry("BackupRetentionService Remote Sync: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.", System.Diagnostics.EventLogEntryType.Information, 1000, 10);
-                }
+            {             
 
                 //Retention
                 if (!RetentionThread.IsAlive)
@@ -859,7 +787,7 @@ namespace BackupRetention
                     _evt.WriteEntry("BackupRetentionService Compress: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.", System.Diagnostics.EventLogEntryType.Information, 5000, 50);
                 }
 
-                //Compression
+                //Script
                 if (!ScriptThread.IsAlive)
                 {
                     ScriptThread = new Thread(new ThreadStart(ScriptExecute));
@@ -868,6 +796,17 @@ namespace BackupRetention
                 else
                 {
                     _evt.WriteEntry("BackupRetentionService Script: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.", System.Diagnostics.EventLogEntryType.Information, 5000, 50);
+                }
+
+                //Remote Sync
+                if (!RemoteSyncThread.IsAlive)
+                {
+                    RemoteSyncThread = new Thread(new ThreadStart(RemoteSync));
+                    RemoteSyncThread.Start();
+                }
+                else
+                {
+                    _evt.WriteEntry("BackupRetentionService Remote Sync: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.", System.Diagnostics.EventLogEntryType.Information, 1000, 10);
                 }
             }
             catch (Exception ex)

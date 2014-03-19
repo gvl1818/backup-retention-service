@@ -14,7 +14,6 @@ using System.Security.Cryptography;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Collections;
-using System.Data.SqlServerCe;
 using System.Text.RegularExpressions;
 
 
@@ -264,16 +263,6 @@ namespace BackupRetention
             double dblPercentFull = -1;
             try
             {
-                /*
-                
-                DriveInfo drive = new DriveInfo(strDrive);
-                long lfreeSpaceInBytes = drive.TotalFreeSpace;
-                long lTotalSpaceInBytes = drive.TotalSize;
-                double dblPercentFreeSpace = (double)lfreeSpaceInBytes / lTotalSpaceInBytes;
-                double dblPercentFull = (double)1.0 - dblPercentFreeSpace;
-                return Math.Round(dblPercentFull, 4);
-                */
-                
                 ulong FreeBytesAvailable;
                 ulong TotalNumberOfBytes;
                 ulong TotalNumberOfFreeBytes;
@@ -307,13 +296,6 @@ namespace BackupRetention
             _evt = GetEventLog;
             try
             {
-                /*
-                DriveInfo drive = new DriveInfo(strDrive);
-                long lfreeSpaceInBytes = drive.TotalFreeSpace;
-                long lTotalSpaceInBytes = drive.TotalSize;
-                double dblPercentFreeSpace = (double)lfreeSpaceInBytes / lTotalSpaceInBytes;
-                return Math.Round(dblPercentFreeSpace, 4);
-                */
 
                 ulong FreeBytesAvailable;
                 ulong TotalNumberOfBytes;
@@ -339,11 +321,6 @@ namespace BackupRetention
             _evt = GetEventLog;
             try
             {
-                /*//This doesn't work with UNC paths
-                DriveInfo drive = new DriveInfo(strDrive);
-                long lfreeSpaceInBytes = drive.TotalFreeSpace;
-                return lfreeSpaceInBytes;
-                 */
                 ulong FreeBytesAvailable;
                 ulong TotalNumberOfBytes;
                 ulong TotalNumberOfFreeBytes;
@@ -1057,7 +1034,7 @@ namespace BackupRetention
                     fileL = new FileInfo(strLocalFile + ".7z");
                 }
 
-                if (!((fileL.LastAccessTimeUtc == FileD.LastWriteTimeUtc) && (fileL.Length == FileD.Length)))
+                if (fileL.Length != FileD.Length)
                 {
                     blOverwriteFile = true;
                 }
@@ -1067,53 +1044,7 @@ namespace BackupRetention
                                    
         }
 
-        /// <summary>
-        /// Saves FileInfo list to the SQL Server Compact Database
-        /// </summary>
-        /// <param name="lFolderActionID"></param>
-        /// <param name="flist"></param>
-        public static void SaveFileInfoList(long lFolderActionID,System.Collections.Generic.List<System.IO.FileInfo> flist, string strSource, ref bool blShuttingDown)
-        {
-            if (flist != null && lFolderActionID > 0)
-            {
-                foreach (FileInfo file in flist)
-                {
-                    if (blShuttingDown)
-                    {
-                        throw new Exception("Shutting Down");
-                    }
-                    RemoteFile rfile = new RemoteFile(file, strSource);
-                    rfile.FolderActionID = lFolderActionID;
-                    rfile.Save();
-                }
-                
-            }
-        }
-
-        /// <summary>
-        /// Saves DirectoryInfo list to SQL Server Compact Database
-        /// </summary>
-        /// <param name="lFolderActionID"></param>
-        /// <param name="flist"></param>
-        /// <param name="strSource"></param>
-        public static void SaveFolderInfoList(long lFolderActionID, System.Collections.Generic.List<System.IO.DirectoryInfo> flist, string strSource,ref bool blShuttingDown)
-        {
-            if (flist != null && lFolderActionID > 0)
-            {
-                foreach (DirectoryInfo dir in flist)
-                {
-                    if (blShuttingDown)
-                    {
-                        throw new Exception("Shutting Down");
-                    }
-                    RemoteFile rfile = new RemoteFile(dir, strSource);
-                    rfile.FolderActionID = lFolderActionID;
-                    rfile.Save();
-                }
-
-            }
-
-        }
+        
        
         /// <summary>
         /// Walks Entire Path and returns Generic List of the files in the entire directory and sub directories
@@ -1605,282 +1536,6 @@ namespace BackupRetention
 
         #region "Methods"
 
-        
-        public long Save()
-        {
-
-            //left off here need! finally 
-            long lastid = 0;
-            
-            SqlCEHelper db = null;
-            SqlCeParameter sp=null;
-            List<SqlCeParameter> list = null;
-            try
-            {
-                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
-                list = new List<SqlCeParameter>();
-
-                //FileOperation = FileOperations.Created;
-
-                sp = new SqlCeParameter("@Name", SqlDbType.NVarChar, 260);
-                sp.Value = Common.FixNullstring(Name);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(FullName);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-                sp.Value = Length;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(ParentDirectory);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
-                sp.Value = IsDirectory;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
-                sp.Value = LastWriteTime;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
-                sp.Value = LastWriteTimeUtc;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
-                sp.Value = Common.FixNullstring(FileOperation);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(NewFullName);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 32);
-                sp.Value = Common.FixNullstring(MD5);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
-                sp.Value = FolderActionID;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@ShortFullName", SqlDbType.NVarChar, 3000);
-                sp.Value = Common.FixNullstring(ShortFullName);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
-                sp.Value = Common.FixNullstring(ShortFullNameMD5);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
-                sp.Value = Common.FixNullstring(SourceFolderMD5);
-                list.Add(sp);
-                lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID,@ShortFullName,@ShortFullNameMD5,@SourceFolderMD5)", list);
-                this.ID = lastid;
-                
-            }
-            catch (Exception ex)
-            {
-                lastid = 0;
-
-                throw ex;
-
-            }
-            finally
-            {
-                if (db != null)
-                {
-                    db.Dispose();
-                }
-                if (list != null)
-                {
-                    list.Clear();
-                }
-                sp = null;
-            }
-            return lastid;
-
-        }
-
-
-        /*
-        public long Save()
-        {
-
-            //left off here need! finally 
-            long lastid = 0;
-            object o;
-            SqlCEHelper db = null;
-            SqlCeParameter sp=null;
-            List<SqlCeParameter> list = null;
-            long lID = 0;
-            try
-            {
-                db = new SqlCEHelper("Data Source=" + Common.WindowsPathClean(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\BackupRetention.sdf;Max Database Size = 4000;Max Buffer Size = 1024"));
-                list = new List<SqlCeParameter>();
-
-
-                sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
-                sp.Value = Common.FixNullstring(ShortFullNameMD5);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
-                sp.Value = Common.FixNullstring(SourceFolderMD5);
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
-                sp.Value = FolderActionID;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-                sp.Value = Length;
-                list.Add(sp);
-
-                sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
-                sp.Value = LastWriteTime;
-                list.Add(sp);
-
-                o=db.ExecuteScalar("SELECT ID FROM RFile WHERE FolderActionID=@FolderActionID AND ShortFullNameMD5=@ShortFullNameMD5 AND SourceFolderMD5=@SourceFolderMD5", list);
-
-                long.TryParse(Common.FixNullstring(o), out lastid);
-
-                if (lastid != 0)
-                {
-                    lID = lastid;
-                    lastid = 0;
-                    list.Clear();
-                    list = new List<SqlCeParameter>();
-
-
-                    sp = new SqlCeParameter("@ID", SqlDbType.BigInt);
-                    sp.Value = lID;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-                    sp.Value = Length;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
-                    sp.Value = LastWriteTime;
-                    list.Add(sp);
-
-                    o = db.ExecuteScalar("SELECT ID FROM RFile WHERE ID=@ID AND FileLength=@FileLength AND LastWriteTime=@LastWriteTime", list);
-                    lastid = Common.FixNulllong(o);
-
-                    //File has been modified new insert is needed
-                    if (lastid == 0)
-                    {
-                        FileOperation = FileOperations.Modified;
-                    }
-                    else
-                    {
-                        //Update FileOperation to None no insert needed.
-                        FileOperation = FileOperations.None;
-                    }
-                    list.Clear();
-                    list = new List<SqlCeParameter>();
-
-                    sp = new SqlCeParameter("@ID", SqlDbType.BigInt);
-                    sp.Value = lID;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
-                    sp.Value = Common.FixNullstring(FileOperation);
-                    list.Add(sp);
-
-                    db.ExecuteNonQuery("UPDATE RFile SET FileOperation=@FileOperation WHERE ID=@ID", list);
-                }
-                else
-                {
-                    //File is newly created and needs to be copied to the destination
-                    list.Clear();
-                    list = new List<SqlCeParameter>();
-
-                    FileOperation = FileOperations.Created;
-
-                    sp = new SqlCeParameter("@Name", SqlDbType.NVarChar, 260);
-                    sp.Value = Common.FixNullstring(Name);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FullName", SqlDbType.NVarChar, 3000);
-                    sp.Value = Common.FixNullstring(FullName);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FileLength", SqlDbType.BigInt);
-                    sp.Value = Length;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FileParentDirectory", SqlDbType.NVarChar, 3000);
-                    sp.Value = Common.FixNullstring(ParentDirectory);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@IsDirectory", SqlDbType.NVarChar, 10);
-                    sp.Value = IsDirectory;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@LastWriteTime", SqlDbType.DateTime);
-                    sp.Value = LastWriteTime;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@LastWriteTimeUTC", SqlDbType.DateTime);
-                    sp.Value = LastWriteTimeUtc;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FileOperation", SqlDbType.NVarChar, 100);
-                    sp.Value = Common.FixNullstring(FileOperation);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@NewFileName", SqlDbType.NVarChar, 3000);
-                    sp.Value = Common.FixNullstring(NewFullName);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@MD5", SqlDbType.NVarChar, 32);
-                    sp.Value = Common.FixNullstring(MD5);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@FolderActionID", SqlDbType.BigInt);
-                    sp.Value = FolderActionID;
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@ShortFullName", SqlDbType.NVarChar, 3000);
-                    sp.Value = Common.FixNullstring(ShortFullName);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@ShortFullNameMD5", SqlDbType.NVarChar, 32);
-                    sp.Value = Common.FixNullstring(ShortFullNameMD5);
-                    list.Add(sp);
-
-                    sp = new SqlCeParameter("@SourceFolderMD5", SqlDbType.NVarChar, 32);
-                    sp.Value = Common.FixNullstring(SourceFolderMD5);
-                    list.Add(sp);
-                    lastid = db.Insert("INSERT INTO RFile (Name,FullName,FileLength,FileParentDirectory,IsDirectory,LastWriteTime,LastWriteTimeUTC,FileOperation,NewFileName,MD5,FolderActionID,ShortFullName,ShortFullNameMD5,SourceFolderMD5) VALUES (@Name,@FullName,@FileLength,@FileParentDirectory,@IsDirectory,@LastWriteTime,@LastWriteTimeUTC,@FileOperation,@NewFileName,@MD5,@FolderActionID,@ShortFullName,@ShortFullNameMD5,@SourceFolderMD5)", list);
-                    this.ID = lastid;
-                }
-            }
-            catch (Exception ex)
-            {
-                lastid = 0;
-
-                throw ex;
-
-            }
-            finally
-            {
-                if (db != null)
-                {
-                    db.Dispose();
-                }
-                if (list != null)
-                {
-                    list.Clear();
-                }
-                sp = null;
-            }
-            return lastid;
-
-        }*/
 
         /// <summary>
         ///  A list of all the files/folder in a specific location.

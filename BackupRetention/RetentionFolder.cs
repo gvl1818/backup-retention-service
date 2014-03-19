@@ -571,25 +571,8 @@ namespace BackupRetention
                         }
                         try
                         {
-                            if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
-                            {
-                                continue;
-                            }
-
-                            if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) && File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                            {
-                                intFilesNotToCount = 2;
-                            }
-                            else if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) ^ File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                            {
-                                intFilesNotToCount = 1;
-                            }
-                            else
-                            {
-                                intFilesNotToCount = 0;
-                            }
-
-
+                           
+                            intFilesNotToCount = 0;
 
                             DateTime Today = DateTime.Now;
                             DateTime FileDate;
@@ -618,7 +601,7 @@ namespace BackupRetention
                             }
 
                             TimeSpan timespan = Today.Subtract(FileDate);
-                            // 3 is for 1 file for File.ID, 1 file for metadata, and 1 file for current iteration
+                            
                             if ((AllFiles.Count - (FilesDeleted.Count + intFilesNotToCount)) > MinFileCount || MinFileCount == 0)
                             {
                                 //Monthly Retention Delete
@@ -741,22 +724,9 @@ namespace BackupRetention
                     }
                     try
                     {
-                        if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
-                        {
-                            continue;
-                        }
-                        if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) && File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                        {
-                            intFilesNotToCount = 2;
-                        }
-                        else if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) ^ File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                        {
-                            intFilesNotToCount = 1;
-                        }
-                        else
-                        {
-                            intFilesNotToCount = 0;
-                        }
+                       
+                        intFilesNotToCount = 0;
+                        
 
                         DateTime Today = DateTime.Now;
                         DateTime FileDate;
@@ -836,22 +806,8 @@ namespace BackupRetention
                     }
                     try
                     {
-                        if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
-                        {
-                            continue;
-                        }
-                        if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) && File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                        {
-                            intFilesNotToCount = 2;
-                        }
-                        else if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) ^ File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                        {
-                            intFilesNotToCount = 1;
-                        }
-                        else
-                        {
-                            intFilesNotToCount = 0;
-                        }
+                        intFilesNotToCount = 0;
+                        
                         DateTime Today = DateTime.Now;
                         DateTime FileDate;
 
@@ -933,22 +889,8 @@ namespace BackupRetention
                     }
                     try
                     {
-                        if (file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
-                        {
-                            continue;
-                        }
-                        if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) && File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                        {
-                            intFilesNotToCount = 2;
-                        }
-                        else if (File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "File.ID")) ^ File.Exists(Common.WindowsPathCombine(file1.DirectoryName, "filesync.metadata")))
-                        {
-                            intFilesNotToCount = 1;
-                        }
-                        else
-                        {
-                            intFilesNotToCount = 0;
-                        }
+                        intFilesNotToCount = 0;
+                        
 
                         DateTime Today = DateTime.Now;
                         DateTime FileDate;

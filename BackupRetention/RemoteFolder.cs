@@ -1009,30 +1009,29 @@ namespace BackupRetention
                                         _evt.WriteEntry("Remote Sync: Shutting Down, about to possibly upload a file: " + ufile.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 1010, 10);
                                         return;
                                     }
-                                    if (ufile.Name.ToLower() != "file.id" && ufile.Name.ToLower() != "filesync.metadata")
+                                    
+                                    if ((blFileFound == false || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound == true))
                                     {
-                                        if ((blFileFound == false || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound == true))
+                                        /*if (sftp.Exists(ufile.FullName))
                                         {
-                                            /*if (sftp.Exists(ufile.FullName))
-                                            {
-                                                SftpFileAttributes fa=sftp.GetAttributes(ufile.FullName);
-                                                fa.OwnerCanWrite = true;
-                                                fa.OthersCanWrite = true;
-                                                fa.GroupCanWrite = true;
-                                                sftp.SetAttributes(ufile.FullName,fa);
-                                                sftp.DeleteFile(ufile.FullName);
-                                            }*/
+                                            SftpFileAttributes fa=sftp.GetAttributes(ufile.FullName);
+                                            fa.OwnerCanWrite = true;
+                                            fa.OthersCanWrite = true;
+                                            fa.GroupCanWrite = true;
+                                            sftp.SetAttributes(ufile.FullName,fa);
+                                            sftp.DeleteFile(ufile.FullName);
+                                        }*/
                                             
-                                            ureader = new FileStream(ufile.FullName, FileMode.Open);
-                                            //sftp.UploadFile(File.OpenRead(ufile.FullName), strRemotePath);
-                                            sftp.UploadFile(ureader, strRemotePath);
+                                        ureader = new FileStream(ufile.FullName, FileMode.Open);
+                                        //sftp.UploadFile(File.OpenRead(ufile.FullName), strRemotePath);
+                                        sftp.UploadFile(ureader, strRemotePath);
                                             
-                                            _evt.WriteEntry("Remote Sync SFTP: File Uploaded: " + ufile.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 1010, 10);
-                                            ureader.Close();
-                                            ureader = null;
-                                            //sftp.SetLastWriteTime(ufile.Name, ufile.LastWriteTimeUtc); //not implemented yet 
-                                        }
+                                        _evt.WriteEntry("Remote Sync SFTP: File Uploaded: " + ufile.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 1010, 10);
+                                        ureader.Close();
+                                        ureader = null;
+                                        //sftp.SetLastWriteTime(ufile.Name, ufile.LastWriteTimeUtc); //not implemented yet 
                                     }
+                                    
 
                                 }
                                 catch (Exception ex)
@@ -1114,30 +1113,13 @@ namespace BackupRetention
                                             _evt.WriteEntry("Remote Sync: Shutting Down, about to possibly download a Host: " + Host + " file: " + DownloadPath + "/" + ftpfile.Name + " From: " + strLocalFilePath, System.Diagnostics.EventLogEntryType.Information, 1020, 10);
                                             return;
                                         }
-                                        if (ftpfile.Name.ToLower() != "file.id" && ftpfile.Name.ToLower() != "filesync.metadata")
+                                        
+                                        if (Common.DownloadFile(strLocalFilePath, strRemoteFilePath, ftpfile, Overwrite))
                                         {
-                                            if (Common.DownloadFile(strLocalFilePath, strRemoteFilePath, ftpfile, Overwrite))
+
+                                            if (Common.FixNullstring(FileNameFilter) != "" && Common.VerifyPattern(FileNameFilter))
                                             {
-
-                                                if (Common.FixNullstring(FileNameFilter) != "" && Common.VerifyPattern(FileNameFilter))
-                                                {
-                                                    if (Common.FileNameMatchesPattern(FileNameFilter, ftpfile.Name))
-                                                    {
-                                                        if (File.Exists(strLocalFilePath))
-                                                        {
-                                                            File.SetAttributes(strLocalFilePath, FileAttributes.Normal);
-                                                            File.Delete(strLocalFilePath);
-                                                        }
-                                                        using (FileStream fs = new FileStream(strLocalFilePath, FileMode.Create))
-                                                        {
-
-                                                            sftp.DownloadFile(strRemoteFilePath, fs);
-                                                            _evt.WriteEntry("Remote Sync SFTP: File Downloaded: " + strRemoteFilePath + " Host: " + Host + " To: " + strLocalFilePath, System.Diagnostics.EventLogEntryType.Information, 1020, 10);
-                                                            fs.Close();
-                                                        }
-                                                    }
-                                                }
-                                                else
+                                                if (Common.FileNameMatchesPattern(FileNameFilter, ftpfile.Name))
                                                 {
                                                     if (File.Exists(strLocalFilePath))
                                                     {
@@ -1152,9 +1134,25 @@ namespace BackupRetention
                                                         fs.Close();
                                                     }
                                                 }
-
                                             }
+                                            else
+                                            {
+                                                if (File.Exists(strLocalFilePath))
+                                                {
+                                                    File.SetAttributes(strLocalFilePath, FileAttributes.Normal);
+                                                    File.Delete(strLocalFilePath);
+                                                }
+                                                using (FileStream fs = new FileStream(strLocalFilePath, FileMode.Create))
+                                                {
+
+                                                    sftp.DownloadFile(strRemoteFilePath, fs);
+                                                    _evt.WriteEntry("Remote Sync SFTP: File Downloaded: " + strRemoteFilePath + " Host: " + Host + " To: " + strLocalFilePath, System.Diagnostics.EventLogEntryType.Information, 1020, 10);
+                                                    fs.Close();
+                                                }
+                                            }
+
                                         }
+                                        
 
                                     }
                                 }
@@ -1401,16 +1399,15 @@ namespace BackupRetention
                                         _evt.WriteEntry("Remote Sync FTPS: Shutting Down about to possible upload a file: " + fileU.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 2010, 20);
                                         return;
                                     }
-                                    if (fileU.Name.ToLower() != "file.id" && fileU.Name.ToLower() != "filesync.metadata")
+                                    
+                                    if ((!blFileFound || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound))
                                     {
-                                        if ((!blFileFound || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound))
-                                        {
-                                            //This Uploads the file
-                                            FTPS.PutFile(fileU.FullName, strRemotePath);
-                                            _evt.WriteEntry("Remote Sync FTPS: File Uploaded: " + fileU.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 2010, 20);
+                                        //This Uploads the file
+                                        FTPS.PutFile(fileU.FullName, strRemotePath);
+                                        _evt.WriteEntry("Remote Sync FTPS: File Uploaded: " + fileU.FullName + " Host: " + Host + " To: " + strRemotePath, System.Diagnostics.EventLogEntryType.Information, 2010, 20);
 
-                                        }
                                     }
+                                    
                                 }
                                 catch (Exception exp)
                                 {
@@ -1466,16 +1463,9 @@ namespace BackupRetention
                                         strLocalFile = Common.WindowsPathCombine(strLocalFile, FileD.Name);
                                         strRemoteFile = FileD.FullName;
 
-                                        if (blShuttingDown)
+                                        if (Common.DownloadFile(strLocalFile, strRemoteFile, FileD, Overwrite))
                                         {
-                                            FTPS.Close();
-                                            FTPS.Dispose();
-                                            _evt.WriteEntry("Remote Sync FTPS: Shutting Down about to possibly download file: " + strRemoteFile + " Host: " + Host + " To: " + strLocalFile, System.Diagnostics.EventLogEntryType.Information, 2020, 20);
-                                            return;
-                                        }
-                                        if (FileD.Name.ToLower() != "file.id" && FileD.Name.ToLower() != "filesync.metadata")
-                                        {
-                                            if (Common.DownloadFile(strLocalFile, strRemoteFile, FileD, Overwrite))
+                                            if ((!blFileFound || blOverwriteFile || (Overwrite == OverwriteOptions.ForceOverwrite && blFileFound)) && !(Overwrite == OverwriteOptions.NoOverwrite && blFileFound))
                                             {
                                                 if (Common.FixNullstring(FileNameFilter) != "" && Common.VerifyPattern(FileNameFilter))
                                                 {
@@ -1490,9 +1480,10 @@ namespace BackupRetention
                                                     FTPS.GetFile(strRemoteFile, strLocalFile);
                                                     _evt.WriteEntry("Remote Sync FTPS: File Downloaded: " + strRemoteFile + " Host: " + Host + " To: " + strLocalFile, System.Diagnostics.EventLogEntryType.Information, 2020, 20);
                                                 }
-                                                
                                             }
+                                                
                                         }
+                                        
 
                                     }
                                 }

@@ -15,32 +15,8 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
         "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -51,8 +27,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_116A95148503408EBF7B98EA65D39329"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
+        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,19 +82,13 @@
         "Entry"
         {
         "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
         "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_853E0C24A5FC4B2D92D65FC830D4F8AD"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
+        "OwnerKey" = "8:_5379844BFA40B330231809CB6363C476"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -136,13 +106,13 @@
         "Entry"
         {
         "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
-        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
-        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
+        "OwnerKey" = "8:_1839C751573444A68729B56F0AEE3EC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,12 +124,6 @@
         "Entry"
         {
         "MsmKey" = "8:_DF2383A7D12A405EA323CECAAF5B956B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E63804C90B1641C4A11BD872312DF7C6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -190,25 +154,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_029E94F672047D9D04E8D422389EB4D1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
+        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -220,7 +166,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_89F62414D2934618B7F3EDB520403314"
+        "OwnerKey" = "8:_946E992E3911708BA4D98766DEFFC4A8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_10BABB1D2C431E0B1F31F365D217D6EE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5930837A9491D859A72079DB8B20D1B3"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -254,11 +212,6 @@
                     {
                     "Name" = "8:.NET Framework 3.5 SP1"
                     "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.SQL.Server.Compact.3.5"
-                    {
-                    "Name" = "8:SQL Server Compact 3.5 SP2"
-                    "ProductCode" = "8:Microsoft.SQL.Server.Compact.3.5"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -394,32 +347,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_029E94F672047D9D04E8D422389EB4D1"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:System.Data.SqlServerCe.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_10BABB1D2C431E0B1F31F365D217D6EE"
             {
             "AssemblyRegister" = "3:1"
@@ -427,6 +354,11 @@
             "AssemblyAsmDisplayName" = "8:AlexPilotti.FTPS.Client, Version=1.1.0.27735, Culture=neutral, PublicKeyToken=48316da1e84b328d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_10BABB1D2C431E0B1F31F365D217D6EE"
+                    {
+                    "Name" = "8:AlexPilotti.FTPS.Client.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:AlexPilotti.FTPS.Client.dll"
             "TargetName" = "8:"
@@ -444,26 +376,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_116A95148503408EBF7B98EA65D39329"
-            {
-            "SourcePath" = "8:..\\BackupRetentionService\\SyncConfig.xml"
-            "TargetName" = "8:SyncConfig.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_241F697A165844FA83633FB76A29C523"
@@ -550,9 +462,14 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.1.9, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.3.5, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_5379844BFA40B330231809CB6363C476"
+                    {
+                    "Name" = "8:BackupRetention.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:BackupRetention.dll"
             "TargetName" = "8:"
@@ -579,6 +496,11 @@
             "AssemblyAsmDisplayName" = "8:SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_5930837A9491D859A72079DB8B20D1B3"
+                    {
+                    "Name" = "8:SevenZipSharp.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:SevenZipSharp.dll"
             "TargetName" = "8:"
@@ -598,26 +520,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_853E0C24A5FC4B2D92D65FC830D4F8AD"
-            {
-            "SourcePath" = "8:..\\BackupRetentionService\\BackupRetention.sdf"
-            "TargetName" = "8:BackupRetention.sdf"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_946E992E3911708BA4D98766DEFFC4A8"
             {
             "AssemblyRegister" = "3:1"
@@ -625,6 +527,11 @@
             "AssemblyAsmDisplayName" = "8:Renci.SshNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_946E992E3911708BA4D98766DEFFC4A8"
+                    {
+                    "Name" = "8:Renci.SshNet.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Renci.SshNet.dll"
             "TargetName" = "8:"
@@ -668,26 +575,6 @@
             {
             "SourcePath" = "8:..\\BackupRetentionService\\ScriptConfig.xml"
             "TargetName" = "8:ScriptConfig.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E63804C90B1641C4A11BD872312DF7C6"
-            {
-            "SourcePath" = "8:..\\BackupRetentionService\\sqlite.sql"
-            "TargetName" = "8:sqlite.sql"
             "Tag" = "8:"
             "Folder" = "8:_C5AF46734EA14A1AA9497D39D1F34E0A"
             "Condition" = "8:"
@@ -832,7 +719,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Backup Retention Service"
         "ProductCode" = "8:{242340CB-B359-4EE0-AD96-EBF24077A98F}"
-        "PackageCode" = "8:{1D52BAFF-E0AF-4EBD-A9D6-422F49EE89EF}"
+        "PackageCode" = "8:{61CD06DE-C2B2-477B-93A6-E7031F0E4A68}"
         "UpgradeCode" = "8:{13942A01-A7FC-4553-AC0C-A2A82F17C5F3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

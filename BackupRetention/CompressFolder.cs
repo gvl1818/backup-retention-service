@@ -698,7 +698,7 @@ namespace BackupRetention
                     }
 
                     //Skip over already compressed files
-                    if (file1.Extension.ToLower() == ".7z" || file1.Extension.ToLower() == ".zip" || file1.Extension.ToLower() == ".rar" || file1.Extension.ToLower() == ".id" || file1.Extension.ToLower() == ".metadata")
+                    if (file1.Extension.ToLower() == ".7z" || file1.Extension.ToLower() == ".zip" || file1.Extension.ToLower() == ".rar")
                     {
                         continue;
                     }

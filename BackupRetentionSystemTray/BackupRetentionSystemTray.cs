@@ -27,10 +27,11 @@ namespace BackupRetention
         /// </summary>
         ServiceController sc;
 
-        /// <summary>
+        /*/// <summary>
         /// Sync DataTable
         /// </summary>
         private DataTable dtSyncConfig;
+        */
         /// <summary>
         /// Retention DataTable
         /// </summary>
@@ -40,7 +41,7 @@ namespace BackupRetention
         /// </summary>
         private DataTable dtCompressConfig;
         /// <summary>
-        /// Remote Sync DataTable
+        /// Remote Remote DataTable
         /// </summary>
         private DataTable dtRemoteConfig;
 
@@ -157,15 +158,7 @@ namespace BackupRetention
 
         #region "Methods"
         
-
-        /// <summary>
-        /// dtSyncConfi initialization
-        /// </summary>
-        private void init_dtSyncConfig()
-        {
-            dtSyncConfig = SyncFolder.init_dtConfig();
-        }
-
+        
         /// <summary>
         /// dtRetentionConfig initialization
         /// </summary>
@@ -206,7 +199,7 @@ namespace BackupRetention
                     trayIcon.Dispose();
                 }
                 sc.Dispose();
-                dtSyncConfig.Dispose();
+                //dtSyncConfig.Dispose();
                 dtRetentionConfig.Dispose();
                 dtRemoteConfig.Dispose();
                 dtCompressConfig.Dispose();
@@ -270,26 +263,7 @@ namespace BackupRetention
             trayIcon.ContextMenu = trayMenu;
             trayIcon.Visible     = true;
 
-            //Initialize Tables and Read Contents
-            init_dtSyncConfig();
-           
-            try
-            {
-                dtSyncConfig.ReadXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\SyncConfig.xml");
-            }
-            catch (Exception)
-            {
-                dtSyncConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\SyncConfig.xml");
-            }
-            dgvSync.AutoGenerateColumns = false;
-            dgvSync.DataSource = dtSyncConfig;
-            //dgvSync.AutoGenerateColumns = false;
-            /*
-            DataGridViewComboBoxColumn myCombo = new DataGridViewComboBoxColumn();
-            myCombo.HeaderText = "Enabled";
-            myCombo.Name = "Enabled";
-            dgvSync.Columns.Insert(0, myCombo); // n is index
-             */
+            
 
 
             init_dtRetentionConfig();
@@ -920,7 +894,7 @@ namespace BackupRetention
 
 
                     //Save Configuration XML Files
-                    dtSyncConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\SyncConfig.xml");
+                    //dtSyncConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\SyncConfig.xml");
                     dtRetentionConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\RetentionConfig.xml");
                     dtCompressConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\CompressConfig.xml");
                     dtRemoteConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\RemoteConfig.xml");
@@ -1212,71 +1186,9 @@ namespace BackupRetention
                 _evt.WriteEntry(ex.Message);
             }
             
-           
-            
         }
 
-        /// <summary>
-        /// dgvSync cell validation event handler
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dgvSync_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            try
-            {
-                if (dgvSync.Columns[e.ColumnIndex].HeaderText == "SourceFolder" || dgvSync.Columns[e.ColumnIndex].HeaderText == "DestinationFolder" || dgvSync.Columns[e.ColumnIndex].HeaderText == "ArchiveFolder")
-                {
-                    DataGridViewTextBoxCell cell = dgvSync[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
-                    if (cell != null)
-                    {
-                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
-                        {
-                            if (!Directory.Exists(e.FormattedValue.ToString()))
-                            {
-                                MessageBox.Show("BackupFolder Path does not exist or permission problem.");
-                                e.Cancel = true;
-                            }
-                        }
-                    }
-                }
-                else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "StartTime")
-                {
-                    //validates text boxes that are supposed to be a military time 00:00
-                    if (!CellEventArgIsTime(ref e))
-                    {
-                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
-                        e.Cancel = true;
-                    }
-                }
-                else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "EndTime")
-                {
-                    //validates text boxes that are supposed to be a military time 00:00
-                    if (!CellEventArgIsTime(ref e))
-                    {
-                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
-                        e.Cancel = true;
-                    }
-                }
-                else if (dgvSync.Columns[e.ColumnIndex].HeaderText == "Interval")
-                {
-                    if (!CellEventArgIsNumeric2(ref e))
-                    {
-                        MessageBox.Show("You have to enter numbers only");
-                        e.Cancel = true;
-                    }
-                }
-
-                
-            }
-            catch (Exception ex)
-            {
-                _evt.WriteEntry(ex.Message);
-            }
-            
-
-        }
-
+        
 
         private void dgvTasks_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
@@ -1593,20 +1505,6 @@ namespace BackupRetention
             }
         }
 
-        /// <summary>
-        /// dgvSync Folders Double Click Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dgvSync_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dgvSync.Columns[e.ColumnIndex].HeaderText == "SourceFolder" || dgvSync.Columns[e.ColumnIndex].HeaderText == "DestinationFolder" || dgvSync.Columns[e.ColumnIndex].HeaderText == "ArchiveFolder")
-            {
-                DataGridViewTextBoxCell cell = dgvSync[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
-                CellFolderBrowser(ref cell);
-                dgvSync.RefreshEdit();
-            }
-        }
 
         /// <summary>
         /// dgvRemote Folders Double Click Event

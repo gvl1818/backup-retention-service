@@ -58,17 +58,11 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackupRetentionDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BackupRetentionDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="BackupRetentionService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -94,9 +88,6 @@
     <Content Include="AlexPilotti.FTPS.Client License.txt" />
     <Content Include="AlexPilotti.FTPS.Client.dll" />
     <Content Include="Backup Retention License.txt" />
-    <Content Include="BackupRetention.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="CompressConfig.xml" />
     <Content Include="ScriptConfig.xml" />
     <Content Include="RemoteConfig.xml">
@@ -109,30 +100,17 @@
     </Content>
     <Content Include="SevenZipSharp.dll" />
     <Content Include="Renci.SshNet License.txt" />
-    <Content Include="SyncConfig.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="BackupRetentionDataSet.xsc">
-      <DependentUpon>BackupRetentionDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="BackupRetentionDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>BackupRetentionDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BackupRetentionDataSet.xss">
-      <DependentUpon>BackupRetentionDataSet.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
