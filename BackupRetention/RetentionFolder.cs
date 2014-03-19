@@ -499,7 +499,7 @@ namespace BackupRetention
         /// <summary>
         /// Determines which Retention algorithm is specified per RetentionAlgorithm
         /// </summary>
-        public void ExecuteRetentionPlan(ref bool blShuttingDown)
+        public void Execute(ref bool blShuttingDown)
         {
             try
             {

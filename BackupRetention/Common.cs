@@ -188,6 +188,7 @@ namespace BackupRetention
             set;
         }
 
+        void Execute(ref bool blShuttingDown);
 
     }
 
@@ -781,6 +782,30 @@ namespace BackupRetention
                     strPath = "\\" + strPath;
                 }
                 
+            }
+
+            return strPath;
+        }
+
+
+
+
+        /// <summary>
+        /// Cleans Windows or Windows Share Paths
+        /// </summary>
+        /// <param name="strPath"></param>
+        /// <returns></returns>
+        public static string WindowsArgumentClean(string strPath)
+        {
+            strPath = FixNullstring(strPath);
+            
+            strPath = strPath.Replace("\\\\", "\\");
+            strPath = strPath.Replace("\\\\", "\\");
+
+            //Fix Empty Paths
+            if (strPath == "\\")
+            {
+                strPath = "";
             }
 
             return strPath;

@@ -616,7 +616,7 @@ namespace BackupRetention
         /// Synchronizes two folders with the specified options of this class
         /// </summary>
         /// <param name="blShuttingDown"></param>
-        public void ExecuteSyncFolder(ref bool blShuttingDown)
+        public void Execute(ref bool blShuttingDown)
         {
             try
             {

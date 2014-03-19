@@ -1305,7 +1305,7 @@ namespace BackupRetention
         /// Compresses All files encrypts the files with AES 256 7zip archive if password is passed.
         /// </summary>
         /// <param name="strPassword"></param>
-        public void ExecuteCompressAll(ref bool blShuttingDown)
+        public void Execute(ref bool blShuttingDown)
         {
             if (Enabled)
             {

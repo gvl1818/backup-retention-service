@@ -32,8 +32,9 @@ namespace BackupRetention
 
         Thread SyncThread;
         Thread RemoteSyncThread;
-        Thread RetentionThread ;
-        Thread CompressThread ;
+        Thread RetentionThread;
+        Thread CompressThread;
+        Thread ScriptThread;
 
         /// <summary>
         /// if service is shutting down boolean variable
@@ -57,6 +58,7 @@ namespace BackupRetention
         /// </summary>
         private static DataTable dtRemoteConfig;
         
+        private static DataTable dtScriptConfig;
     
         /// <summary>
         /// Event Log Class
@@ -297,6 +299,13 @@ namespace BackupRetention
             dtRemoteConfig = RemoteFolder.init_dtConfig();
         }
 
+        /// <summary>
+        /// Initializes Compress configuration table
+        /// </summary>
+        private void init_dtScriptConfig()
+        {
+            dtScriptConfig = ScriptFolder.init_dtConfig();
+        }
 
         /// <summary>
         /// Service Start Method
@@ -325,6 +334,9 @@ namespace BackupRetention
                 init_dtRemoteConfig();
                 dtRemoteConfig.ReadXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\RemoteConfig.xml");
 
+                init_dtScriptConfig();
+                dtScriptConfig.ReadXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\ScriptConfig.xml");
+
                 //Timer_Execute();
 
                 SyncThread = new Thread(new ThreadStart(Sync));
@@ -334,6 +346,8 @@ namespace BackupRetention
                 RetentionThread = new Thread(new ThreadStart(Retention));
                 
                 CompressThread = new Thread(new ThreadStart(Compress));
+
+                ScriptThread = new Thread(new ThreadStart(ScriptExecute));
 
                 SyncFolder.CompactDatabase();
 
@@ -363,7 +377,7 @@ namespace BackupRetention
                 _t.Dispose();
                 _t = null;
                 long lwait = 0;
-                while (SyncThread.IsAlive || RemoteSyncThread.IsAlive || RetentionThread.IsAlive || CompressThread.IsAlive)
+                while (SyncThread.IsAlive || RemoteSyncThread.IsAlive || RetentionThread.IsAlive || CompressThread.IsAlive || ScriptThread.IsAlive)
                 {
                     Thread.Sleep(3000);
                     lwait += 3;
@@ -385,6 +399,10 @@ namespace BackupRetention
                         {
                             CompressThread.Abort();
                         }
+                        if (ScriptThread.IsAlive)
+                        {
+                            ScriptThread.Abort();
+                        }
                         Thread.Sleep(3000);
                         break;
                     }
@@ -394,6 +412,7 @@ namespace BackupRetention
                 RemoteSyncThread = null;
                 RetentionThread = null;
                 CompressThread = null;
+                ScriptThread = null;
                 if (lwait > 3600)
                 {
                     _evt.WriteEntry("BackupRetentionService Forced Stopped: " + lwait.ToString(), System.Diagnostics.EventLogEntryType.Information, 0, 0);
@@ -639,7 +658,7 @@ namespace BackupRetention
                             {
                                 if (Common.DriveSpaceUsed(SFolder.DestinationFolder) < MaxDriveSpaceUsedPercent)
                                 {
-                                    SFolder.ExecuteSyncFolder(ref blShuttingDown);
+                                    SFolder.Execute(ref blShuttingDown);
                                 }
                                 else
                                 {
@@ -674,7 +693,7 @@ namespace BackupRetention
                             {
                                 if ((Common.DriveSpaceUsed(RemFolder.BackupFolder) < MaxDriveSpaceUsedPercent) || (RemFolder.TransferDirection == TransferDirectionOptions.Upload))
                                 {
-                                    RemFolder.ExecuteTransfer(ref blShuttingDown);
+                                    RemFolder.Execute(ref blShuttingDown);
                                 }
                                 else
                                 {
@@ -709,7 +728,7 @@ namespace BackupRetention
                         {
                             if (DayToExecute(RFolder) || DayOfMonthToExecute(RFolder) || NthDayOfMonth(RFolder))
                             {
-                                RFolder.ExecuteRetentionPlan(ref blShuttingDown);
+                                RFolder.Execute(ref blShuttingDown);
                             }
                         }
                     }
@@ -739,7 +758,7 @@ namespace BackupRetention
                             if (DayToExecute(CFolder) || DayOfMonthToExecute(CFolder) || NthDayOfMonth(CFolder))
                             {
                                 //Compress checks each file before compressing for available space
-                                CFolder.ExecuteCompressAll(ref blShuttingDown);
+                                CFolder.Execute(ref blShuttingDown);
                             }
                         }
                     }
@@ -748,7 +767,45 @@ namespace BackupRetention
             }
         }
 
-        
+
+        private System.Object lockScripts = new System.Object();
+        /// <summary>
+        /// File Compression thread for files or folder and sub folder contents
+        /// </summary>
+        public void ScriptExecute()
+        {
+
+            lock (lockScripts)
+            {
+                //Compress All Files Individually Execution
+                foreach (DataRow row in dtScriptConfig.Rows)
+                {
+                    ScriptFolder ScFolder = new ScriptFolder(row);
+                    if (ScFolder.Enabled)
+                    {
+                        if (string.IsNullOrEmpty(ScFolder.Time) || TimeToExecute(ScFolder))
+                        {
+                            if (DayToExecute(ScFolder) || DayOfMonthToExecute(ScFolder) || NthDayOfMonth(ScFolder))
+                            {
+                                if (Common.FixNullstring(ScFolder.SourceFolder).Length > 0 && Common.FixNullstring(ScFolder.DestinationFolder).Length > 0)
+                                {
+                                    if ((Common.DriveSpaceUsed(ScFolder.SourceFolder) < MaxDriveSpaceUsedPercent) && (Common.DriveSpaceUsed(ScFolder.DestinationFolder) < MaxDriveSpaceUsedPercent))
+                                    {
+                                        ScFolder.Execute(ref blShuttingDown);
+                                    }
+                                }
+                                else
+                                {
+                                    //Script did not specify folders/drives in use for this script
+                                    ScFolder.Execute(ref blShuttingDown);
+                                }
+                            }
+                        }
+                    }
+                    ScFolder = null;
+                }
+            }
+        }
 
         /// <summary>
         /// This code executes the main code of the service
@@ -800,6 +857,17 @@ namespace BackupRetention
                 else
                 {
                     _evt.WriteEntry("BackupRetentionService Compress: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.", System.Diagnostics.EventLogEntryType.Information, 5000, 50);
+                }
+
+                //Compression
+                if (!ScriptThread.IsAlive)
+                {
+                    ScriptThread = new Thread(new ThreadStart(ScriptExecute));
+                    ScriptThread.Start();
+                }
+                else
+                {
+                    _evt.WriteEntry("BackupRetentionService Script: Timer Code has not finished running. This is an additional firing of the TimerFired event. This is normal while compressing, Remote Sync, or Sync if large files or many files are present. Alternatively the Service Interval could be too short.", System.Diagnostics.EventLogEntryType.Information, 5000, 50);
                 }
             }
             catch (Exception ex)

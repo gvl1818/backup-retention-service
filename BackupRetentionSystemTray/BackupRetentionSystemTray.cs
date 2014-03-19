@@ -9,6 +9,7 @@ using System.ServiceProcess;
 using System.Configuration;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace BackupRetention
 {
@@ -43,6 +44,9 @@ namespace BackupRetention
         /// </summary>
         private DataTable dtRemoteConfig;
 
+
+        private DataTable dtScriptConfig;
+
         /// <summary>
         /// Event Log DataSet
         /// </summary>
@@ -62,7 +66,7 @@ namespace BackupRetention
         /// FolderBrowserDialog for double click events in dgv's cells with folder data
         /// </summary>
         public FolderBrowserDialog FolderBrowserD;
-        
+        public System.Windows.Forms.OpenFileDialog FileBrowserD;
         /// <summary>
         /// trayIcon or Notification Area Icon
         /// </summary>
@@ -187,7 +191,11 @@ namespace BackupRetention
         }
 
      
+        private void init_dtScriptConfig()
+        {
 
+            dtScriptConfig = ScriptFolder.init_dtConfig();
+        }
 
         ~BackupRetentionSystemTray()
         {
@@ -202,8 +210,10 @@ namespace BackupRetention
                 dtRetentionConfig.Dispose();
                 dtRemoteConfig.Dispose();
                 dtCompressConfig.Dispose();
+                dtScriptConfig.Dispose();
                 bs.Dispose();
                 FolderBrowserD.Dispose();
+                FileBrowserD.Dispose();
                 dsEvents.Dispose();
 
             }
@@ -325,14 +335,30 @@ namespace BackupRetention
             dgvRemote.AutoGenerateColumns = false;
             dgvRemote.DataSource = dtRemoteConfig;
 
-            
+
+            init_dtScriptConfig();
+
+            try
+            {
+                dtScriptConfig.ReadXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\ScriptConfig.xml");
+            }
+            catch (Exception)
+            {
+                dtScriptConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\ScriptConfig.xml");
+            }
+
+            dgvTasks.AutoGenerateColumns = false;
+            dgvTasks.DataSource = dtScriptConfig;
+
+
+
             mtxtMaxDriveSpaceUsed.Text = (MaxDriveSpaceUsedPercent * 100).ToString().Trim();
             txtServiceInterval.Text = ServiceInterval.ToString().Trim();
 
             lblServiceIntervalMinutes.Text = lblServiceIntervalMinutes.Text = (Math.Round(((double) ServiceInterval) / 1000 / 60, 2)).ToString() + " Minutes";
 
             FolderBrowserD = new FolderBrowserDialog();
-
+            FileBrowserD = new OpenFileDialog();
             
             GetServiceStatus();
         }
@@ -606,78 +632,88 @@ namespace BackupRetention
         /// </summary>
         public void RefreshEventsTab()
         {
-            Application.DoEvents();
-            //Refresh Events
-            dsEvents = new DataSet("EventLog");
-            DataTable dtEvents = new DataTable("Events");
-            dtEvents.Columns.Add(new DataColumn("Type", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("EventImage", typeof(System.Drawing.Image)));
-            dtEvents.Columns.Add(new DataColumn("Time", typeof(System.DateTime)));
-            dtEvents.Columns.Add(new DataColumn("Message", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("Source", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("Category", typeof(String)));
-            dtEvents.Columns.Add(new DataColumn("EventID", typeof(long)));
-            dsEvents.Tables.Add(dtEvents);
+            try
+            {
+                Application.DoEvents();
+                //Refresh Events
+                dsEvents = new DataSet("EventLog");
+                DataTable dtEvents = new DataTable("Events");
+                dtEvents.Columns.Add(new DataColumn("Type", typeof(String)));
+                dtEvents.Columns.Add(new DataColumn("EventImage", typeof(System.Drawing.Image)));
+                dtEvents.Columns.Add(new DataColumn("Time", typeof(System.DateTime)));
+                dtEvents.Columns.Add(new DataColumn("Message", typeof(String)));
+                dtEvents.Columns.Add(new DataColumn("Source", typeof(String)));
+                dtEvents.Columns.Add(new DataColumn("Category", typeof(String)));
+                dtEvents.Columns.Add(new DataColumn("EventID", typeof(long)));
+                dsEvents.Tables.Add(dtEvents);
 
-            foreach (System.Diagnostics.EventLogEntry entry in eventLogBackupRetention.Entries)
-            {
-                if (entry.Source == "BackupRetention")
+                foreach (System.Diagnostics.EventLogEntry entry in eventLogBackupRetention.Entries)
                 {
-                    AddEventLogEntry(entry);
+                    if (entry.Source == "BackupRetention")
+                    {
+                        AddEventLogEntry(entry);
+                    }
                 }
-            }
-            bs = new BindingSource(dsEvents, "Events");
-            string strFilter = "";
-            if (!Common.FixNullbool(chkError.Checked))
-            {
-                strFilter = "Type<>'Error'";
-            }
-            if (!Common.FixNullbool(chkWarning.Checked))
-            {
+                bs = new BindingSource(dsEvents, "Events");
+                string strFilter = "";
+                if (!Common.FixNullbool(chkError.Checked))
+                {
+                    strFilter = "Type<>'Error'";
+                }
+                if (!Common.FixNullbool(chkWarning.Checked))
+                {
+                    if (strFilter.Length > 0)
+                    {
+                        strFilter += " AND Type<>'Warning'";
+                    }
+                    else
+                    {
+                        strFilter = "Type<>'Warning'";
+                    }
+                }
+                if (!Common.FixNullbool(chkInformation.Checked))
+                {
+                    if (strFilter.Length > 0)
+                    {
+                        strFilter += " AND Type<>'Information'";
+                    }
+                    else
+                    {
+                        strFilter = "Type<>'Information'";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    if (strFilter.Length > 0)
+                    {
+                        strFilter += " AND Message LIKE '%" + txtSearch.Text + "%'";
+                    }
+                    else
+                    {
+                        strFilter = "Message LIKE '%" + txtSearch.Text + "%'";
+                    }
+                }
+
                 if (strFilter.Length > 0)
                 {
-                    strFilter += " AND Type<>'Warning'";
+                    bs.Filter = strFilter; //+ " AND Source='BackupRetention'";
                 }
-                else
-                {
-                    strFilter = "Type<>'Warning'";
-                }
-            }
-            if (!Common.FixNullbool(chkInformation.Checked))
-            {
-                if (strFilter.Length > 0)
-                {
-                    strFilter += " AND Type<>'Information'";
-                }
-                else
-                {
-                    strFilter = "Type<>'Information'";
-                }
-            }
 
-            if (!string.IsNullOrEmpty(txtSearch.Text))
-            {
-                if (strFilter.Length > 0)
-                {
-                    strFilter += " AND Message LIKE '%" + txtSearch.Text +  "%'";
-                }
-                else
-                {
-                    strFilter = "Message LIKE '%" + txtSearch.Text + "%'";
-                }
-            }
 
-            if (strFilter.Length > 0)
-            {
-                bs.Filter = strFilter; //+ " AND Source='BackupRetention'";
+                bs.Sort = "Time DESC";
+                dgvEvents.DataSource = bs;
+                Application.DoEvents();
+                GetServiceStatus();
+                Application.DoEvents();
             }
-
-            
-            bs.Sort = "Time DESC";
-            dgvEvents.DataSource = bs;
-            Application.DoEvents();
-            GetServiceStatus();
-            Application.DoEvents();
+            catch (Exception ex)
+            {
+                string strError = "Search Error: Make sure to not use special characters like *,% etc.  Error: " + ex.Message;
+                MessageBox.Show(strError, "BackupRetentionSystemTray", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                
+            }
+           
         }
 
         /// <summary>
@@ -888,7 +924,7 @@ namespace BackupRetention
                     dtRetentionConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\RetentionConfig.xml");
                     dtCompressConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\CompressConfig.xml");
                     dtRemoteConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\RemoteConfig.xml");
-
+                    dtScriptConfig.WriteXml(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\ScriptConfig.xml");
 
                 }
             }
@@ -957,7 +993,7 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Cell Event Argument IsNumeric validation
+        /// Cell Event Argument IsNumeric validation whole and negative numbers
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
@@ -985,7 +1021,7 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Cell Event Argument IsNumeric validation
+        /// Cell Event Argument IsNumeric validation whole numbers only
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
@@ -1023,24 +1059,21 @@ namespace BackupRetention
         private bool CellEventArgIsTime(ref DataGridViewCellValidatingEventArgs e)
         {
 
-            bool blIsNumeric = true;
+            bool blIsTime = true;
             try
             {
-                char[] chars = e.FormattedValue.ToString().ToCharArray();
-                foreach (char c in chars)
+                //^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$
+                if (Common.FixNullstring(e.FormattedValue).Length > 0)
                 {
-                    if (char.IsDigit(c) == false && c != ':')
-                    {
-                        blIsNumeric = false;
-                        break;
-                    }
+                    Regex checktime = new Regex(@"^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+                    blIsTime = checktime.IsMatch(e.FormattedValue.ToString());
                 }
             }
             catch (Exception)
             {
-                blIsNumeric = false;
+                blIsTime = false;
             }
-            return blIsNumeric;
+            return blIsTime;
         }
 
         /// <summary>
@@ -1057,10 +1090,13 @@ namespace BackupRetention
                     DataGridViewTextBoxCell cell = dgvRetention[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
                     if (cell != null)
                     {
-                        if (!Directory.Exists(e.FormattedValue.ToString()))
+                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
                         {
-                            MessageBox.Show("BackupFolder Path does not exist or permission problem.");
-                            e.Cancel = true;
+                            if (!Directory.Exists(e.FormattedValue.ToString()))
+                            {
+                                MessageBox.Show("BackupFolder Path does not exist or permission problem.");
+                                e.Cancel = true;
+                            }
                         }
                     }
                 }
@@ -1077,7 +1113,7 @@ namespace BackupRetention
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
                     {
-                        MessageBox.Show("You have to enter numbers or a colon only");
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
                         e.Cancel = true;
                     }
                 }
@@ -1086,7 +1122,7 @@ namespace BackupRetention
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
                     {
-                        MessageBox.Show("You have to enter numbers or a colon only");
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
                         e.Cancel = true;
                     }
                 }
@@ -1125,10 +1161,13 @@ namespace BackupRetention
                     DataGridViewTextBoxCell cell = dgvCompress[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
                     if (cell != null)
                     {
-                        if (!Directory.Exists(e.FormattedValue.ToString()))
+                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
                         {
-                            MessageBox.Show("Folder Path does not exist or permission problem.");
-                            e.Cancel = true;
+                            if (!Directory.Exists(e.FormattedValue.ToString()))
+                            {
+                                MessageBox.Show("Folder Path does not exist or permission problem.");
+                                e.Cancel = true;
+                            }
                         }
                     }
                 }
@@ -1145,7 +1184,7 @@ namespace BackupRetention
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
                     {
-                        MessageBox.Show("You have to enter numbers or a colon only");
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
                         e.Cancel = true;
                     }
                 }
@@ -1154,7 +1193,7 @@ namespace BackupRetention
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
                     {
-                        MessageBox.Show("You have to enter numbers or a colon only");
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
                         e.Cancel = true;
                     }
                 }
@@ -1191,10 +1230,13 @@ namespace BackupRetention
                     DataGridViewTextBoxCell cell = dgvSync[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
                     if (cell != null)
                     {
-                        if (!Directory.Exists(e.FormattedValue.ToString()))
+                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
                         {
-                            MessageBox.Show("BackupFolder Path does not exist or permission problem.");
-                            e.Cancel = true;
+                            if (!Directory.Exists(e.FormattedValue.ToString()))
+                            {
+                                MessageBox.Show("BackupFolder Path does not exist or permission problem.");
+                                e.Cancel = true;
+                            }
                         }
                     }
                 }
@@ -1203,7 +1245,7 @@ namespace BackupRetention
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
                     {
-                        MessageBox.Show("You have to enter numbers or a colon only");
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
                         e.Cancel = true;
                     }
                 }
@@ -1212,7 +1254,7 @@ namespace BackupRetention
                     //validates text boxes that are supposed to be a military time 00:00
                     if (!CellEventArgIsTime(ref e))
                     {
-                        MessageBox.Show("You have to enter numbers or a colon only");
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
                         e.Cancel = true;
                     }
                 }
@@ -1235,6 +1277,84 @@ namespace BackupRetention
 
         }
 
+
+        private void dgvTasks_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            try
+            {
+                if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "WorkingDirectory" || dgvTasks.Columns[e.ColumnIndex].HeaderText == "SourceFolder" || dgvTasks.Columns[e.ColumnIndex].HeaderText == "DestinationFolder")
+                {
+                    DataGridViewTextBoxCell cell = dgvTasks[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
+                    if (cell != null)
+                    {
+                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
+                        {
+                            if (!Directory.Exists(e.FormattedValue.ToString()) || Common.FixNullstring(e.FormattedValue) == "")
+                            {
+                                MessageBox.Show("Folder Path does not exist or permission problem.");
+                                e.Cancel = true;
+                            }
+                        }
+                    }
+                }
+                else if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "FileName")
+                {
+                    DataGridViewTextBoxCell cell = dgvTasks[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
+                    if (cell != null)
+                    {
+                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
+                        {
+                            if (!File.Exists(e.FormattedValue.ToString()) || Common.FixNullstring(e.FormattedValue) == "")
+                            {
+                                MessageBox.Show("File does not exist or permission problem.");
+                                e.Cancel = true;
+                            }
+                        }
+                    }
+                }
+                else if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "Timeout")
+                {
+                    //validates text boxes that are supposed to be numeric
+                    if (!CellEventArgIsNumeric2(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers only");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "StartTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "EndTime")
+                {
+                    //validates text boxes that are supposed to be a military time 00:00
+                    if (!CellEventArgIsTime(ref e))
+                    {
+                        MessageBox.Show("Time has to be in military time format 00:00 between 00:00 - 23:59");
+                        e.Cancel = true;
+                    }
+                }
+                else if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "Interval")
+                {
+                    if (!CellEventArgIsNumeric2(ref e))
+                    {
+                        MessageBox.Show("You have to enter numbers only");
+                        e.Cancel = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _evt.WriteEntry(ex.Message);
+
+            }
+        }
+
         /// <summary>
         /// dgvRemote Cell Validation
         /// </summary>
@@ -1249,12 +1369,15 @@ namespace BackupRetention
                     DataGridViewTextBoxCell cell = dgvRemote[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
                     if (cell != null)
                     {
-                        if (!Directory.Exists(e.FormattedValue.ToString()) || e.FormattedValue.ToString() == "")
+                        if (Common.FixNullstring(e.FormattedValue).Length > 0)
                         {
-                            if (!(dgvRemote.Columns[e.ColumnIndex].HeaderText == "KeyFileDirectory" && e.FormattedValue.ToString() == ""))
+                            if (!Directory.Exists(e.FormattedValue.ToString()) || e.FormattedValue.ToString() == "")
                             {
-                                MessageBox.Show("Folder Path does not exist or permission problem.");
-                                e.Cancel = true;
+                                if (!(dgvRemote.Columns[e.ColumnIndex].HeaderText == "KeyFileDirectory" && e.FormattedValue.ToString() == ""))
+                                {
+                                    MessageBox.Show("Folder Path does not exist or permission problem.");
+                                    e.Cancel = true;
+                                }
                             }
                         }
                     }
@@ -1336,7 +1459,9 @@ namespace BackupRetention
                 sc.Refresh();
                 string strStatus = sc.Status.ToString();
                 txtServiceStatus.Text = strStatus;
-                if (strStatus == "Running" || strStatus == "StartPending")
+                ServiceControllerStatus cStatus = sc.Status;
+                //if (strStatus == "Running" || strStatus == "StartPending")
+                if (cStatus == ServiceControllerStatus.Running || cStatus == ServiceControllerStatus.StartPending ||  cStatus == ServiceControllerStatus.ContinuePending)
                 {
 
                     btnStart.Enabled = false;
@@ -1348,7 +1473,7 @@ namespace BackupRetention
                     
                     txtServiceStatus.BackColor = Color.DarkGreen;
                 }
-                else if (strStatus == "Stopped" || strStatus == "StopPending")
+                else if (cStatus == ServiceControllerStatus.Stopped || cStatus == ServiceControllerStatus.StopPending || cStatus == ServiceControllerStatus.Paused || cStatus == ServiceControllerStatus.PausePending)
                 {
                     trayMenu.MenuItems[1].Enabled = true;
                     trayMenu.MenuItems[2].Enabled = false;
@@ -1389,12 +1514,10 @@ namespace BackupRetention
                 {
                     if (Directory.Exists(cell.Value.ToString()))
                     {
-                        //FolderBrowserD.RootFolder =  Environment.SpecialFolder.MyComputer;
                         FolderBrowserD.SelectedPath = cell.Value.ToString();
                     }
                     if (FolderBrowserD.ShowDialog() == DialogResult.OK)
                     {
-                        //cell.Value = FolderBrowserD.SelectedPath.Replace("\\", "\\\\");
                         cell.Value = FolderBrowserD.SelectedPath;
                     }
                 }
@@ -1407,6 +1530,38 @@ namespace BackupRetention
            
         }
 
+
+
+        /// <summary>
+        /// Cell FileBrowser Call 
+        /// </summary>
+        /// <param name="cell"></param>
+        private void CellFileBrowser(ref DataGridViewTextBoxCell cell)
+        {
+            try
+            {
+                if (cell != null)
+                {
+                    FileBrowserD.FileName = "";
+                    if (File.Exists(cell.Value.ToString()))
+                    {
+                        FileInfo f = new FileInfo(cell.Value.ToString());
+                        FileBrowserD.InitialDirectory = f.Directory.FullName;
+                        FileBrowserD.FileName = cell.Value.ToString();
+                    }
+                    if (FileBrowserD.ShowDialog() == DialogResult.OK)
+                    {
+                        cell.Value = FileBrowserD.FileName;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _evt.WriteEntry(ex.Message);
+
+            }
+
+        }
 
         /// <summary>
         /// dgvRetention double click event handler
@@ -1465,6 +1620,23 @@ namespace BackupRetention
                 DataGridViewTextBoxCell cell = dgvRemote[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
                 CellFolderBrowser(ref cell);
                 dgvRemote.RefreshEdit();
+            }
+        }
+
+
+        private void dgvTasks_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "WorkingDirectory" || dgvTasks.Columns[e.ColumnIndex].HeaderText == "SourceFolder" || dgvTasks.Columns[e.ColumnIndex].HeaderText == "DestinationFolder")
+            {
+                DataGridViewTextBoxCell cell = dgvTasks[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
+                CellFolderBrowser(ref cell);
+                dgvTasks.RefreshEdit();
+            }
+            if (dgvTasks.Columns[e.ColumnIndex].HeaderText == "FileName")
+            {
+                DataGridViewTextBoxCell cell = dgvTasks[e.ColumnIndex, e.RowIndex] as DataGridViewTextBoxCell;
+                CellFileBrowser(ref cell);
+                dgvTasks.RefreshEdit();
             }
         }
 
@@ -1736,6 +1908,9 @@ namespace BackupRetention
         }
 
         #endregion
+
+        
+        
 
         
 

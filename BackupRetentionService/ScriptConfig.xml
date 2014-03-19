@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <ScriptConfig>
+    <ID>1</ID>
+    <Enabled>false</Enabled>
+    <Time></Time>
+    <EndTime></EndTime>
+    <IntervalType>Daily</IntervalType>
+    <Interval>0</Interval>
+    <Monday>false</Monday>
+    <Tuesday>false</Tuesday>
+    <Wednesday>false</Wednesday>
+    <Thursday>false</Thursday>
+    <Friday>false</Friday>
+    <Saturday>false</Saturday>
+    <Sunday>false</Sunday>
+    <DayOfMonth>0</DayOfMonth>
+    <WorkingDirectory></WorkingDirectory>
+    <FileName></FileName>
+    <Arguments></Arguments>
+    <SourceFolder></SourceFolder>
+    <DestinationFolder></DestinationFolder>
+    <Timeout>120</Timeout>
+  </ScriptConfig>
+</DocumentElement>
