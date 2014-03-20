@@ -5,7 +5,9 @@ using System.Security.Cryptography;
 
 namespace BackupRetention
 {
-
+    /// <summary>
+    /// AES 256 Encryption Class
+    /// </summary>
     public class AES256
     {
         /// <summary>

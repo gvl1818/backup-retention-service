@@ -228,7 +228,20 @@ namespace BackupRetention
 
         }
 
+        private string _title = "";
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
 
+            set
+            {
+                _title = value;
+            }
+
+        }
 
         private string _time = "";
         /// <summary>
@@ -399,6 +412,21 @@ namespace BackupRetention
                 _enabled = value;
             }
 
+
+        }
+
+        private string _comment = "";
+        public string Comment
+        {
+            get
+            {
+                return _comment;
+            }
+
+            set
+            {
+                _comment = value;
+            }
 
         }
 
@@ -649,6 +677,7 @@ namespace BackupRetention
 
             //Create Columns
             dtRemote.Columns.Add(new DataColumn("Enabled", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("Title", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Time", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("EndTime", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("IntervalType", typeof(String)));
@@ -674,8 +703,9 @@ namespace BackupRetention
             dtRemote.Columns.Add(new DataColumn("AllowAnyCertificate", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Timeout", typeof(Int32)));
             dtRemote.Columns.Add(new DataColumn("FileNameFilter", typeof(string)));
-
+            dtRemote.Columns.Add(new DataColumn("Comment", typeof(string)));
             dtRemote.Columns["Enabled"].DefaultValue = "true";
+            dtRemote.Columns["Time"].DefaultValue = "01:00";
             dtRemote.Columns["IntervalType"].DefaultValue = "Daily";
             dtRemote.Columns["Interval"].DefaultValue = "0";
             dtRemote.Columns["Monday"].DefaultValue = "true";
@@ -782,7 +812,8 @@ namespace BackupRetention
             }
             FileNameFilter = Common.FixNullstring(row["FileNameFilter"]);
 
-
+            Title = Common.FixNullstring(row["Title"]);
+            Comment = Common.FixNullstring(row["Comment"]);
         }
 
         /// <summary>

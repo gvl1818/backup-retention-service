@@ -55,12 +55,7 @@ namespace BackupRetention
     }
 
 
-    public enum FileSyncReplicaOptions
-    {
-        //OneWay
-        OneWayMirror
-        ,OneWayBackup
-    }
+    
 
     public enum ProtocolOptions
     {
@@ -110,6 +105,12 @@ namespace BackupRetention
     public interface IFolderConfig
     {
         int ID
+        {
+            get;
+            set;
+        }
+
+        string Title
         {
             get;
             set;
@@ -187,6 +188,12 @@ namespace BackupRetention
             set;
         }
 
+        string Comment
+        {
+            get;
+            set;
+        }
+
         void Execute(ref bool blShuttingDown);
 
     }
@@ -225,11 +232,7 @@ namespace BackupRetention
                         {
                             EventLog.CreateEventSource(d);
                         }
-                        /*else
-                        {
-                            EventLog.DeleteEventSource(strApplication_Name, ".");
-                            EventLog.CreateEventSource(d);
-                        }*/
+                        
                     }
                     catch (Exception)
                     {

@@ -45,7 +45,22 @@ namespace BackupRetention
             }
 
         }
+        private string _title = "";
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
 
+            set
+            {
+                _title = value;
+            }
+
+        }
+
+        
 
 
         private string _time = "";
@@ -214,6 +229,21 @@ namespace BackupRetention
             {
                 _enabled = value;
             }
+        }
+
+        private string _comment = "";
+        public string Comment
+        {
+            get
+            {
+                return _comment;
+            }
+
+            set
+            {
+                _comment = value;
+            }
+
         }
 
         private CompressOption _compress = CompressOption.Compress;
@@ -424,6 +454,8 @@ namespace BackupRetention
             
             StartCompressingAfterDays = Common.FixNullInt32(row["StartCompressingAfterDays"]);
             FileNameFilter = Common.FixNullstring(row["FileNameFilter"]);
+            Title = Common.FixNullstring(row["Title"]);
+            Comment = Common.FixNullstring(row["Comment"]);
         }
 
         /// <summary>
@@ -463,6 +495,7 @@ namespace BackupRetention
 
             //Create Columns
             dtCompressConfig.Columns.Add(new DataColumn("Enabled", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("Title", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Time", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("EndTime", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("IntervalType", typeof(String)));
@@ -483,7 +516,8 @@ namespace BackupRetention
             dtCompressConfig.Columns.Add(new DataColumn("CompressionLvl", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("StartCompressingAfterDays", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
-
+            dtCompressConfig.Columns.Add(new DataColumn("Comment", typeof(String)));
+            dtCompressConfig.Columns["Time"].DefaultValue = "01:00";
             dtCompressConfig.Columns["Enabled"].DefaultValue = "true";
             dtCompressConfig.Columns["IntervalType"].DefaultValue = "Daily";
             dtCompressConfig.Columns["Interval"].DefaultValue = "0";
@@ -503,7 +537,10 @@ namespace BackupRetention
 
         }
 
-
+        /// <summary>
+        /// Gets the 7zip "7z.dll" full path where it is installed.
+        /// </summary>
+        /// <returns></returns>
         protected string Get7ZipFolder()
         {
 

@@ -3,6 +3,7 @@
   <RetentionConfig>
     <ID>1</ID>
     <Enabled>false</Enabled>
+    <Title></Title>
     <Time></Time>
     <EndTime></EndTime>
     <IntervalType>Daily</IntervalType>
@@ -15,6 +16,7 @@
     <Saturday>false</Saturday>
     <Sunday>false</Sunday>
     <DayOfMonth>0</DayOfMonth>
+    <Comment></Comment>
     <BackupFolder>c:\\BackupTest3</BackupFolder>
     <MinFileCount>3</MinFileCount>
     <DayOfWeekToKeep>Monday</DayOfWeekToKeep>

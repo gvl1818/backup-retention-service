@@ -44,7 +44,20 @@ namespace BackupRetention
 
         }
 
+        private string _title = "";
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
 
+            set
+            {
+                _title = value;
+            }
+
+        }
 
         private string _time = "";
         public string Time
@@ -212,6 +225,22 @@ namespace BackupRetention
                 _enabled = value;
             }
         }
+
+        private string _comment = "";
+        public string Comment
+        {
+            get
+            {
+                return _comment;
+            }
+
+            set
+            {
+                _comment = value;
+            }
+
+        }
+
         private string _workingDirectory = "";
         public string WorkingDirectory
         {
@@ -326,6 +355,7 @@ namespace BackupRetention
             
 
             ID = Common.FixNullInt32(row["ID"]);
+            Title = Common.FixNullstring(row["Title"]);
             Enabled = Common.FixNullbool(row["Enabled"]);
             Time = Common.FixNullstring(row["Time"]);
             EndTime=Common.FixNullstring(row["EndTime"]);
@@ -353,6 +383,7 @@ namespace BackupRetention
             SourceFolder = Common.FixNullstring(row["SourceFolder"]);
             DestinationFolder = Common.FixNullstring(row["DestinationFolder"]);
             Timeout = Common.FixNullInt32(row["Timeout"]);
+            Comment = Common.FixNullstring(row["Comment"]);
 
         }
 
@@ -407,6 +438,7 @@ namespace BackupRetention
 
             //Create Columns
             dtScriptConfig.Columns.Add(new DataColumn("Enabled", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("Title", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Time", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("EndTime", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("IntervalType", typeof(String)));
@@ -425,8 +457,10 @@ namespace BackupRetention
             dtScriptConfig.Columns.Add(new DataColumn("SourceFolder", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("DestinationFolder", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Timeout", typeof(String)));
-            
+            dtScriptConfig.Columns.Add(new DataColumn("Comment", typeof(String)));
+
             dtScriptConfig.Columns["Enabled"].DefaultValue = "true";
+            dtScriptConfig.Columns["Time"].DefaultValue = "01:00";
             dtScriptConfig.Columns["IntervalType"].DefaultValue = "Daily";
             dtScriptConfig.Columns["Interval"].DefaultValue = "0";
             dtScriptConfig.Columns["Monday"].DefaultValue = "true";

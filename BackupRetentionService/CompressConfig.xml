@@ -3,6 +3,7 @@
   <CompressConfig>
     <ID>1</ID>
     <Enabled>false</Enabled>
+    <Title></Title>
     <Time></Time>
     <EndTime></EndTime>
     <IntervalType>Daily</IntervalType>
@@ -15,6 +16,7 @@
     <Saturday>false</Saturday>
     <Sunday>false</Sunday>
     <DayOfMonth>0</DayOfMonth>
+    <Comment></Comment>
     <Compress>Compress</Compress>
     <SourceOption>File</SourceOption>
     <SourceFolder>c:\\BackupTest</SourceFolder>

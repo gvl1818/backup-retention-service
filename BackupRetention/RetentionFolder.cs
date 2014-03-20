@@ -35,7 +35,20 @@ namespace BackupRetention
 
         }
 
+        private string _title = "";
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
 
+            set
+            {
+                _title = value;
+            }
+
+        }
 
         private string _time = "";
         public string Time
@@ -205,6 +218,20 @@ namespace BackupRetention
             }
         }
 
+        private string _comment = "";
+        public string Comment
+        {
+            get
+            {
+                return _comment;
+            }
+
+            set
+            {
+                _comment = value;
+            }
+
+        }
 
         public static string _backupFolder = "";
         /// <summary>
@@ -416,6 +443,8 @@ namespace BackupRetention
                 RetentionAlgorithm = (RetentionAlgorithmOptions)System.Enum.Parse(typeof(RetentionAlgorithmOptions), "GFS");
             }
 
+            Title = Common.FixNullstring(row["Title"]);
+            Comment = Common.FixNullstring(row["Comment"]);
         }
 
         /// <summary>
@@ -456,6 +485,7 @@ namespace BackupRetention
 
             //Create Columns
             dtRetentionConfig.Columns.Add(new DataColumn("Enabled", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("Title", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Time", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("EndTime", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("IntervalType", typeof(String)));
@@ -475,8 +505,10 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("MonthlyMaxDaysOld", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("RetentionAlgorithm", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("Comment", typeof(String)));
 
             dtRetentionConfig.Columns["Enabled"].DefaultValue = "true";
+            dtRetentionConfig.Columns["Time"].DefaultValue = "01:00";
             dtRetentionConfig.Columns["IntervalType"].DefaultValue = "Daily";
             dtRetentionConfig.Columns["Interval"].DefaultValue = "0";
             dtRetentionConfig.Columns["Monday"].DefaultValue = "true";

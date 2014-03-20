@@ -100,7 +100,6 @@
     </Content>
     <Content Include="SevenZipSharp.dll" />
     <Content Include="Renci.SshNet License.txt" />
-    <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">

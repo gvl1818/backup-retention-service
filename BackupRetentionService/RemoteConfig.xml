@@ -3,6 +3,7 @@
     <RemoteConfig>
       <ID>1</ID>
       <Enabled>false</Enabled>
+      <Title></Title>
       <Time></Time>
       <EndTime></EndTime>
       <IntervalType>Daily</IntervalType>
@@ -15,6 +16,7 @@
       <Saturday>false</Saturday>
       <Sunday>false</Sunday>
       <DayOfMonth>0</DayOfMonth>
+      <Comment></Comment>
       <Host>10.13.10.11</Host>
       <Protocol>SFTP</Protocol>
       <Port>22</Port>
