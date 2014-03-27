@@ -209,7 +209,7 @@ namespace BackupRetention
         private System.Collections.Generic.List<System.IO.FileInfo> FilesDownloaded=null;
 
         private System.Diagnostics.EventLog _evt;
-        private string ep = "9BFD444C-8F19-4D3C-947C-03A8884502AE";
+        private string ep = "6315270D-F7BD-4734-81EC-312A48D01436";
         #endregion
 
         #region "Properties"

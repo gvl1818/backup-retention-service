@@ -55,7 +55,7 @@ namespace BackupRetention
         private BindingSource bs;
        
 
-        private string ep = "9BFD444C-8F19-4D3C-947C-03A8884502AE";
+        private string ep = "6315270D-F7BD-4734-81EC-312A48D01436";
 
         /// <summary>
         /// About Box
@@ -669,11 +669,14 @@ namespace BackupRetention
                     }
                 }
 
-                if (strFilter.Length > 0)
+                if (Common.FixNullstring(strFilter).Length > 0)
                 {
                     bs.Filter = strFilter; //+ " AND Source='BackupRetention'";
                 }
-
+                else
+                {
+                    bs.Filter = "";
+                }
 
                 bs.Sort = "Time DESC";
                 dgvEvents.DataSource = bs;
@@ -685,7 +688,40 @@ namespace BackupRetention
             {
                 string strError = "Search Error: Make sure to not use special characters like *,% etc.  Error: " + ex.Message;
                 MessageBox.Show(strError, "BackupRetentionSystemTray", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                
+                try
+                {
+                    dsEvents = new DataSet("EventLog");
+                    DataTable dtEvents = new DataTable("Events");
+                    dtEvents.Columns.Add(new DataColumn("Type", typeof(String)));
+                    dtEvents.Columns.Add(new DataColumn("EventImage", typeof(System.Drawing.Image)));
+                    dtEvents.Columns.Add(new DataColumn("Time", typeof(System.DateTime)));
+                    dtEvents.Columns.Add(new DataColumn("Message", typeof(String)));
+                    dtEvents.Columns.Add(new DataColumn("Source", typeof(String)));
+                    dtEvents.Columns.Add(new DataColumn("Category", typeof(String)));
+                    dtEvents.Columns.Add(new DataColumn("EventID", typeof(long)));
+                    dsEvents.Tables.Add(dtEvents);
+
+                    foreach (System.Diagnostics.EventLogEntry entry in eventLogBackupRetention.Entries)
+                    {
+                        if (entry.Source == "BackupRetention")
+                        {
+                            AddEventLogEntry(entry);
+                        }
+                    }
+                    bs = new BindingSource(dsEvents, "Events");
+
+                    bs.Sort = "Time DESC";
+                    bs.Filter = "";
+                    dgvEvents.DataSource = bs;
+                    Application.DoEvents();
+                    GetServiceStatus();
+                    Application.DoEvents();
+                }
+                catch (Exception)
+                {
+                   
+                }
+               
             }
            
         }

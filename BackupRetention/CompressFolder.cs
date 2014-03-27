@@ -25,8 +25,8 @@ namespace BackupRetention
         public System.Diagnostics.EventLog _evt;
 
         //ISincerely!HopeThisIsNotUsed@
-        private string ep = "9BFD444C-8F19-4D3C-947C-03A8884502AE";
-
+        private string ep = "6315270D-F7BD-4734-81EC-312A48D01436";
+        
         #endregion
 
         #region "Properties"
