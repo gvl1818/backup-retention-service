@@ -623,6 +623,162 @@ namespace BackupRetention
         }
 
         
+
+        /// <summary>
+        /// Is Today in the Month specified to execute
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        public bool MonthToExecute(IFolderConfig folder)
+        {
+            DateTime today = DateTime.Now;
+            bool blExecuteThisMonth = false;
+            switch (today.Month)
+            {
+                case 1:
+                    if ((int)(folder.Months & Month.January) == 1)
+                    {
+                        blExecuteThisMonth= true;
+                    }
+                    break;
+                case 2:
+                    if ((int)(folder.Months & Month.February) == 2)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 3:
+                    if ((int)(folder.Months & Month.March) == 4)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 4:
+                    if ((int)(folder.Months & Month.April) == 8)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 5:
+                    if ((int)(folder.Months & Month.May) == 16)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 6:
+                    if ((int)(folder.Months & Month.June) == 32)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 7:
+                    if ((int)(folder.Months & Month.July) == 64)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 8:
+                    if ((int)(folder.Months & Month.August) == 128)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 9:
+                    if ((int)(folder.Months & Month.September) == 256)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 10:
+                    if ((int)(folder.Months & Month.October) == 512)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 11:
+                    if ((int)(folder.Months & Month.November) == 1024)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+                case 12:
+                    if ((int)(folder.Months & Month.December) == 2048)
+                    {
+                        blExecuteThisMonth = true;
+                    }
+                    break;
+
+            }
+            return blExecuteThisMonth;
+        }
+
+        public bool ValidateStartDate(IFolderConfig folder)
+        {
+            bool blExecute = false;
+            DateTime today = DateTime.Now;
+            if (folder.StartDate != null)
+            {
+                if (today >= folder.StartDate || folder.StartDate == DateTime.MinValue)
+                {
+                    blExecute = true;
+                }
+            }
+            else
+            {
+                blExecute = true;
+            }
+            return blExecute;
+        }
+
+        public bool ValidateEndDate(IFolderConfig folder)
+        {
+            bool blExecute = false;
+            DateTime today = DateTime.Now;
+            if (folder.EndDate != null)
+            {
+                if (today <= folder.EndDate || folder.EndDate == DateTime.MinValue)
+                {
+                    blExecute = true;
+                }
+            }
+            else
+            {
+                blExecute = true;
+            }
+            return blExecute;
+
+        }
+
+        /// <summary>
+        /// Checks Multiple Conditions to see if it is the correct Month, Day, and Time to execute
+        /// Also, that Today is in between the StartDate and EndDate
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        public bool ExecuteTime(IFolderConfig folder)
+        {
+           
+            bool blTime = false;
+            if (folder.Enabled)
+            {
+                if (ValidateStartDate(folder) && ValidateEndDate(folder))
+                {
+                    if (MonthToExecute(folder))
+                    {
+                        if (string.IsNullOrEmpty(folder.Time) || TimeToExecute(folder))
+                        {
+                            if (DayToExecute(folder) || DayOfMonthToExecute(folder) || NthDayOfMonth(folder))
+                            {
+                                blTime = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return blTime;
+        }
+        
         private System.Object lockRemoteSync = new System.Object();
         /// <summary>
         /// Thread Procedure for Remotely synchronizing folders and subfolder contents to a remote ftp,ftps, or sftp site
@@ -635,22 +791,16 @@ namespace BackupRetention
                 foreach (DataRow row in dtRemoteConfig.Rows)
                 {
                     RemoteFolder RemFolder = new RemoteFolder(row);
-                    if (RemFolder.Enabled)
+                    if (ExecuteTime(RemFolder))
                     {
-                        if (string.IsNullOrEmpty(RemFolder.Time) || TimeToExecute(RemFolder))
+                        if ((Common.DriveSpaceUsed(RemFolder.BackupFolder) < MaxDriveSpaceUsedPercent) || (RemFolder.TransferDirection == TransferDirectionOptions.Upload))
                         {
-                            if (DayToExecute(RemFolder) || DayOfMonthToExecute(RemFolder) || NthDayOfMonth(RemFolder))
-                            {
-                                if ((Common.DriveSpaceUsed(RemFolder.BackupFolder) < MaxDriveSpaceUsedPercent) || (RemFolder.TransferDirection == TransferDirectionOptions.Upload))
-                                {
-                                    RemFolder.Execute(ref blShuttingDown);
-                                }
-                                else
-                                {
-                                    _evt.WriteEntry("Remote Sync: Max Drive Space Used Percent Exceeded!");
-                                }
-                            }
+                            RemFolder.Execute(ref blShuttingDown);
                         }
+                        else
+                        {
+                            _evt.WriteEntry("Remote Sync: Max Drive Space Used Percent Exceeded!");
+                        } 
                     }
                     RemFolder = null;
 
@@ -670,17 +820,10 @@ namespace BackupRetention
                 //Retention  Deletes older files based on algorithm
                 foreach (DataRow row in dtRetentionConfig.Rows)
                 {
-
                     RetentionFolder RFolder = new RetentionFolder(row);
-                    if (RFolder.Enabled)
+                    if (ExecuteTime(RFolder))
                     {
-                        if (string.IsNullOrEmpty(RFolder.Time) || TimeToExecute(RFolder))
-                        {
-                            if (DayToExecute(RFolder) || DayOfMonthToExecute(RFolder) || NthDayOfMonth(RFolder))
-                            {
-                                RFolder.Execute(ref blShuttingDown);
-                            }
-                        }
+                        RFolder.Execute(ref blShuttingDown);           
                     }
                     RFolder = null;
                 }
@@ -701,16 +844,10 @@ namespace BackupRetention
                 foreach (DataRow row in dtCompressConfig.Rows)
                 {
                     CompressFolder CFolder = new CompressFolder(row);
-                    if (CFolder.Enabled)
+                    if (ExecuteTime(CFolder))
                     {
-                        if (string.IsNullOrEmpty(CFolder.Time) || TimeToExecute(CFolder))
-                        {
-                            if (DayToExecute(CFolder) || DayOfMonthToExecute(CFolder) || NthDayOfMonth(CFolder))
-                            {
-                                //Compress checks each file before compressing for available space
-                                CFolder.Execute(ref blShuttingDown);
-                            }
-                        }
+                        //Compress checks each file before compressing for available space
+                        CFolder.Execute(ref blShuttingDown);
                     }
                     CFolder = null;
                 }
@@ -731,26 +868,41 @@ namespace BackupRetention
                 foreach (DataRow row in dtScriptConfig.Rows)
                 {
                     ScriptFolder ScFolder = new ScriptFolder(row);
-                    if (ScFolder.Enabled)
+                    if (ExecuteTime(ScFolder))
                     {
-                        if (string.IsNullOrEmpty(ScFolder.Time) || TimeToExecute(ScFolder))
+                        if (Common.FixNullstring(ScFolder.DestinationFolder).Length > 0 && Directory.Exists(ScFolder.DestinationFolder))
                         {
-                            if (DayToExecute(ScFolder) || DayOfMonthToExecute(ScFolder) || NthDayOfMonth(ScFolder))
+                            if ((Common.DriveSpaceUsed(ScFolder.DestinationFolder) < MaxDriveSpaceUsedPercent))
                             {
-                                if (Common.FixNullstring(ScFolder.SourceFolder).Length > 0 && Common.FixNullstring(ScFolder.DestinationFolder).Length > 0)
+                                if (Common.FixNullstring(ScFolder.SourceFolder).Length > 0 && Directory.Exists(ScFolder.SourceFolder))
                                 {
-                                    if ((Common.DriveSpaceUsed(ScFolder.SourceFolder) < MaxDriveSpaceUsedPercent) && (Common.DriveSpaceUsed(ScFolder.DestinationFolder) < MaxDriveSpaceUsedPercent))
+                                    
+                                    double dblSrcSize = (double) Common.CalculateFolderSize(ScFolder.SourceFolder);
+                                    if (Common.DriveFreeSpace(ScFolder.DestinationFolder) > dblSrcSize)
                                     {
                                         ScFolder.Execute(ref blShuttingDown);
+                                    }
+                                    else
+                                    {
+                                        _evt.WriteEntry("Tasks: SourceFolder Size Exceeds DestinationFolder Available Space");
                                     }
                                 }
                                 else
                                 {
-                                    //Script did not specify folders/drives in use for this script
                                     ScFolder.Execute(ref blShuttingDown);
                                 }
                             }
+                            else
+                            {
+                                _evt.WriteEntry("Tasks: Max Drive Space Used Percent Exceeded!");
+                            }
                         }
+                        else
+                        {
+                            //Script did not specify folders/drives in use for this script
+                            ScFolder.Execute(ref blShuttingDown);
+                        }
+                           
                     }
                     ScFolder = null;
                 }

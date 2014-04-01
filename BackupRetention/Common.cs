@@ -20,6 +20,21 @@ using System.Text.RegularExpressions;
 namespace BackupRetention
 {
 
+    public enum Month 
+    {
+        January = 0x01,
+        February  = 0x02,
+        March = 0x04,
+        April = 0x08,
+        May =0x16,
+        June = 0x32,
+        July =0x64,
+        August=0x128,
+        September=0x256,
+        October=0x512,
+        November = 0x1024,
+        December = 0x2048
+    }
 
 
     public enum ConflictResolutionPolicy
@@ -182,6 +197,12 @@ namespace BackupRetention
             set;
         }
 
+        Month Months
+        {
+            get;
+            set;
+        }
+
         bool Enabled
         {
             get;
@@ -189,6 +210,18 @@ namespace BackupRetention
         }
 
         string Comment
+        {
+            get;
+            set;
+        }
+
+        DateTime StartDate
+        {
+            get;
+            set;
+        }
+
+        DateTime EndDate
         {
             get;
             set;

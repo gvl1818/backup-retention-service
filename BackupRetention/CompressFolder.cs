@@ -215,6 +215,19 @@ namespace BackupRetention
             }
         }
 
+        private Month _months = Month.January | Month.February | Month.March | Month.April | Month.May | Month.June | Month.July | Month.August | Month.September | Month.October | Month.November | Month.December;
+        public Month Months
+        {
+            get
+            {
+                return _months;
+            }
+
+            set
+            {
+                _months = value;
+            }
+        }
         
 
         private bool _enabled = false;
@@ -244,6 +257,34 @@ namespace BackupRetention
                 _comment = value;
             }
 
+        }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+
+            set
+            {
+                _startDate = value;
+            }
+        }
+
+        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return _endDate;
+            }
+
+            set
+            {
+                _endDate = value;
+            }
         }
 
         private CompressOption _compress = CompressOption.Compress;
@@ -417,7 +458,58 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
-            
+
+            Months = 0;
+            if (Common.FixNullbool(row["January"]))
+            {
+                Months = Months | Month.January;
+            }
+            if (Common.FixNullbool(row["February"]))
+            {
+                Months = Months | Month.February;
+            }
+            if (Common.FixNullbool(row["March"]))
+            {
+                Months = Months | Month.March;
+            }
+            if (Common.FixNullbool(row["April"]))
+            {
+                Months = Months | Month.April;
+            }
+            if (Common.FixNullbool(row["May"]))
+            {
+                Months = Months | Month.May;
+            }
+            if (Common.FixNullbool(row["June"]))
+            {
+                Months = Months | Month.June;
+            }
+            if (Common.FixNullbool(row["July"]))
+            {
+                Months = Months | Month.July;
+            }
+            if (Common.FixNullbool(row["August"]))
+            {
+                Months = Months | Month.August;
+            }
+            if (Common.FixNullbool(row["September"]))
+            {
+                Months = Months | Month.September;
+            }
+            if (Common.FixNullbool(row["October"]))
+            {
+                Months = Months | Month.October;
+            }
+            if (Common.FixNullbool(row["November"]))
+            {
+                Months = Months | Month.November;
+            }
+            if (Common.FixNullbool(row["December"]))
+            {
+                Months = Months | Month.December;
+            }
+            DateTime.TryParse(Common.FixNullstring(row["StartDate"]), out _startDate);
+            DateTime.TryParse(Common.FixNullstring(row["EndDate"]), out _endDate);
             str = Common.FixNullstring(row["Compress"]);
             try
             {
@@ -463,10 +555,24 @@ namespace BackupRetention
         /// </summary>
         ~CompressFolder()
         {
-            AllFiles.Clear();
-            FilesCompressed.Clear();
+            try
+            {
+                if (AllFiles != null)
+                {
+                    AllFiles.Clear();
+                }
+                if (FilesCompressed != null)
+                {
+                    FilesCompressed.Clear();
+                }
+            }
+            catch (Exception)
+            {
+                   
+            }
             AllFiles = null;
             FilesCompressed = null;
+            _evt = null;
         }
 
         /// <summary>
@@ -507,6 +613,18 @@ namespace BackupRetention
             dtCompressConfig.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Sunday", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("January", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("February", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("March", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("April", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("May", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("June", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("July", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("August", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("September", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("October", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("November", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("December", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Compress", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("SourceOption", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("SourceFolder", typeof(String)));
@@ -516,6 +634,8 @@ namespace BackupRetention
             dtCompressConfig.Columns.Add(new DataColumn("CompressionLvl", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("StartCompressingAfterDays", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("StartDate", typeof(String)));
+            dtCompressConfig.Columns.Add(new DataColumn("EndDate", typeof(String)));
             dtCompressConfig.Columns.Add(new DataColumn("Comment", typeof(String)));
             dtCompressConfig.Columns["Time"].DefaultValue = "01:00";
             dtCompressConfig.Columns["Enabled"].DefaultValue = "true";
@@ -528,7 +648,20 @@ namespace BackupRetention
             dtCompressConfig.Columns["Friday"].DefaultValue = "true";
             dtCompressConfig.Columns["Saturday"].DefaultValue = "true";
             dtCompressConfig.Columns["Sunday"].DefaultValue = "true";
-            
+            dtCompressConfig.Columns["January"].DefaultValue = "true";
+            dtCompressConfig.Columns["February"].DefaultValue = "true";
+            dtCompressConfig.Columns["March"].DefaultValue = "true";
+            dtCompressConfig.Columns["April"].DefaultValue = "true";
+            dtCompressConfig.Columns["May"].DefaultValue = "true";
+            dtCompressConfig.Columns["June"].DefaultValue = "true";
+            dtCompressConfig.Columns["July"].DefaultValue = "true";
+            dtCompressConfig.Columns["August"].DefaultValue = "true";
+            dtCompressConfig.Columns["September"].DefaultValue = "true";
+            dtCompressConfig.Columns["October"].DefaultValue = "true";
+            dtCompressConfig.Columns["November"].DefaultValue = "true";
+            dtCompressConfig.Columns["December"].DefaultValue = "true";
+
+
             dtCompressConfig.Columns["CompressionLvl"].DefaultValue = "Normal";
             dtCompressConfig.Columns["KeepOriginalFile"].DefaultValue = "true";
             dtCompressConfig.Columns["StartCompressingAfterDays"].DefaultValue = "2";
@@ -706,10 +839,11 @@ namespace BackupRetention
             Stream creader = null;
             Stream extestreader = null;
             string[] strfilearr = new string[1];
-            AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown, FileNameFilter);
+            
 
             try
             {
+                AllFiles = Common.WalkDirectory(SourceFolder, ref blShuttingDown, FileNameFilter);
                 SevenZip.SevenZipBase.SetLibraryPath(Get7ZipFolder());
                 if (SourceFolder != DestinationFolder)
                 {

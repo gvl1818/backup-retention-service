@@ -397,6 +397,20 @@ namespace BackupRetention
             }
         }
 
+        private Month _months = Month.January | Month.February | Month.March | Month.April | Month.May | Month.June | Month.July | Month.August | Month.September | Month.October | Month.November | Month.December;
+        public Month Months
+        {
+            get
+            {
+                return _months;
+            }
+
+            set
+            {
+                _months = value;
+            }
+        }
+
         private bool _enabled = true;
         /// <summary>
         /// Remote Upload or Download of entire directory enabled?
@@ -428,6 +442,34 @@ namespace BackupRetention
                 _comment = value;
             }
 
+        }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+
+            set
+            {
+                _startDate = value;
+            }
+        }
+
+        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return _endDate;
+            }
+
+            set
+            {
+                _endDate = value;
+            }
         }
 
         private string _host = "";
@@ -689,6 +731,18 @@ namespace BackupRetention
             dtRemote.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Sunday", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("January", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("February", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("March", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("April", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("May", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("June", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("July", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("August", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("September", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("October", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("November", typeof(String)));
+            dtRemote.Columns.Add(new DataColumn("December", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Host", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Protocol", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Port", typeof(Int32)));
@@ -703,6 +757,8 @@ namespace BackupRetention
             dtRemote.Columns.Add(new DataColumn("AllowAnyCertificate", typeof(String)));
             dtRemote.Columns.Add(new DataColumn("Timeout", typeof(Int32)));
             dtRemote.Columns.Add(new DataColumn("FileNameFilter", typeof(string)));
+            dtRemote.Columns.Add(new DataColumn("StartDate", typeof(string)));
+            dtRemote.Columns.Add(new DataColumn("EndDate", typeof(string)));
             dtRemote.Columns.Add(new DataColumn("Comment", typeof(string)));
             dtRemote.Columns["Enabled"].DefaultValue = "true";
             dtRemote.Columns["Time"].DefaultValue = "01:00";
@@ -715,7 +771,19 @@ namespace BackupRetention
             dtRemote.Columns["Friday"].DefaultValue = "true";
             dtRemote.Columns["Saturday"].DefaultValue = "true";
             dtRemote.Columns["Sunday"].DefaultValue = "true";
-           
+            dtRemote.Columns["January"].DefaultValue = "true";
+            dtRemote.Columns["February"].DefaultValue = "true";
+            dtRemote.Columns["March"].DefaultValue = "true";
+            dtRemote.Columns["April"].DefaultValue = "true";
+            dtRemote.Columns["May"].DefaultValue = "true";
+            dtRemote.Columns["June"].DefaultValue = "true";
+            dtRemote.Columns["July"].DefaultValue = "true";
+            dtRemote.Columns["August"].DefaultValue = "true";
+            dtRemote.Columns["September"].DefaultValue = "true";
+            dtRemote.Columns["October"].DefaultValue = "true";
+            dtRemote.Columns["November"].DefaultValue = "true";
+            dtRemote.Columns["December"].DefaultValue = "true";
+
             dtRemote.Columns["Time"].DefaultValue = "00:00";
             dtRemote.Columns["Protocol"].DefaultValue = "SFTP";
             dtRemote.Columns["TransferDirection"].DefaultValue = "Upload";
@@ -770,7 +838,59 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
-            
+
+            Months = 0;
+            if (Common.FixNullbool(row["January"]))
+            {
+                Months = Months | Month.January;
+            }
+            if (Common.FixNullbool(row["February"]))
+            {
+                Months = Months | Month.February;
+            }
+            if (Common.FixNullbool(row["March"]))
+            {
+                Months = Months | Month.March;
+            }
+            if (Common.FixNullbool(row["April"]))
+            {
+                Months = Months | Month.April;
+            }
+            if (Common.FixNullbool(row["May"]))
+            {
+                Months = Months | Month.May;
+            }
+            if (Common.FixNullbool(row["June"]))
+            {
+                Months = Months | Month.June;
+            }
+            if (Common.FixNullbool(row["July"]))
+            {
+                Months = Months | Month.July;
+            }
+            if (Common.FixNullbool(row["August"]))
+            {
+                Months = Months | Month.August;
+            }
+            if (Common.FixNullbool(row["September"]))
+            {
+                Months = Months | Month.September;
+            }
+            if (Common.FixNullbool(row["October"]))
+            {
+                Months = Months | Month.October;
+            }
+            if (Common.FixNullbool(row["November"]))
+            {
+                Months = Months | Month.November;
+            }
+            if (Common.FixNullbool(row["December"]))
+            {
+                Months = Months | Month.December;
+            }
+            DateTime.TryParse(Common.FixNullstring(row["StartDate"]), out _startDate);
+            DateTime.TryParse(Common.FixNullstring(row["EndDate"]), out _endDate);
+
             Host = Common.FixNullstring(row["Host"]);
             str = Common.FixNullstring(row["Protocol"]);
             try

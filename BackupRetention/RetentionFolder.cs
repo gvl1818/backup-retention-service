@@ -201,6 +201,20 @@ namespace BackupRetention
             }
         }
 
+        private Month _months = Month.January | Month.February | Month.March | Month.April | Month.May | Month.June | Month.July | Month.August | Month.September | Month.October | Month.November | Month.December;
+        public Month Months
+        {
+            get
+            {
+                return _months;
+            }
+
+            set
+            {
+                _months = value;
+            }
+        }
+
         private bool _enabled = false;
         /// <summary>
         /// Retention Plan Enabled for this folder?
@@ -231,6 +245,34 @@ namespace BackupRetention
                 _comment = value;
             }
 
+        }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+
+            set
+            {
+                _startDate = value;
+            }
+        }
+
+        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return _endDate;
+            }
+
+            set
+            {
+                _endDate = value;
+            }
         }
 
         public static string _backupFolder = "";
@@ -415,7 +457,58 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
-            
+            //Months = (Month) Common.FixNullInt32(row["Months"]);
+            Months = 0;
+            if (Common.FixNullbool(row["January"]))
+            {
+                Months = Months | Month.January;
+            }
+            if (Common.FixNullbool(row["February"]))
+            {
+                Months = Months | Month.February;
+            }
+            if (Common.FixNullbool(row["March"]))
+            {
+                Months = Months | Month.March;
+            }
+            if (Common.FixNullbool(row["April"]))
+            {
+                Months = Months | Month.April;
+            }
+            if (Common.FixNullbool(row["May"]))
+            {
+                Months = Months | Month.May;
+            }
+            if (Common.FixNullbool(row["June"]))
+            {
+                Months = Months | Month.June;
+            }
+            if (Common.FixNullbool(row["July"]))
+            {
+                Months = Months | Month.July;
+            }
+            if (Common.FixNullbool(row["August"]))
+            {
+                Months = Months | Month.August;
+            }
+            if (Common.FixNullbool(row["September"]))
+            {
+                Months = Months | Month.September;
+            }
+            if (Common.FixNullbool(row["October"]))
+            {
+                Months = Months | Month.October;
+            }
+            if (Common.FixNullbool(row["November"]))
+            {
+                Months = Months | Month.November;
+            }
+            if (Common.FixNullbool(row["December"]))
+            {
+                Months = Months | Month.December;
+            }
+            DateTime.TryParse(Common.FixNullstring(row["StartDate"]), out _startDate);
+            DateTime.TryParse(Common.FixNullstring(row["EndDate"]), out _endDate);
             BackupFolder = Common.FixNullstring(row["BackupFolder"]);
             MinFileCount = Common.FixNullInt32(row["MinFileCount"]);
             str = Common.FixNullstring(row["DayOfWeekToKeep"]);
@@ -452,8 +545,21 @@ namespace BackupRetention
         /// </summary>
         ~RetentionFolder()
         {
-            AllFiles.Clear();
-            FilesDeleted.Clear();
+            try
+            {
+                if (AllFiles != null)
+                {
+                    AllFiles.Clear();
+                }
+                if (FilesDeleted != null)
+                {
+                    FilesDeleted.Clear();
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
             AllFiles = null;
             FilesDeleted = null;
             _evt = null;
@@ -497,6 +603,18 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Sunday", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("January", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("February", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("March", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("April", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("May", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("June", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("July", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("August", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("September", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("October", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("November", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("December", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("BackupFolder", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("MinFileCount", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("DayOfWeekToKeep", typeof(String)));
@@ -505,6 +623,8 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("MonthlyMaxDaysOld", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("RetentionAlgorithm", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("StartDate", typeof(String)));
+            dtRetentionConfig.Columns.Add(new DataColumn("EndDate", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("Comment", typeof(String)));
 
             dtRetentionConfig.Columns["Enabled"].DefaultValue = "true";
@@ -518,7 +638,18 @@ namespace BackupRetention
             dtRetentionConfig.Columns["Friday"].DefaultValue = "true";
             dtRetentionConfig.Columns["Saturday"].DefaultValue = "true";
             dtRetentionConfig.Columns["Sunday"].DefaultValue = "true";
-            
+            dtRetentionConfig.Columns["January"].DefaultValue = "true";
+            dtRetentionConfig.Columns["February"].DefaultValue = "true";
+            dtRetentionConfig.Columns["March"].DefaultValue = "true";
+            dtRetentionConfig.Columns["April"].DefaultValue = "true";
+            dtRetentionConfig.Columns["May"].DefaultValue = "true";
+            dtRetentionConfig.Columns["June"].DefaultValue = "true";
+            dtRetentionConfig.Columns["July"].DefaultValue = "true";
+            dtRetentionConfig.Columns["August"].DefaultValue = "true";
+            dtRetentionConfig.Columns["September"].DefaultValue = "true";
+            dtRetentionConfig.Columns["October"].DefaultValue = "true";
+            dtRetentionConfig.Columns["November"].DefaultValue = "true";
+            dtRetentionConfig.Columns["December"].DefaultValue = "true";
             dtRetentionConfig.Columns["MinFileCount"].DefaultValue = 10;
             dtRetentionConfig.Columns["DayOfWeekToKeep"].DefaultValue = "Monday";
             dtRetentionConfig.Columns["DailyMaxDaysOld"].DefaultValue = 7;

@@ -210,7 +210,19 @@ namespace BackupRetention
             }
         }
 
-        
+        private Month _months = Month.January | Month.February | Month.March | Month.April | Month.May | Month.June | Month.July | Month.August | Month.September | Month.October | Month.November | Month.December;
+        public Month Months
+        {
+            get
+            {
+                return _months;
+            }
+
+            set
+            {
+                _months = value;
+            }
+        }
 
         private bool _enabled = false;
         public bool Enabled
@@ -239,6 +251,34 @@ namespace BackupRetention
                 _comment = value;
             }
 
+        }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+
+            set
+            {
+                _startDate = value;
+            }
+        }
+
+        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return _endDate;
+            }
+
+            set
+            {
+                _endDate = value;
+            }
         }
 
         private string _workingDirectory = "";
@@ -377,6 +417,57 @@ namespace BackupRetention
             Friday = Common.FixNullbool(row["Friday"]);
             Saturday = Common.FixNullbool(row["Saturday"]);
             Sunday = Common.FixNullbool(row["Sunday"]);
+            Months = 0;
+            if (Common.FixNullbool(row["January"]))
+            {
+                Months = Months | Month.January;
+            }
+            if (Common.FixNullbool(row["February"]))
+            {
+                Months = Months | Month.February;
+            }
+            if (Common.FixNullbool(row["March"]))
+            {
+                Months = Months | Month.March;
+            }
+            if (Common.FixNullbool(row["April"]))
+            {
+                Months = Months | Month.April;
+            }
+            if (Common.FixNullbool(row["May"]))
+            {
+                Months = Months | Month.May;
+            }
+            if (Common.FixNullbool(row["June"]))
+            {
+                Months = Months | Month.June;
+            }
+            if (Common.FixNullbool(row["July"]))
+            {
+                Months = Months | Month.July;
+            }
+            if (Common.FixNullbool(row["August"]))
+            {
+                Months = Months | Month.August;
+            }
+            if (Common.FixNullbool(row["September"]))
+            {
+                Months = Months | Month.September;
+            }
+            if (Common.FixNullbool(row["October"]))
+            {
+                Months = Months | Month.October;
+            }
+            if (Common.FixNullbool(row["November"]))
+            {
+                Months = Months | Month.November;
+            }
+            if (Common.FixNullbool(row["December"]))
+            {
+                Months = Months | Month.December;
+            }
+            DateTime.TryParse(Common.FixNullstring(row["StartDate"]), out _startDate);
+            DateTime.TryParse(Common.FixNullstring(row["EndDate"]), out _endDate);
             FileName = Common.FixNullstring(row["FileName"]);
             Arguments = Common.FixNullstring(row["Arguments"]);
             WorkingDirectory = Common.FixNullstring(row["WorkingDirectory"]);
@@ -407,7 +498,8 @@ namespace BackupRetention
             catch (Exception)
             {   
             }
-            
+            process = null;
+            _evt = null;
         }
 
 
@@ -450,12 +542,26 @@ namespace BackupRetention
             dtScriptConfig.Columns.Add(new DataColumn("Friday", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Saturday", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Sunday", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("January", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("February", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("March", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("April", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("May", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("June", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("July", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("August", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("September", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("October", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("November", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("December", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("DayOfMonth", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("WorkingDirectory", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("FileName", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Arguments", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("SourceFolder", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("DestinationFolder", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("StartDate", typeof(String)));
+            dtScriptConfig.Columns.Add(new DataColumn("EndDate", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Timeout", typeof(String)));
             dtScriptConfig.Columns.Add(new DataColumn("Comment", typeof(String)));
 
@@ -470,6 +576,18 @@ namespace BackupRetention
             dtScriptConfig.Columns["Friday"].DefaultValue = "true";
             dtScriptConfig.Columns["Saturday"].DefaultValue = "true";
             dtScriptConfig.Columns["Sunday"].DefaultValue = "true";
+            dtScriptConfig.Columns["January"].DefaultValue = "true";
+            dtScriptConfig.Columns["February"].DefaultValue = "true";
+            dtScriptConfig.Columns["March"].DefaultValue = "true";
+            dtScriptConfig.Columns["April"].DefaultValue = "true";
+            dtScriptConfig.Columns["May"].DefaultValue = "true";
+            dtScriptConfig.Columns["June"].DefaultValue = "true";
+            dtScriptConfig.Columns["July"].DefaultValue = "true";
+            dtScriptConfig.Columns["August"].DefaultValue = "true";
+            dtScriptConfig.Columns["September"].DefaultValue = "true";
+            dtScriptConfig.Columns["October"].DefaultValue = "true";
+            dtScriptConfig.Columns["November"].DefaultValue = "true";
+            dtScriptConfig.Columns["December"].DefaultValue = "true";
             dtScriptConfig.Columns["DayOfMonth"].DefaultValue = "0";
             dtScriptConfig.Columns["FileName"].DefaultValue = "";
             dtScriptConfig.Columns["Arguments"].DefaultValue = "";
