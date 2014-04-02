@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows.Forms;
+using BackupRetention;
 
-namespace BackupRetention
+namespace System.Windows.Forms
 {
-    using System;
-    using System.Windows.Forms;
-
     public class CalendarColumn : DataGridViewColumn
     {
         public CalendarColumn()
@@ -41,7 +37,7 @@ namespace BackupRetention
             : base()
         {
             // Use the short date format. 
-            this.Style.Format = "d";
+            this.Style.Format = "MM/dd/yyyy";
         }
 
         public override void InitializeEditingControl(int rowIndex, object
@@ -53,13 +49,16 @@ namespace BackupRetention
             CalendarEditingControl ctl =
                 DataGridView.EditingControl as CalendarEditingControl;
             // Use the default row value when Value property is null. 
-            if (this.Value == null)
+            if (this.Value == null || Common.FixNullstring(this.Value) == "")
             {
                 ctl.Value = (DateTime)this.DefaultNewRowValue;
             }
             else
             {
-                ctl.Value = (DateTime)this.Value;
+                DateTime dtValue = DateTime.Now;
+                DateTime.TryParse(Common.FixNullstring(this.Value), out dtValue);
+                //ctl.Value = (DateTime)this.Value;
+                ctl.Value = dtValue;
             }
         }
 

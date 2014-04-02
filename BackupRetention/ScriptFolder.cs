@@ -380,7 +380,7 @@ namespace BackupRetention
         /// <param name="row"></param>
         public ScriptFolder()
         {
-            
+            _evt = Common.GetEventLog;
         }
 
 
@@ -511,7 +511,7 @@ namespace BackupRetention
         {
             DataTable dtScriptConfig;
             dtScriptConfig = new DataTable("ScriptConfig");
-            _evt = Common.GetEventLog;
+            
 
             //Create Primary Key Column
             DataColumn dcID = new DataColumn("ID", typeof(Int32));
@@ -644,11 +644,14 @@ namespace BackupRetention
             }
             finally
             {
-                if (!process.HasExited)
+                if (process != null)
                 {
-                    process.Kill();
+                    if (!process.HasExited)
+                    {
+                        process.Kill();
+                    }
+                    process.Close();
                 }
-                process.Close();
                 process = null;
                
             }

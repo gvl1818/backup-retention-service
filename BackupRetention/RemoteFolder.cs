@@ -955,6 +955,11 @@ namespace BackupRetention
                 {
                     FilesDownloaded.Clear();
                 }
+                if (KeyFiles != null)
+                {
+                    KeyFiles.Clear();
+                }
+
             }
             catch (Exception)
             {
@@ -964,6 +969,7 @@ namespace BackupRetention
             UploadFiles = null;
             FilesUploaded = null;
             FilesDownloaded = null;
+            KeyFiles = null;
             _evt = null;
         }
 
@@ -1360,6 +1366,7 @@ namespace BackupRetention
                     }
                     sftp.Dispose();
                 }
+                sftp = null;
             }
         }
 
@@ -1679,8 +1686,9 @@ namespace BackupRetention
                     }
 
                     FTPS.Dispose();
-                    FTPS = null;
+                   
                 }
+                FTPS = null;
             }
 
         }
