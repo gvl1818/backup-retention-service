@@ -660,7 +660,7 @@ namespace BackupRetention
             dtCompressConfig.Columns["October"].DefaultValue = "true";
             dtCompressConfig.Columns["November"].DefaultValue = "true";
             dtCompressConfig.Columns["December"].DefaultValue = "true";
-
+            dtCompressConfig.Columns["StartDate"].DefaultValue = DateTime.Now.ToString("d");
 
             dtCompressConfig.Columns["CompressionLvl"].DefaultValue = "Normal";
             dtCompressConfig.Columns["KeepOriginalFile"].DefaultValue = "true";

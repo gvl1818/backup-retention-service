@@ -392,7 +392,7 @@ namespace BackupRetention
         /// <param name="row"></param>
         public ScriptFolder(DataRow row)
         {
-            
+            _evt = Common.GetEventLog;
 
             ID = Common.FixNullInt32(row["ID"]);
             Title = Common.FixNullstring(row["Title"]);
@@ -593,13 +593,14 @@ namespace BackupRetention
             dtScriptConfig.Columns["Arguments"].DefaultValue = "";
             dtScriptConfig.Columns["WorkingDirectory"].DefaultValue = "";
             dtScriptConfig.Columns["Timeout"].DefaultValue = "360";
+            dtScriptConfig.Columns["StartDate"].DefaultValue = DateTime.Now.ToString("d");
             return dtScriptConfig;
 
         }
 
 
         /// <summary>
-        /// Executes Script
+        /// Executes Script or Task
         /// </summary>
         /// <param name="blShuttingDown"></param>
         public void Execute(ref bool blShuttingDown)
@@ -640,20 +641,27 @@ namespace BackupRetention
             }
             catch (Exception e)
             {
-                _evt.WriteEntry("Script: " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments) + " Error: " + e.ToString());
+                _evt.WriteEntry("Tasks: " + Title + " " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments) + " Error: " + e.ToString());
             }
             finally
             {
-                if (process != null)
+                try
                 {
-                    if (!process.HasExited)
+                    if (process != null)
                     {
-                        process.Kill();
+                        if (!process.HasExited)
+                        {
+                            process.Kill();
+                            process.WaitForExit(1000 * 60 * 2);
+                        }
+                        process.Dispose();
                     }
-                    process.Close();
+                    process = null;
                 }
-                process = null;
-               
+                catch (Exception ex1)
+                {
+                    _evt.WriteEntry("Tasks: " + Title + " " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments) + " Error: " + ex1.ToString());
+                }
             }
         }
 
@@ -667,7 +675,7 @@ namespace BackupRetention
             {
                 _evt.WriteEntry("Script: " + sbOutput.ToString(), EventLogEntryType.Information);
             }*/
-            _evt.WriteEntry("Script: Script Finished: " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments), EventLogEntryType.Information);
+            _evt.WriteEntry("Tasks: Finished: " + Title + " " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments), EventLogEntryType.Information);
         }
 
         /*

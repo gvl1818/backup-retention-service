@@ -462,7 +462,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:BackupRetention, Version=1.0.3.9, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5379844BFA40B330231809CB6363C476"
@@ -719,7 +719,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Backup Retention Service"
         "ProductCode" = "8:{242340CB-B359-4EE0-AD96-EBF24077A98F}"
-        "PackageCode" = "8:{58BFCB34-62DB-4AF5-93D0-8256222DBCE3}"
+        "PackageCode" = "8:{9EFEF302-8F23-447E-B198-71E9C5E62473}"
         "UpgradeCode" = "8:{13942A01-A7FC-4553-AC0C-A2A82F17C5F3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1063,7 +1063,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install [ProductName] on your computer.  7Zip at http://www.7zip.org must be installed in the default program files location."
+                            "Value" = "8:The installer will guide you through the steps required to install [ProductName] on your computer.  7Zip at http://www.7zip.org must be installed in the default program files location.  Make sure and specify the service user account as a domain account that has read write permissions to needed shares."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }

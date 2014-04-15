@@ -14,5 +14,20 @@ namespace BackupRetentionService
         {
             InitializeComponent();
         }
+        public override void Install(IDictionary stateSaver)
+        {
+            //Forces Service to bring up "Set Service Login" Dialog
+            if (this.serviceProcessInstaller1 != null)
+            {
+                this.serviceProcessInstaller1.Username = null;
+                this.serviceProcessInstaller1.Password = null;
+                Context.Parameters["USERNAME"] = null;
+                Context.Parameters["PASSWORD"] = null;
+                Context.Parameters["ACCOUNT"] = "User";
+                this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.User;
+            }
+            
+            base.Install(stateSaver);
+        }
     }
 }

@@ -656,6 +656,7 @@ namespace BackupRetention
             dtRetentionConfig.Columns["WeeklyMaxDaysOld"].DefaultValue = 31;
             dtRetentionConfig.Columns["MonthlyMaxDaysOld"].DefaultValue = 62;
             dtRetentionConfig.Columns["RetentionAlgorithm"].DefaultValue = "GFS";
+            dtRetentionConfig.Columns["StartDate"].DefaultValue = DateTime.Now.ToString("d");
             return dtRetentionConfig;
         }
 

@@ -40,10 +40,7 @@ namespace BackupRetention
         /// if service is shutting down boolean variable
         /// </summary>
         private static bool blShuttingDown = false;
-        /// <summary>
-        /// Synchronization configuration table
-        /// </summary>
-        //private static DataTable dtSyncConfig;
+        
         /// <summary>
         /// Retention configuration table
         /// </summary>
@@ -447,7 +444,6 @@ namespace BackupRetention
             try
             {
 
-
                 strExecutionTime = folder.Time;
                 TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
@@ -636,73 +632,73 @@ namespace BackupRetention
             switch (today.Month)
             {
                 case 1:
-                    if ((int)(folder.Months & Month.January) == 1)
+                    if ((folder.Months & Month.January) == Month.January)
                     {
                         blExecuteThisMonth= true;
                     }
                     break;
                 case 2:
-                    if ((int)(folder.Months & Month.February) == 2)
+                    if ((folder.Months & Month.February) == Month.February)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 3:
-                    if ((int)(folder.Months & Month.March) == 4)
+                    if ((folder.Months & Month.March) == Month.March)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 4:
-                    if ((int)(folder.Months & Month.April) == 8)
+                    if ((folder.Months & Month.April) == Month.April)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 5:
-                    if ((int)(folder.Months & Month.May) == 16)
+                    if ((folder.Months & Month.May) == Month.May)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 6:
-                    if ((int)(folder.Months & Month.June) == 32)
+                    if ((folder.Months & Month.June) == Month.June)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 7:
-                    if ((int)(folder.Months & Month.July) == 64)
+                    if ((folder.Months & Month.July) == Month.July)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 8:
-                    if ((int)(folder.Months & Month.August) == 128)
+                    if ((folder.Months & Month.August) == Month.August)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 9:
-                    if ((int)(folder.Months & Month.September) == 256)
+                    if ((folder.Months & Month.September) == Month.September)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 10:
-                    if ((int)(folder.Months & Month.October) == 512)
+                    if ((folder.Months & Month.October) == Month.October)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 11:
-                    if ((int)(folder.Months & Month.November) == 1024)
+                    if ((folder.Months & Month.November) == Month.November)
                     {
                         blExecuteThisMonth = true;
                     }
                     break;
                 case 12:
-                    if ((int)(folder.Months & Month.December) == 2048)
+                    if ((folder.Months & Month.December) == Month.December)
                     {
                         blExecuteThisMonth = true;
                     }

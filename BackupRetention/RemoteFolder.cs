@@ -791,7 +791,7 @@ namespace BackupRetention
             dtRemote.Columns["Port"].DefaultValue = 22;
             dtRemote.Columns["Timeout"].DefaultValue = 120000;
             dtRemote.Columns["AllowAnyCertificate"].DefaultValue = "true";
-
+            dtRemote.Columns["StartDate"].DefaultValue = DateTime.Now.ToString("d");
             return dtRemote;
         }
 
