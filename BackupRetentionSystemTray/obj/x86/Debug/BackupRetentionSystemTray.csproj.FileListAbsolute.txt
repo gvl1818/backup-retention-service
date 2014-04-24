@@ -14,3 +14,5 @@ C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x8
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetentionSystemTray.exe.config
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\Renci.SshNet.dll
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\AlexPilotti.FTPS.Client.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\GenerateResource.write.1.tlog

@@ -22,3 +22,5 @@ C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\BackupRetention.pdb
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\Renci.SshNet.dll
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\bin\Debug\AlexPilotti.FTPS.Client.dll
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionService\obj\x86\Debug\GenerateResource.write.1.tlog

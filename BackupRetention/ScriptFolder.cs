@@ -611,6 +611,7 @@ namespace BackupRetention
                 {
                     //sbOutput = new StringBuilder();
                     //sbError = new StringBuilder();
+                    _evt = Common.GetEventLog;
                     _evt.WriteEntry("Script: Starting Script: " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments), EventLogEntryType.Information);
                     process = new System.Diagnostics.Process();
                     System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -639,9 +640,10 @@ namespace BackupRetention
                     
                 }
             }
-            catch (Exception e)
+            catch (Exception ex2)
             {
-                _evt.WriteEntry("Tasks: " + Title + " " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments) + " Error: " + e.ToString());
+                _evt = Common.GetEventLog;
+                _evt.WriteEntry("Tasks: " + Common.FixNullstring(Title) + " Error: " + ex2.Message);
             }
             finally
             {
@@ -660,7 +662,8 @@ namespace BackupRetention
                 }
                 catch (Exception ex1)
                 {
-                    _evt.WriteEntry("Tasks: " + Title + " " + Common.FixNullstring(FileName) + " " + Common.FixNullstring(Arguments) + " Error: " + ex1.ToString());
+                    _evt = Common.GetEventLog;
+                    _evt.WriteEntry("Tasks: " + Common.FixNullstring(Title) + " Error: " + ex1.Message);
                 }
             }
         }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BackupRetention</RootNamespace>
     <AssemblyName>BackupRetentionService</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -89,6 +89,7 @@
     <Content Include="AlexPilotti.FTPS.Client.dll" />
     <Content Include="Backup Retention License.txt" />
     <Content Include="CompressConfig.xml" />
+    <Content Include="Delimon.Win32.IO.dll" />
     <Content Include="ScriptConfig.xml" />
     <Content Include="RemoteConfig.xml">
       <SubType>Designer</SubType>
