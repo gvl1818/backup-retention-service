@@ -1,6 +1,4 @@
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\ResGen.read.1.tlog
-C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\ResGen.write.1.tlog
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetentionSystemTray.exe
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\BackupRetentionSystemTray.pdb
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\BackupRetentionSystemTray.exe
@@ -16,3 +14,4 @@ C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\De
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\AlexPilotti.FTPS.Client.dll
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\pcooper\Desktop\BackupRetentionService\BackupRetentionSystemTray\bin\Debug\Delimon.Win32.IO.dll

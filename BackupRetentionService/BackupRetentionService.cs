@@ -866,11 +866,11 @@ namespace BackupRetention
                     ScriptFolder ScFolder = new ScriptFolder(row);
                     if (ExecuteTime(ScFolder))
                     {
-                        if (Common.FixNullstring(ScFolder.DestinationFolder).Length > 0 && Directory.Exists(ScFolder.DestinationFolder))
+                        if (Common.FixNullstring(ScFolder.DestinationFolder).Length > 0 && Common.DirectoryExists(ScFolder.DestinationFolder))
                         {
                             if ((Common.DriveSpaceUsed(ScFolder.DestinationFolder) < MaxDriveSpaceUsedPercent))
                             {
-                                if (Common.FixNullstring(ScFolder.SourceFolder).Length > 0 && Directory.Exists(ScFolder.SourceFolder))
+                                if (Common.FixNullstring(ScFolder.SourceFolder).Length > 0 && Common.DirectoryExists(ScFolder.SourceFolder))
                                 {
                                     
                                     double dblSrcSize = (double) Common.CalculateFolderSize(ScFolder.SourceFolder);

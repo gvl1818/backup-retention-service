@@ -289,7 +289,7 @@ namespace BackupRetention
 
 
         /// <summary>
-        /// Gets Drive Space Used Percent of Drive Letter passed
+        /// Gets Drive Space Used Percent of Drive Letter passed.
         /// </summary>
         /// <param name="strPath"></param>
         /// <returns></returns>
@@ -302,7 +302,7 @@ namespace BackupRetention
                 ulong FreeBytesAvailable;
                 ulong TotalNumberOfBytes;
                 ulong TotalNumberOfFreeBytes;
-
+                
                 bool success = GetDiskFreeSpaceEx(strPath, out FreeBytesAvailable, out TotalNumberOfBytes,
                                     out TotalNumberOfFreeBytes);
                 if (!success)
@@ -322,7 +322,7 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Gets Drive Free Space of Drive letter passed
+        /// Gets Drive Free Space of Drive letter passed.
         /// </summary>
         /// <param name="strPath"></param>
         /// <returns></returns>
@@ -336,7 +336,7 @@ namespace BackupRetention
                 ulong FreeBytesAvailable;
                 ulong TotalNumberOfBytes;
                 ulong TotalNumberOfFreeBytes;
-
+               
                 bool success = GetDiskFreeSpaceEx(strPath, out FreeBytesAvailable, out TotalNumberOfBytes,
                                     out TotalNumberOfFreeBytes);
                 if (!success)
@@ -352,6 +352,11 @@ namespace BackupRetention
             return dblPercentFreeSpace;
         }
 
+        /// <summary>
+        /// Drive Free Space in Bytes.  
+        /// </summary>
+        /// <param name="strPath"></param>
+        /// <returns></returns>
         public static long DriveFreeSpaceBytes(string strPath)
         {
             _evt = GetEventLog;
@@ -360,7 +365,7 @@ namespace BackupRetention
                 ulong FreeBytesAvailable;
                 ulong TotalNumberOfBytes;
                 ulong TotalNumberOfFreeBytes;
-
+                
                 bool success = GetDiskFreeSpaceEx(strPath, out FreeBytesAvailable, out TotalNumberOfBytes,
                                     out TotalNumberOfFreeBytes);
                 if (!success)
@@ -376,7 +381,7 @@ namespace BackupRetention
 
         /// <summary>
         /// Calculates Folder Size by adding up all file.Length
-        /// this works for UNC and Non UNC paths.
+        /// this works for UNC and Non UNC paths.  This can also handle long file names.
         /// </summary>
         /// <param name="folder"></param>
         /// <returns></returns>
@@ -392,16 +397,16 @@ namespace BackupRetention
                 {
                     try
                     {
-                        foreach (string file in Directory.GetFiles(folder))
+                        foreach (string file in Delimon.Win32.IO.Directory.GetFiles(folder))
                         {
-                            if (File.Exists(file))
+                            if (Delimon.Win32.IO.File.Exists(file))
                             {
-                                FileInfo finfo = new FileInfo(file);
+                                Delimon.Win32.IO.FileInfo finfo = new Delimon.Win32.IO.FileInfo(file);
                                 folderSize += (float) finfo.Length;
                             }
                         }
 
-                        foreach (string dir in Directory.GetDirectories(folder))
+                        foreach (string dir in Delimon.Win32.IO.Directory.GetDirectories(folder))
                         {
                             folderSize += CalculateFolderSize(dir);
                         }
@@ -421,7 +426,7 @@ namespace BackupRetention
 
 
         /// <summary>
-        /// Gets Number of files in entire folder and sub folder
+        /// Gets Number of files in entire folder and sub folder.  Long file paths are supported.
         /// </summary>
         /// <param name="folder"></param>
         /// <returns></returns>
@@ -437,15 +442,15 @@ namespace BackupRetention
                 {
                     try
                     {
-                        foreach (string file in Directory.GetFiles(folder))
+                        foreach (string file in Delimon.Win32.IO.Directory.GetFiles(folder))
                         {
-                            if (File.Exists(file))
+                            if (Delimon.Win32.IO.File.Exists(file))
                             {
                                 lFileCount++;
                             }
                         }
 
-                        foreach (string dir in Directory.GetDirectories(folder))
+                        foreach (string dir in Delimon.Win32.IO.Directory.GetDirectories(folder))
                         {
                             lFileCount += GetFolderFileCount(dir);
                         }
@@ -688,7 +693,7 @@ namespace BackupRetention
         }
 
         /// <summary>
-        /// Cleans the path before checking if the directory exists
+        /// Cleans the path before checking if the directory exists and long file paths are supported
         /// </summary>
         /// <param name="strPath"></param>
         /// <returns></returns>
@@ -698,7 +703,7 @@ namespace BackupRetention
             try
             {
                 strPath = WindowsPathClean(strPath);
-                blSuccess = Directory.Exists(strPath);
+                blSuccess = Delimon.Win32.IO.Directory.Exists(strPath);
             }
             catch (Exception)
             {

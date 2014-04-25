@@ -365,6 +365,33 @@ namespace BackupRetention
             }
         }
 
+        public static int _yearlyMaxYearsOld = 7;
+        public int YearlyMaxYearsOld
+        {
+            get
+            {
+                return _yearlyMaxYearsOld;
+            }
+            set
+            {
+                _yearlyMaxYearsOld = value;
+            }
+        }
+
+        private DateTime _yearlyDateToKeep;
+        public DateTime YearlyDateToKeep
+        {
+            get
+            {
+                return _yearlyDateToKeep;
+            }
+
+            set
+            {
+                _yearlyDateToKeep = value;
+            }
+        }
+
         public static string _fileNameFilter = "";
         public string FileNameFilter
         {
@@ -524,6 +551,9 @@ namespace BackupRetention
             DailyMaxDaysOld = Common.FixNullInt32(row["DailyMaxDaysOld"]);
             WeeklyMaxDaysOld = Common.FixNullInt32(row["WeeklyMaxDaysOld"]);
             MonthlyMaxDaysOld = Common.FixNullInt32(row["MonthlyMaxDaysOld"]);
+            YearlyMaxYearsOld = Common.FixNullInt32(row["YearlyMaxYearsOld"]);
+            DateTime.TryParse(Common.FixNullstring(row["YearlyDateToKeep"]), out _yearlyDateToKeep);
+            
             FileNameFilter = Common.FixNullstring(row["FileNameFilter"]);
             //RetentionAlgorithm
             str = Common.FixNullstring(row["RetentionAlgorithm"]);
@@ -621,6 +651,8 @@ namespace BackupRetention
             dtRetentionConfig.Columns.Add(new DataColumn("DailyMaxDaysOld", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("WeeklyMaxDaysOld", typeof(Int32)));
             dtRetentionConfig.Columns.Add(new DataColumn("MonthlyMaxDaysOld", typeof(Int32)));
+            dtRetentionConfig.Columns.Add(new DataColumn("YearlyMaxYearsOld", typeof(Int32)));
+            dtRetentionConfig.Columns.Add(new DataColumn("YearlyDateToKeep", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("RetentionAlgorithm", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("FileNameFilter", typeof(String)));
             dtRetentionConfig.Columns.Add(new DataColumn("StartDate", typeof(String)));
@@ -655,6 +687,8 @@ namespace BackupRetention
             dtRetentionConfig.Columns["DailyMaxDaysOld"].DefaultValue = 7;
             dtRetentionConfig.Columns["WeeklyMaxDaysOld"].DefaultValue = 31;
             dtRetentionConfig.Columns["MonthlyMaxDaysOld"].DefaultValue = 62;
+            dtRetentionConfig.Columns["YearlyMaxYearsOld"].DefaultValue = 7;
+            dtRetentionConfig.Columns["YearlyDateToKeep"].DefaultValue = DateTime.Now.ToString("d");
             dtRetentionConfig.Columns["RetentionAlgorithm"].DefaultValue = "GFS";
             dtRetentionConfig.Columns["StartDate"].DefaultValue = DateTime.Now.ToString("d");
             return dtRetentionConfig;
@@ -768,11 +802,30 @@ namespace BackupRetention
                             
                             if ((AllFiles.Count - (FilesDeleted.Count + intFilesNotToCount)) > MinFileCount || MinFileCount == 0)
                             {
-                                //Monthly Retention Delete
+                                //Yearly Retention Delete
+                                if (FileDate.Month == YearlyDateToKeep.Month && FileDate.Day==YearlyDateToKeep.Day )
+                                {
+                                    DateTime DeletebyDate = FileDate.AddYears(YearlyMaxYearsOld);
+                                    
+                                    if (DeletebyDate < DateTime.Now)
+                                    {
+                                        if (RetentionAlgorithm == RetentionAlgorithmOptions.KeepAll)
+                                        {
+                                            FilesDeleted.Add(file1);
+                                            _evt.WriteEntry("Retention Logging Only Mode: GFS Yearly File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6771, 60);
+                                        }
+                                        else
+                                        {
+                                            FilesDeleted.Add(file1);
+                                            //File.SetAttributes(file1.FullName, FileAttributes.Normal);
+                                            file1.IsReadOnly = false;
+                                            File.Delete(file1.FullName);
+                                            _evt.WriteEntry("Retention: GFS Yearly File Date: " + FileDate.ToString() + "File Deleted: " + file1.FullName, System.Diagnostics.EventLogEntryType.Information, 6770, 60);
+                                        }
+                                    }
 
-
-
-                                if ((((timespan.Days * 24 + timespan.Hours) > (MonthlyMaxDaysOld * 24)) || (FileDate.DayOfWeek != DayOfWeekToKeep && FileDate.Day > 7)) && (timespan.Days > WeeklyMaxDaysOld && timespan.Days > DailyMaxDaysOld))
+                                } //Monthly Retention Delete
+                                else if (((((long) timespan.Days * 24 + (long) timespan.Hours) > ((long) MonthlyMaxDaysOld * (long) 24)) || (FileDate.DayOfWeek != DayOfWeekToKeep && FileDate.Day > 7)) && (timespan.Days > WeeklyMaxDaysOld && timespan.Days > DailyMaxDaysOld))
                                 {
                                     if (RetentionAlgorithm == RetentionAlgorithmOptions.KeepAll)
                                     {
